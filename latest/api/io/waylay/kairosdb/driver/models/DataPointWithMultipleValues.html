@@ -45,12 +45,12 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">DataPointWithMultipleValues</span><span class="params">(<span name="metricName">metricName: <a href="MetricName.html" class="extype" name="io.waylay.kairosdb.driver.models.MetricName">MetricName</a></span>, <span name="values">values: <span class="extype" name="scala.Seq">Seq</span>[(<span class="extype" name="java.time.Instant">Instant</span>, <a href="KairosCompatibleType.html" class="extype" name="io.waylay.kairosdb.driver.models.KairosCompatibleType">KairosCompatibleType</a>)]</span>, <span name="tags">tags: <span class="extype" name="scala.Seq">Seq</span>[<a href="Tag.html" class="extype" name="io.waylay.kairosdb.driver.models.Tag">Tag</a>] = <span class="symbol">Seq.empty</span></span>, <span name="ttl">ttl: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Long">Long</span>] = <span class="symbol">None</span></span>)</span><span class="result"> extends <a href="DataPoint.html" class="extype" name="io.waylay.kairosdb.driver.models.DataPoint">DataPoint</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">DataPointWithMultipleValues</span><span class="params">(<span name="metricName">metricName: <a href="MetricName.html" class="extype" name="io.waylay.kairosdb.driver.models.MetricName">MetricName</a></span>, <span name="values">values: <span class="extype" name="scala.Seq">Seq</span>[(<span class="extype" name="java.time.Instant">Instant</span>, <a href="KairosCompatibleType.html" class="extype" name="io.waylay.kairosdb.driver.models.KairosCompatibleType">KairosCompatibleType</a>)]</span>, <span name="tags">tags: <span class="extype" name="scala.Seq">Seq</span>[<a href="Tag.html" class="extype" name="io.waylay.kairosdb.driver.models.Tag">Tag</a>] = <span class="symbol">Seq.empty</span></span>, <span name="ttl">ttl: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.concurrent.duration.FiniteDuration">FiniteDuration</span>] = <span class="symbol">None</span></span>)</span><span class="result"> extends <a href="DataPoint.html" class="extype" name="io.waylay.kairosdb.driver.models.DataPoint">DataPoint</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
       
           <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>A data point has with metric name, a single value, a timestamp, and a list of one or more tags
-</p></div><dl class="paramcmts block"><dt class="param">ttl</dt><dd class="cmt"><p>Sets the Cassandra ttl for the data points. None or Some(0L) will not set a ttl in Cassandra.</p></dd></dl><div class="toggleContainer block">
+</p></div><dl class="paramcmts block"><dt class="param">ttl</dt><dd class="cmt"><p>Sets the Cassandra ttl for the data points. None or Some(0.seconds) will not set a TTL</p></dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
           <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="DataPoint.html" class="extype" name="io.waylay.kairosdb.driver.models.DataPoint">DataPoint</a>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
@@ -90,7 +90,7 @@
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
               <ol><li name="io.waylay.kairosdb.driver.models.DataPointWithMultipleValues#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="&lt;init&gt;(metricName:io.waylay.kairosdb.driver.models.MetricName,values:Seq[(java.time.Instant,io.waylay.kairosdb.driver.models.KairosCompatibleType)],tags:Seq[io.waylay.kairosdb.driver.models.Tag],ttl:Option[Long]):io.waylay.kairosdb.driver.models.DataPointWithMultipleValues"></a>
+      <a id="&lt;init&gt;(metricName:io.waylay.kairosdb.driver.models.MetricName,values:Seq[(java.time.Instant,io.waylay.kairosdb.driver.models.KairosCompatibleType)],tags:Seq[io.waylay.kairosdb.driver.models.Tag],ttl:Option[scala.concurrent.duration.FiniteDuration]):io.waylay.kairosdb.driver.models.DataPointWithMultipleValues"></a>
       <a id="&lt;init&gt;:DataPointWithMultipleValues"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -98,14 +98,14 @@
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">DataPointWithMultipleValues</span><span class="params">(<span name="metricName">metricName: <a href="MetricName.html" class="extype" name="io.waylay.kairosdb.driver.models.MetricName">MetricName</a></span>, <span name="values">values: <span class="extype" name="scala.Seq">Seq</span>[(<span class="extype" name="java.time.Instant">Instant</span>, <a href="KairosCompatibleType.html" class="extype" name="io.waylay.kairosdb.driver.models.KairosCompatibleType">KairosCompatibleType</a>)]</span>, <span name="tags">tags: <span class="extype" name="scala.Seq">Seq</span>[<a href="Tag.html" class="extype" name="io.waylay.kairosdb.driver.models.Tag">Tag</a>] = <span class="symbol">Seq.empty</span></span>, <span name="ttl">ttl: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Long">Long</span>] = <span class="symbol">None</span></span>)</span>
+        <span class="name">DataPointWithMultipleValues</span><span class="params">(<span name="metricName">metricName: <a href="MetricName.html" class="extype" name="io.waylay.kairosdb.driver.models.MetricName">MetricName</a></span>, <span name="values">values: <span class="extype" name="scala.Seq">Seq</span>[(<span class="extype" name="java.time.Instant">Instant</span>, <a href="KairosCompatibleType.html" class="extype" name="io.waylay.kairosdb.driver.models.KairosCompatibleType">KairosCompatibleType</a>)]</span>, <span name="tags">tags: <span class="extype" name="scala.Seq">Seq</span>[<a href="Tag.html" class="extype" name="io.waylay.kairosdb.driver.models.Tag">Tag</a>] = <span class="symbol">Seq.empty</span></span>, <span name="ttl">ttl: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.concurrent.duration.FiniteDuration">FiniteDuration</span>] = <span class="symbol">None</span></span>)</span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../../index.html#io.waylay.kairosdb.driver.models.DataPointWithMultipleValues@&lt;init&gt;(metricName:io.waylay.kairosdb.driver.models.MetricName,values:Seq[(java.time.Instant,io.waylay.kairosdb.driver.models.KairosCompatibleType)],tags:Seq[io.waylay.kairosdb.driver.models.Tag],ttl:Option[Long]):io.waylay.kairosdb.driver.models.DataPointWithMultipleValues" title="Permalink" target="_top">
+      <a href="../../../../../index.html#io.waylay.kairosdb.driver.models.DataPointWithMultipleValues@&lt;init&gt;(metricName:io.waylay.kairosdb.driver.models.MetricName,values:Seq[(java.time.Instant,io.waylay.kairosdb.driver.models.KairosCompatibleType)],tags:Seq[io.waylay.kairosdb.driver.models.Tag],ttl:Option[scala.concurrent.duration.FiniteDuration]):io.waylay.kairosdb.driver.models.DataPointWithMultipleValues" title="Permalink" target="_top">
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">ttl</dt><dd class="cmt"><p>Sets the Cassandra ttl for the data points. None or Some(0L) will not set a ttl in Cassandra.</p></dd></dl></div>
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">ttl</dt><dd class="cmt"><p>Sets the Cassandra ttl for the data points. None or Some(0.seconds) will not set a TTL</p></dd></dl></div>
     </li></ol>
             </div>
 
@@ -383,22 +383,22 @@
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="io.waylay.kairosdb.driver.models.DataPointWithMultipleValues">DataPointWithMultipleValues</a> → <a href="DataPoint.html" class="extype" name="io.waylay.kairosdb.driver.models.DataPoint">DataPoint</a></dd></dl></div>
     </li><li name="io.waylay.kairosdb.driver.models.DataPointWithMultipleValues#ttl" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="ttl:Option[Long]"></a>
-      <a id="ttl:Option[Long]"></a>
+      <a id="ttl:Option[scala.concurrent.duration.FiniteDuration]"></a>
+      <a id="ttl:Option[FiniteDuration]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">ttl</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Long">Long</span>]</span>
+        <span class="name">ttl</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.concurrent.duration.FiniteDuration">FiniteDuration</span>]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../../index.html#io.waylay.kairosdb.driver.models.DataPointWithMultipleValues@ttl:Option[Long]" title="Permalink" target="_top">
+      <a href="../../../../../index.html#io.waylay.kairosdb.driver.models.DataPointWithMultipleValues@ttl:Option[scala.concurrent.duration.FiniteDuration]" title="Permalink" target="_top">
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <p class="shortcomment cmt">Sets the Cassandra ttl for the data points.</p><div class="fullcomment"><div class="comment cmt"><p>Sets the Cassandra ttl for the data points. None or Some(0L) will not set a ttl in Cassandra.</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="io.waylay.kairosdb.driver.models.DataPointWithMultipleValues">DataPointWithMultipleValues</a> → <a href="DataPoint.html" class="extype" name="io.waylay.kairosdb.driver.models.DataPoint">DataPoint</a></dd></dl></div>
+      <p class="shortcomment cmt">Sets the Cassandra ttl for the data points.</p><div class="fullcomment"><div class="comment cmt"><p>Sets the Cassandra ttl for the data points. None or Some(0.seconds) will not set a TTL</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="io.waylay.kairosdb.driver.models.DataPointWithMultipleValues">DataPointWithMultipleValues</a> → <a href="DataPoint.html" class="extype" name="io.waylay.kairosdb.driver.models.DataPoint">DataPoint</a></dd></dl></div>
     </li><li name="io.waylay.kairosdb.driver.models.DataPointWithMultipleValues#values" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="values:Seq[(java.time.Instant,io.waylay.kairosdb.driver.models.KairosCompatibleType)]"></a>
       <a id="values:Seq[(Instant,KairosCompatibleType)]"></a>

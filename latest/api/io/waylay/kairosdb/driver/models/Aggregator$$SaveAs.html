@@ -45,7 +45,7 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">SaveAs</span><span class="params">(<span name="metricName">metricName: <a href="MetricName.html" class="extype" name="io.waylay.kairosdb.driver.models.MetricName">MetricName</a></span>, <span name="tags">tags: <span class="extype" name="scala.Seq">Seq</span>[<a href="Tag.html" class="extype" name="io.waylay.kairosdb.driver.models.Tag">Tag</a>]</span>, <span name="ttl">ttl: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result"> extends <a href="Aggregator.html" class="extype" name="io.waylay.kairosdb.driver.models.Aggregator">Aggregator</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">SaveAs</span><span class="params">(<span name="metricName">metricName: <a href="MetricName.html" class="extype" name="io.waylay.kairosdb.driver.models.MetricName">MetricName</a></span>, <span name="tags">tags: <span class="extype" name="scala.Seq">Seq</span>[<a href="Tag.html" class="extype" name="io.waylay.kairosdb.driver.models.Tag">Tag</a>]</span>, <span name="ttl">ttl: <span class="extype" name="scala.concurrent.duration.FiniteDuration">FiniteDuration</span></span>)</span><span class="result"> extends <a href="Aggregator.html" class="extype" name="io.waylay.kairosdb.driver.models.Aggregator">Aggregator</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
       
@@ -92,7 +92,7 @@ when saved. If you do a group by query the group by tags are saved.
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
               <ol><li name="io.waylay.kairosdb.driver.models.Aggregator.SaveAs#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="&lt;init&gt;(metricName:io.waylay.kairosdb.driver.models.MetricName,tags:Seq[io.waylay.kairosdb.driver.models.Tag],ttl:Long):io.waylay.kairosdb.driver.models.Aggregator.SaveAs"></a>
+      <a id="&lt;init&gt;(metricName:io.waylay.kairosdb.driver.models.MetricName,tags:Seq[io.waylay.kairosdb.driver.models.Tag],ttl:scala.concurrent.duration.FiniteDuration):io.waylay.kairosdb.driver.models.Aggregator.SaveAs"></a>
       <a id="&lt;init&gt;:SaveAs"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -100,10 +100,10 @@ when saved. If you do a group by query the group by tags are saved.
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">SaveAs</span><span class="params">(<span name="metricName">metricName: <a href="MetricName.html" class="extype" name="io.waylay.kairosdb.driver.models.MetricName">MetricName</a></span>, <span name="tags">tags: <span class="extype" name="scala.Seq">Seq</span>[<a href="Tag.html" class="extype" name="io.waylay.kairosdb.driver.models.Tag">Tag</a>]</span>, <span name="ttl">ttl: <span class="extype" name="scala.Long">Long</span></span>)</span>
+        <span class="name">SaveAs</span><span class="params">(<span name="metricName">metricName: <a href="MetricName.html" class="extype" name="io.waylay.kairosdb.driver.models.MetricName">MetricName</a></span>, <span name="tags">tags: <span class="extype" name="scala.Seq">Seq</span>[<a href="Tag.html" class="extype" name="io.waylay.kairosdb.driver.models.Tag">Tag</a>]</span>, <span name="ttl">ttl: <span class="extype" name="scala.concurrent.duration.FiniteDuration">FiniteDuration</span></span>)</span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../../index.html#io.waylay.kairosdb.driver.models.Aggregator$$SaveAs@&lt;init&gt;(metricName:io.waylay.kairosdb.driver.models.MetricName,tags:Seq[io.waylay.kairosdb.driver.models.Tag],ttl:Long):io.waylay.kairosdb.driver.models.Aggregator.SaveAs" title="Permalink" target="_top">
+      <a href="../../../../../index.html#io.waylay.kairosdb.driver.models.Aggregator$$SaveAs@&lt;init&gt;(metricName:io.waylay.kairosdb.driver.models.MetricName,tags:Seq[io.waylay.kairosdb.driver.models.Tag],ttl:scala.concurrent.duration.FiniteDuration):io.waylay.kairosdb.driver.models.Aggregator.SaveAs" title="Permalink" target="_top">
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -402,18 +402,18 @@ when saved. If you do a group by query the group by tags are saved.
     </span>
       <p class="shortcomment cmt">Additional tags to set on the metrics {&quot;tag1&quot;:&quot;value1&quot;,&quot;tag2&quot;:&quot;value2&quot;}</p>
     </li><li name="io.waylay.kairosdb.driver.models.Aggregator.SaveAs#ttl" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="ttl:Long"></a>
-      <a id="ttl:Long"></a>
+      <a id="ttl:scala.concurrent.duration.FiniteDuration"></a>
+      <a id="ttl:FiniteDuration"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">ttl</span><span class="result">: <span class="extype" name="scala.Long">Long</span></span>
+        <span class="name">ttl</span><span class="result">: <span class="extype" name="scala.concurrent.duration.FiniteDuration">FiniteDuration</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../../index.html#io.waylay.kairosdb.driver.models.Aggregator$$SaveAs@ttl:Long" title="Permalink" target="_top">
+      <a href="../../../../../index.html#io.waylay.kairosdb.driver.models.Aggregator$$SaveAs@ttl:scala.concurrent.duration.FiniteDuration" title="Permalink" target="_top">
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
