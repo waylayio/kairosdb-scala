@@ -1,0 +1,20 @@
+sudo: true
+
+services:
+  - docker
+
+before_install:
+  - docker pull thomastoye/kairosdb-scala-driver-it
+
+language: scala
+scala:
+  - 2.11.8
+
+jdk:
+# openjdk8 still not available
+#  - openjdk8
+ - oraclejdk8
+
+script:
+  - sbt ++$TRAVIS_SCALA_VERSION test it:test
+
