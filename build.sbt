@@ -3,18 +3,12 @@ import GhPagesKeys._
 
 organization in ThisBuild := "io.waylay.kairosdb"
 
-lazy val repoSettings = Seq(
-  publishTo := {
-    if (isSnapshot.value)
-      Some("Sonatype snapshot repo" at "https://oss.sonatype.org/content/repositories/snapshots")
-    else
-      Some("Sonatype releases repo" at "https://oss.sonatype.org/service/local/staging/deploy/maven2")
-  }
-)
-
 val playVersion = "2.5.4"
 val akkaVersion = "2.4.8"
 val specs2Version = "3.7.3"
+
+// we need both Test and IntegrationTest scopes for a correct pom, see https://github.com/sbt/sbt/issues/1380
+val TestAndIntegrationTest = IntegrationTest.name + "," + Test.name
 
 val exclusions = Seq("netty-codec", "netty-handler-proxy", "netty-handler", "netty-transport-native-epoll",
   "netty-codec-socks", "netty-codec-http").map(name => ExclusionRule(organization = "io.netty", name = name))
@@ -23,7 +17,6 @@ lazy val root = (project in file("."))
   .settings(
     name := "kairosdb-scala",
     scalaVersion := "2.11.8",
-    repoSettings,
 
     parallelExecution in IntegrationTest := false,
 
@@ -47,8 +40,8 @@ lazy val root = (project in file("."))
 
       // INTEGRATION TESTS
       // TODO investigate if we can do this with specs2
-      "org.scalatest" %% "scalatest" % "2.2.6" % IntegrationTest,
-      "com.whisk" %% "docker-testkit-scalatest" % "0.9.0-M5" % IntegrationTest excludeAll(exclusions:_*)
+      "org.scalatest" %% "scalatest" % "2.2.6" % TestAndIntegrationTest,
+      "com.whisk" %% "docker-testkit-scalatest" % "0.9.0-M5" % TestAndIntegrationTest excludeAll(exclusions:_*)
     ),
     scalacOptions ++= Seq(
       "-feature",
