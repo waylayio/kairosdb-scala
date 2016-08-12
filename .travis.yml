@@ -1,20 +1,18 @@
 sudo: true
-
 services:
-  - docker
-
+- docker
 before_install:
-  - docker pull thomastoye/kairosdb-scala-driver-it
-
+- docker pull thomastoye/kairosdb-scala-driver-it
 language: scala
 scala:
-  - 2.11.8
-
+- 2.11.8
 jdk:
-# openjdk8 still not available
-#  - openjdk8
- - oraclejdk8
-
+- oraclejdk8
 script:
-  - sbt ++$TRAVIS_SCALA_VERSION test it:test
-
+- sbt ++$TRAVIS_SCALA_VERSION clean test it:test
+env:
+  global:
+  - secure: hwSSTe/9XO53TEybPaBPp3ZRrZeKAk9JKqddTonwq/Bm2QTQQNqSkr+wLqjzNm7Fq2HzUSlEFjiAwau6LOjKQ0UJqRNdzCJaJzeJg0uUWhITSoKh3H4dyFqvkULAUO5YHkSDSaas3Of+Rcr1ZefHx5WOhq/Ye+IF9pEpz87gTa8xrl7epkQ4+Fy9FOXMkgIvaWcr0O/TAiZiwmHGTnHLrQOk/ZlcjVJbcqtz4AGbP6OS2XVZRqrCGsgUfR8EQCM65njhroUumbiCdmgDas3gPwTGWw0eu92LVeKFuluqGuGgYgfQWlpSFaaSkod5OEF0BalJbWygiBQDuX83nrTTPsTSFgy10HLle6jDSIwGJCnjp7hYjXU8sQKhRCykCcXaMVmQfI8nEY6kNed1gnJKzhb+Rjmnwijn7pHtQ/Rgo9PLbudiRV32EBcRX+xlJI6MZM7at476mavWnLa0nJe/o8aORZ6N4G0aeq8RsqhhhIyJPPjAk9npNy3rxUthUYuXNe/SRH1YeeyXYYBNC1VtU2K3+5jkUhomZ2OMTUp0fgjtCvDy0gSDYC1vGasKVR/HOQXJCfAALMjnOqaBYYDZPBD+udXS7A6v2FirpoQcGUU1YE/goWcbJz5gvDV4xQUbK19fRfqT6XGsCuSwiYHOiIHv9yQ+A8kgX86LNG8pU6o=
+  - secure: AIavbCKXnhwX+sEsCUMYo9Oom+eMC/FzjhbiT/O5ufgGhnZKQBYNTX4z6bJ3zGhwC8UkYbGehcJJD0+pAI9JcqaWURbFKNpYfl8YsRkhNp32PRNMKYGCHOVrqMuXNb9XxueQpZv0Shb4bHDZypK7vZm3Zp9ptemt0pc1fsjDE877hYwveWOzHJ6yKgUnvSIFG03kfXi8AmgljHjTo/qJ5CCzKEO1MAgZDztPEvDDrI4j7spHgtHfvZLCNNWoe41FJkOFJqecEv9jLwC2Vng66NRjkpf8g7bhpFbiSTT/9sRUaYdA4AKyaoN4jlj3X77Ee5T55i9aM7gHNbKJVEH2r85Jwz0pkz2/HDuNDd3Bl+pagQG9pL/VPCVtCAWdX9MFkDmMONR4TbDx2T9JdsfN8GChfll9q4Ziwou0B/1t/h646lUSCL3fMdMozhwHXlfo+8KiRmf9RjSfGBgCsIOAE0cm/RJTc9WdUS5fawAsx9V0c1xUz+9k5sNqBuT+IVe8PJjhvGrHdFzLvAbyWpMTUOo21NsuEI+LfTv2NZBo/Ym7EOCwV9GwXsPchcazphG+OwQs+VdbccaIUeTHUZrTheJSwkNvDwy4Z9PnqPX/9sZTfTw0QBVu8C6AwRTT8CQQKvcn6aYYPU2Ke91vWVlsR9Lklc8xv4B9vkOi5DX3u/M=
+after_success:
+- '[[ $TRAVIS_BRANCH == "master" ]] && { sbt publish; };'
