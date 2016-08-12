@@ -72,7 +72,7 @@ ghpages.settings
 enablePlugins(SiteScaladocPlugin)
 
 val publishScalaDoc = (ref: ProjectRef) => ReleaseStep(
-  action = releaseStepTaskAggregated(GhPagesKeys.pushSite in ref) // publish release notes
+  action = releaseStepTaskAggregated(GhPagesKeys.pushSite in ref) // publish scaladoc
 )
 
 val runIntegrationTest = (ref: ProjectRef) => ReleaseStep(
