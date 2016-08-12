@@ -4,22 +4,20 @@ A feature-complete Scala library to talk to KairosDB, a time series database.
 
 ![](logo.png)
 
-## Examples
-
-See the `examples` project for some examples.
-
-## Use
+## Usage
 
 Add this to your build.sbt
 
 ```scala
-libraryDependencies ++= Seq(
-  // other dependencies here
-  "io.waylay.kairosdb" %% "kairosdb-scala" % "1.0.0"
-)
+libraryDependencies += "io.waylay.kairosdb" %% "kairosdb-scala" % "1.0.0"
 ```
 
 snapshots are available at: `https://oss.sonatype.org/content/repositories/snapshots`
+
+
+## Examples
+
+See the `examples` project for some examples.
 
 ### Usage on the REPL
 
