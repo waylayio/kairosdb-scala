@@ -106,13 +106,7 @@ class KairosDB(wsClient: WSClient, config: KairosDBConfig, executionContext: Exe
       .url(uri / "api" / "v1" / "metric" / metricName.name)
       .applyKairosDBAuth
       .delete
-      .map { res =>
-        res.status match {
-          case 204 => Unit
-          case 400 => throw KairosDBResponseBadRequestException(errors = getErrors(res))
-          case 500 => throw KairosDBResponseInternalServerErrorException(errors = getErrors(res))
-        }
-      }
+      .map { res => wsRepsonseToResult(res, _ => (), 204) }
   }
 
   def addDataPoints(dataPoints: Seq[DataPoint]): Future[Unit] = {
@@ -122,13 +116,7 @@ class KairosDB(wsClient: WSClient, config: KairosDBConfig, executionContext: Exe
       .url(uri / "api" / "v1" / "datapoints")
       .applyKairosDBAuth
       .post(body)
-      .map { res =>
-        res.status match {
-          case 204 => ()
-          case 400 => throw KairosDBResponseBadRequestException(errors = getErrors(res))
-          case 500 => throw KairosDBResponseInternalServerErrorException(errors = getErrors(res))
-        }
-      }
+      .map { res => wsRepsonseToResult(res, _ => (), 204) }
   }
 
   def addDataPoint(dataPoint: DataPoint): Future[Unit] = addDataPoints(Seq(dataPoint))
@@ -140,13 +128,7 @@ class KairosDB(wsClient: WSClient, config: KairosDBConfig, executionContext: Exe
       .url(uri / "api" / "v1" / "datapoints" / "query")
       .applyKairosDBAuth
       .post(query)
-      .map { res =>
-        res.status match {
-          case 200 => parseQueryResult(res.json)
-          case 400 => throw KairosDBResponseBadRequestException(errors = getErrors(res))
-          case 500 => throw KairosDBResponseInternalServerErrorException(errors = getErrors(res))
-        }
-      }
+      .map { res => wsRepsonseToResult(res, (x: WSResponse) => parseQueryResult(x.json)) }
   }
 
   /** You can think of this as the exact same as the query but it leaves off the data and just returns the tag information.
@@ -161,14 +143,12 @@ class KairosDB(wsClient: WSClient, config: KairosDBConfig, executionContext: Exe
       .applyKairosDBAuth
       .post(query)
       .map { res =>
-        res.status match {
-          case 200 => res.json.validate[TagsResponse] match {
-            case JsSuccess(tagsResponse, jsPath) => tagsResponse
-            case JsError(errors) => throw KairosDBResponseParseException(errors = errors)
-          }
-          case 400 => throw KairosDBResponseBadRequestException(errors = getErrors(res))
-          case 500 => throw KairosDBResponseInternalServerErrorException(errors =  getErrors(res))
+        val transform = (x: WSResponse) => x.json.validate[TagsResponse] match {
+          case JsSuccess(tagsResponse, jsPath) => tagsResponse
+          case JsError(errors) => throw KairosDBResponseParseException(errors = errors)
         }
+
+        wsRepsonseToResult(res, transform)
       }
   }
 
@@ -187,13 +167,7 @@ class KairosDB(wsClient: WSClient, config: KairosDBConfig, executionContext: Exe
       .url(uri / "api" / "v1" / "datapoints" / "delete")
       .applyKairosDBAuth
       .post(query)
-      .map { res =>
-        res.status match {
-          case 204 => ()
-          case 400 => throw KairosDBResponseBadRequestException(errors = getErrors(res))
-          case 500 => throw KairosDBResponseInternalServerErrorException(errors = getErrors(res))
-        }
-      }
+      .map { res => wsRepsonseToResult(res, _ => (), 204) }
   }
 
   private def parseQueryResult(json: JsValue): Response = {
@@ -212,5 +186,11 @@ class KairosDB(wsClient: WSClient, config: KairosDBConfig, executionContext: Exe
         pass <-  uri.password
       } yield req.withAuth(user, pass, WSAuthScheme.BASIC)) getOrElse req
     }
+  }
+
+  private def wsRepsonseToResult[T](res: WSResponse, tranform: (WSResponse => T), successStatusCode: Int = 200): T = res.status match {
+    case i if i == successStatusCode => tranform(res)
+    case 400 => throw KairosDBResponseBadRequestException(errors = getErrors(res))
+    case 500 => throw KairosDBResponseInternalServerErrorException(errors = getErrors(res))
   }
 }
