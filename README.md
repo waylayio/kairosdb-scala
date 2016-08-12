@@ -8,22 +8,82 @@ A feature-complete Scala library to talk to KairosDB, a time series database.
 
 See the `examples` project for some examples.
 
+### Usage on the REPL
+
+If you want to test this project out on the REPL, clone it, switch to the examples project (`project examples`), run `sbt console`, and enter `:load repl/repl.scala` to get started quickly.
+
+### Config
+
+Configuration is done by creating a `KairosDBConfig` instance. The defaults are to connect to a local KairosDB on port 8080.
+
+### Implicits
+
+To make the library more pleasant to use, implicits are provided in `io.waylay.kairosdb.driver.Implicits`:
+
+```scala
+import io.waylay.kairosdb.driver.Implicits._
 ```
-for {
-  version <- kairosDB.version
-  names   <- kairosDB.listMetricNames
-  _       <- kairosDB.addDataPoint(DataPoint(MetricName("kairosdbscala.test"), KNumber(9001), tags = Seq(Tag("awesome", "yes"))))
-  qr      <- kairosDB.queryMetrics(
-               QueryMetrics(Seq(
-                 Query(MetricName("kairosscala.test"), tags = Seq(QueryTag("awesome", Seq("yes", "true"))))
-               ), TimeSpan(RelativeStartTime(5.minutes)))
-             )
-} yield {
-  println(s"The KairosDB version is $version.")
-  println(s"""Some of the metrics are ${names take 3 map (_.name) mkString ", "}.""")
-  println(s"The result of querying was ${qr.queries.head.results.head}.")
-}
+
+### Data types
+
+KairosDB supports numbers and strings. These are represented as `KNumber` and `KString`. Implicit conversions are provided.
+
+```scala
+scala> val a = KNumber(1111)
+a: io.waylay.kairosdb.driver.models.KairosCompatibleType.KNumber = KNumber(1111)
+
+scala> val b = KString("test")
+b: io.waylay.kairosdb.driver.models.KairosCompatibleType.KString = KString(test)
+
+scala> val c: KNumber = 1111
+c: io.waylay.kairosdb.driver.models.KairosCompatibleType.KNumber = KNumber(1111)
+
+scala> val d: KString = "test"
+d: io.waylay.kairosdb.driver.models.KairosCompatibleType.KString = KString(test)
 ```
+
+### Data points
+
+You can insert data points with a single value, but you can also batch insert data points with the same tags, ttl and metric name.
+
+```scala
+scala> val dp = DataPointWithSingleValue("scala.powerlevel", 9001, Instant.now, Seq(Tag("some", "tag")), Some(5.minutes))
+dp: io.waylay.kairosdb.driver.models.DataPointWithSingleValue = DataPointWithSingleValue(MetricName(scala.powerlevel),KNumber(9001),2016-08-11T09:25:09.498Z,List(Tag(some,tag)),Some(5 minutes))
+
+scala> val dp2 = DataPoint("scala.powerlevel", 9001, Instant.now, Seq(Tag("some", "tag")), Some(5.minutes))
+dp2: io.waylay.kairosdb.driver.models.DataPointWithSingleValue = DataPointWithSingleValue(MetricName(scala.powerlevel),KNumber(9001),2016-08-11T09:25:28.639Z,List(Tag(some,tag)),Some(5 minutes))
+
+scala> val values: Seq[(Instant, KairosCompatibleType)] = Seq(Instant.ofEpochMilli(1000) -> 10, Instant.ofEpochMilli(2000) -> 20)
+values: Seq[(java.time.Instant, io.waylay.kairosdb.driver.models.KairosCompatibleType)] = List((1970-01-01T00:00:01Z,KNumber(10)), (1970-01-01T00:00:02Z,KNumber(20)))
+
+scala> val dps = DataPointWithMultipleValues("scala.powerlevel", values, Seq(Tag("shared", "yes"), Tag("cool", "very")))
+dps: io.waylay.kairosdb.driver.models.DataPointWithMultipleValues = DataPointWithMultipleValues(MetricName(scala.powerlevel),List((1970-01-01T00:00:01Z,KNumber(10)), (1970-01-01T00:00:02Z,KNumber(20))),List(Tag(shared,yes), Tag(cool,very)),None)
+```
+
+### Inserting data
+
+```scala
+scala> kairosDB.addDataPoint(dp).map(_ => println("Inserted data point!"))
+res2: scala.concurrent.Future[Unit] = List()
+
+Inserted data point!
+
+scala> kairosDB.addDataPoint(dps).map(_ => println("Inserted data point with multiple values!"))
+res4: scala.concurrent.Future[Unit] = List()
+
+Inserted data point with multiple values!
+
+scala> kairosDB.addDataPoints(Seq(dp, dps)).map(_ => println("Inserted multiple data points!"))
+res6: scala.concurrent.Future[Unit] = List()
+
+Inserted multiple data points!
+```
+
+### Querying
+
+You can build queries with the `QueryMetrics` class. It allows to send multiple queries at once.
+
+Firing off the query is done with `KairosDB#queryMetrics`. `KairosDB#queryMetricTags` and `KairosDB#deleteDataPoints` also accept a `QueryMetrics`.
 
 ## Features
 
