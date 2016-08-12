@@ -1,4 +1,4 @@
-# kairosdb-scala [![Build Status](https://travis-ci.org/waylayio/kairosdb-scala.svg?branch=master)](https://travis-ci.org/waylayio/kairosdb-scala) [![Coverage Status](https://coveralls.io/repos/github/waylayio/kairosdb-scala/badge.svg)](https://coveralls.io/github/waylayio/kairosdb-scala)
+# kairosdb-scala [![Build Status](https://travis-ci.org/waylayio/kairosdb-scala.svg?branch=master)](https://travis-ci.org/waylayio/kairosdb-scala)
 
 A feature-complete Scala library to talk to KairosDB, a time series database.
 
@@ -7,6 +7,19 @@ A feature-complete Scala library to talk to KairosDB, a time series database.
 ## Examples
 
 See the `examples` project for some examples.
+
+## Use
+
+Add this to your build.sbt
+
+```scala
+libraryDependencies ++= Seq(
+  // other dependencies here
+  "io.waylay.kairosdb" %% "kairosdb-scala" % "1.0.0"
+)
+```
+
+snapshots are available at: `https://oss.sonatype.org/content/repositories/snapshots`
 
 ### Usage on the REPL
 
