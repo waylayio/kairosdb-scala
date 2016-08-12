@@ -1,4 +1,6 @@
-# kairosdb-scala [![Build Status](https://travis-ci.org/waylayio/kairosdb-scala.svg?branch=master)](https://travis-ci.org/waylayio/kairosdb-scala)
+# kairosdb-scala
+[![Build Status](https://travis-ci.org/waylayio/kairosdb-scala.svg?branch=master)](https://travis-ci.org/waylayio/kairosdb-scala)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.waylay.kairosdb/kairosdb-scala/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.waylay.kairosdb/kairosdb-scala)
 
 A feature-complete Scala library to talk to KairosDB, a time series database.
 
