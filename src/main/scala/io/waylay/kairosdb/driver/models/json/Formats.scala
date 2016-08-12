@@ -71,7 +71,7 @@ object Formats {
           case "minutes" => Some((x: Long) => x.minutes)
           case "hours" => Some((x: Long) => x.hours)
           case "days" => Some((x: Long) => x.days)
-          case "weeks" => None // not supported by scala.concurrent.duration but supported by KairosDB
+          case "weeks" => Some((x: Long) => (x * 7).days)
           case "months" => None // not supported by scala.concurrent.duration but supported by KairosDB
           case "years" => None // not supported by scala.concurrent.duration but supported by KairosDB
           case _ => None
@@ -81,7 +81,7 @@ object Formats {
       val unitRes = (json \ "unit").validate[String].map(_.toLowerCase).flatMap { x =>
         fromString(x)
           .map(fun => JsSuccess.apply(fun))
-          .getOrElse(JsError("unit must be one of: milliseconds, seconds, minutes, hours, days. (weeks, months and years are supported by KairosDB but not this driver)"))
+          .getOrElse(JsError("unit must be one of: milliseconds, seconds, minutes, hours, days, weeks. (months and years are supported by KairosDB but not this driver)"))
       }
       val valueRes = (json \ "value").validate[Int]
 

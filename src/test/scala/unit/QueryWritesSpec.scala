@@ -6,7 +6,7 @@ import java.util.concurrent.TimeUnit
 import io.waylay.kairosdb.driver.models.Aggregator._
 import io.waylay.kairosdb.driver.models.GroupBy._
 import io.waylay.kairosdb.driver.models.KairosQuery.Order.Descending
-import io.waylay.kairosdb.driver.models.KairosQuery.QueryTag
+import io.waylay.kairosdb.driver.models.KairosQuery.{Order, QueryTag}
 import io.waylay.kairosdb.driver.models.TimeSpan._
 import io.waylay.kairosdb.driver.models.json.Formats._
 import io.waylay.kairosdb.driver.models._
@@ -19,6 +19,16 @@ class QueryWritesSpec extends Specification {
   "Kairos query builder" should {
     "Correctly serialize a minimal query" in {
       val query = Query(MetricName("mymetric"))
+      Json.toJson(query) must be equalTo Json.obj("name" -> "mymetric")
+    }
+
+    "Correctly serialize a query with descending order" in {
+      val query = Query(MetricName("mymetric"), order = Order.Descending())
+      Json.toJson(query) must be equalTo Json.obj("name" -> "mymetric", "order" -> "desc")
+    }
+
+    "Correctly serialize a query with default order" in {
+      val query = Query(MetricName("mymetric"), order = Order.defaultOrder)
       Json.toJson(query) must be equalTo Json.obj("name" -> "mymetric")
     }
 

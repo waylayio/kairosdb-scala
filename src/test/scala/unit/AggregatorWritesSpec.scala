@@ -260,6 +260,21 @@ class AggregatorWritesSpec extends Specification {
         "time_zone" -> "Africa/Banjul"
       )
     }
+
+    "correcly serialize 1.0 percentile when aligning start time" in {
+      val aggregator = Percentile(1.0, 3.days, Some(AbsoluteStartTime(Instant.ofEpochMilli(1469778777L))), Some(AlignStartTime()), Some("Africa/Banjul"))
+      Json.toJson(aggregator) should be equalTo Json.obj(
+        "name" -> "percentile",
+        "percentile" -> 1.0,
+        "sampling" -> Json.obj(
+          "value" -> "3",
+          "unit" -> "days"
+        ),
+        "start_time" -> 1469778777L,
+        "align_start_time" -> true,
+        "time_zone" -> "Africa/Banjul"
+      )
+    }
   }
 
   "Sum aggregator" should {
@@ -312,6 +327,14 @@ class AggregatorWritesSpec extends Specification {
           "value" -> "2"
         )
       )
+    }
+
+    "throw exception when trying to use microseconds" in {
+      Json.toJson(Rate(TimeUnit.MICROSECONDS, 2.days, None)) should throwAn[IllegalArgumentException]
+    }
+
+    "throw exception when trying to use nanoseconds" in {
+      Json.toJson(Rate(TimeUnit.NANOSECONDS, 2.days, None)) should throwAn[IllegalArgumentException]
     }
 
     "correctly serialize with time zone" in {

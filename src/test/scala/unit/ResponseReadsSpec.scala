@@ -78,5 +78,56 @@ class ResponseReadsSpec extends Specification {
 
       responseReads.reads(json) should beAnInstanceOf[JsSuccess[Response]]
     }
+
+    "Correctly read example without group_by" in {
+      val json = Json.parse(
+        """
+          |{
+          |  "queries": [
+          |      {
+          |          "sample_size": 14368,
+          |          "results": [
+          |              {
+          |                  "name": "abc_123",
+          |                  "tags": {
+          |                      "host": [
+          |                          "server1"
+          |                      ],
+          |                      "customer": [
+          |                          "bar"
+          |                      ]
+          |                  },
+          |                  "values": [
+          |                      [
+          |                          1364968800000,
+          |                          11019
+          |                      ],
+          |                      [
+          |                          1366351200000,
+          |                          2843
+          |                      ]
+          |                  ]
+          |              }
+          |         ]
+          |     }
+          |  ]
+          |}
+        """.stripMargin)
+
+      val expected = Response(Seq(
+        ResponseQuery(14368,
+          Seq(
+            Result(
+              MetricName("abc_123"),
+              Seq.empty,
+              Seq(TagResult("host", Seq("server1")), TagResult("customer", Seq("bar"))),
+              Seq( (Instant.ofEpochMilli(1364968800000L), KNumber(11019)), (Instant.ofEpochMilli(1366351200000L), KNumber(2843)) )
+            )
+          )
+        )
+      ))
+
+      responseReads.reads(json) should beAnInstanceOf[JsSuccess[Response]]
+    }
   }
 }

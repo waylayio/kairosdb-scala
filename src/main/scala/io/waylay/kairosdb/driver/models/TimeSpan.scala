@@ -32,7 +32,9 @@ object TimeSpan {
   }
   case class RelativeStartTime(howLongAgo: FiniteDuration) extends StartTime {
     override val fieldName = "start_relative"
-    override def toMillis: Long = Instant.now.minusMillis(howLongAgo.toMillis).toEpochMilli
+    override def toMillis: Long = toMillis(Instant.now)
+
+    def toMillis(reference: Instant) = reference.minusMillis(howLongAgo.toMillis).toEpochMilli
   }
 
 
@@ -42,6 +44,8 @@ object TimeSpan {
   }
   case class RelativeEndTime(howLongAgo: FiniteDuration) extends EndTime {
     override val fieldName = "end_relative"
-    override def toMillis = Instant.now.minusMillis(howLongAgo.toMillis).toEpochMilli
+    override def toMillis = toMillis(Instant.now)
+
+    def toMillis(reference: Instant) = reference.minusMillis(howLongAgo.toMillis).toEpochMilli
   }
 }

@@ -22,6 +22,9 @@ class ImplicitsSpec extends Specification with ResultMatchers {
       val kNumber: KNumber = 555
       kNumber should be equalTo KNumber(555)
 
+      val kLong: KNumber = 555L
+      kLong should be equalTo KNumber(555)
+
       val metricName: MetricName = "metric.name"
       metricName should be equalTo MetricName("metric.name")
 
