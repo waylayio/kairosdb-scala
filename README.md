@@ -85,6 +85,7 @@ Inserted data point!
 scala> kairosDB.addDataPoint(dps).map(_ => println("Inserted data point with multiple values!"))
 res4: scala.concurrent.Future[Unit] = List()
 
+
 Inserted data point with multiple values!
 
 scala> kairosDB.addDataPoints(Seq(dp, dps)).map(_ => println("Inserted multiple data points!"))
@@ -106,14 +107,14 @@ This library supports all current KairosDB functionality.
 | Name               | Supported | Unit tests | Integration tests |
 | ------------------ | --- | --- | --- |
 | List metric names  | X | X | X |
-| List tag names     | X | X |  |
+| List tag names     | X | X | X |
 | List tag values    | X | X |  |
 | Health status      | X | X | X |
 | Health check       | X | X | X |
 | Version            | X | X | X |
 | Delete metric      | X | X | X |
 | Add data points    | X | X | X |
-| Delete data points | X | X |  |
+| Delete data points | X | X | X |
 | Query metric tags  | X | X | X |
 | Aggregators        | X | X |  |
 | Query metrics      | See below |  |  |

@@ -2,6 +2,7 @@ package unit
 
 import java.time.Instant
 
+import io.waylay.kairosdb.driver.models.TimeSpan
 import io.waylay.kairosdb.driver.models.TimeSpan.{AbsoluteEndTime, AbsoluteStartTime, RelativeEndTime, RelativeStartTime}
 import org.specs2.matcher.{FutureMatchers, ResultMatchers}
 import org.specs2.mutable.Specification
@@ -35,4 +36,10 @@ class TimeSpec extends Specification with FutureMatchers with ResultMatchers {
     }
   }
 
+  "Timespan#toMillis" should {
+    "work" in {
+      val ts = TimeSpan(AbsoluteStartTime(Instant.ofEpochSecond(1471003248L)), Some(AbsoluteEndTime(Instant.ofEpochSecond(1471007154L))))
+      ts.toMillis should be equalTo 3906L
+    }
+  }
 }
