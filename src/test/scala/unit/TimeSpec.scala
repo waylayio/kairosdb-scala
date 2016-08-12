@@ -39,7 +39,7 @@ class TimeSpec extends Specification with FutureMatchers with ResultMatchers {
   "Timespan#toMillis" should {
     "work" in {
       val ts = TimeSpan(AbsoluteStartTime(Instant.ofEpochSecond(1471003248L)), Some(AbsoluteEndTime(Instant.ofEpochSecond(1471007154L))))
-      ts.toMillis should be equalTo 3906L
+      ts.toMillis should be equalTo 3906000L
     }
   }
 }
