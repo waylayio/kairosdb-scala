@@ -1,3 +1,5 @@
+releasePublishArtifactsAction := PgpKeys.publishSigned.value
+
 publishMavenStyle := true
 
 pomIncludeRepository := { _ => false }
