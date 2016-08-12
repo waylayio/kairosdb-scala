@@ -1,4 +1,4 @@
-# kairosdb-scala [![Build Status](https://travis-ci.org/waylayio/kairosdb-scala.svg?branch=master)](https://travis-ci.org/waylayio/kairosdb-scala)
+# kairosdb-scala [![Build Status](https://travis-ci.org/waylayio/kairosdb-scala.svg?branch=master)](https://travis-ci.org/waylayio/kairosdb-scala) [![Coverage Status](https://coveralls.io/repos/github/waylayio/kairosdb-scala/badge.svg)](https://coveralls.io/github/waylayio/kairosdb-scala)
 
 A feature-complete Scala library to talk to KairosDB, a time series database.
 

@@ -16,5 +16,7 @@ jdk:
  - oraclejdk8
 
 script:
-  - sbt ++$TRAVIS_SCALA_VERSION test it:test
+  - sbt ++$TRAVIS_SCALA_VERSION clean coverage "examples/compile" test it:test
+
+after_success: "sbt coverageReport coveralls"
 
