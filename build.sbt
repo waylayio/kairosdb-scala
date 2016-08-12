@@ -5,11 +5,10 @@ organization in ThisBuild := "io.waylay.kairosdb"
 
 lazy val repoSettings = Seq(
   publishTo := {
-    val nexus = "https://nexus.waylay.io"
     if (isSnapshot.value)
-      Some("Waylay snapshot repo" at nexus + "/repository/maven-snapshots")
+      Some("Sonatype snapshot repo" at "https://oss.sonatype.org/content/repositories/snapshots")
     else
-      Some("Waylay releases repo" at nexus + "/repository/maven-releases")
+      Some("Sonatype releases repo" at "https://oss.sonatype.org/service/local/staging/deploy/maven2")
   }
 )
 
