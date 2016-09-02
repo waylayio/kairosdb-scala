@@ -4,7 +4,7 @@ import io.waylay.kairosdb.driver.models._
 import io.waylay.kairosdb.driver.models.HealthCheckResult._
 import com.netaporter.uri.dsl._
 import com.typesafe.scalalogging.StrictLogging
-import io.waylay.kairosdb.driver.KairosDB.{KairosDBResponseBadRequestException, KairosDBResponseInternalServerErrorException, KairosDBResponseParseException}
+import io.waylay.kairosdb.driver.KairosDB._
 import io.waylay.kairosdb.driver.models.QueryMetricTagsResponse.TagsResponse
 import io.waylay.kairosdb.driver.models.json.Formats._
 import io.waylay.kairosdb.driver.models.QueryResponse.Response
@@ -15,6 +15,7 @@ import play.api.libs.ws.{WSAuthScheme, WSClient, WSRequest, WSResponse}
 import scala.concurrent.{ExecutionContext, Future}
 
 object KairosDB {
+
   /** Parent exception for all exceptions this driver may throw */
   class KairosDBException(msg: String) extends Exception(msg)
 
@@ -27,11 +28,19 @@ object KairosDB {
 
   /** Thrown when the request is invalid */
   case class KairosDBResponseBadRequestException(msg: String = "KairosDB returned HTTP 400 (Bad Request)", errors: Seq[String])
-    extends KairosDBException(s"""$msg (errors: ${errors.mkString(", ")})""")
+    extends KairosDBResponseException(s"""$msg (errors: ${errors.mkString(", ")})""")
+
+  /** Thrown when the request is unauthorized */
+  case class KairosDBResponseUnauthorizedException(msg: String = "KairosDB returned HTTP 401 (Unauthorized)", errors: Seq[String])
+    extends KairosDBResponseException(s"""$msg (errors: ${errors.mkString(", ")})""")
 
   /** Thrown if an error occurs retrieving data */
   case class KairosDBResponseInternalServerErrorException(msg: String = "KairosDB returned HTTP 500 (Internal Server Error)", errors: Seq[String])
-    extends KairosDBException(s"""$msg (errors: ${errors.mkString(", ")})""")
+    extends KairosDBResponseException(s"""$msg (errors: ${errors.mkString(", ")})""")
+
+  /** Thrown if an unexpected error occurs retrieving data */
+  case class KairosDBResponseUnhandledException(statusCode: Int, errors: Seq[String])
+    extends KairosDBResponseException(s"""KairosDB returned unhandled HTTP $statusCode (???) (errors: ${errors.mkString(", ")})""")
 }
 
 class KairosDB(wsClient: WSClient, config: KairosDBConfig, executionContext: ExecutionContext) extends StrictLogging {
@@ -106,7 +115,9 @@ class KairosDB(wsClient: WSClient, config: KairosDBConfig, executionContext: Exe
       .url(uri / "api" / "v1" / "metric" / metricName.name)
       .applyKairosDBAuth
       .delete
-      .map { res => wsRepsonseToResult(res, _ => (), 204) }
+      .map { res =>
+        wsRepsonseToResult(res, _ => (), 204)
+      }
   }
 
   def addDataPoints(dataPoints: Seq[DataPoint]): Future[Unit] = {
@@ -116,7 +127,9 @@ class KairosDB(wsClient: WSClient, config: KairosDBConfig, executionContext: Exe
       .url(uri / "api" / "v1" / "datapoints")
       .applyKairosDBAuth
       .post(body)
-      .map { res => wsRepsonseToResult(res, _ => (), 204) }
+      .map { res =>
+        wsRepsonseToResult(res, _ => (), 204)
+      }
   }
 
   def addDataPoint(dataPoint: DataPoint): Future[Unit] = addDataPoints(Seq(dataPoint))
@@ -128,7 +141,9 @@ class KairosDB(wsClient: WSClient, config: KairosDBConfig, executionContext: Exe
       .url(uri / "api" / "v1" / "datapoints" / "query")
       .applyKairosDBAuth
       .post(query)
-      .map { res => wsRepsonseToResult(res, (x: WSResponse) => parseQueryResult(x.json)) }
+      .map { res =>
+        wsRepsonseToResult(res, (x: WSResponse) => parseQueryResult(x.json))
+      }
   }
 
   /** You can think of this as the exact same as the query but it leaves off the data and just returns the tag information.
@@ -188,9 +203,12 @@ class KairosDB(wsClient: WSClient, config: KairosDBConfig, executionContext: Exe
     }
   }
 
-  private def wsRepsonseToResult[T](res: WSResponse, tranform: (WSResponse => T), successStatusCode: Int = 200): T = res.status match {
-    case i if i == successStatusCode => tranform(res)
-    case 400 => throw KairosDBResponseBadRequestException(errors = getErrors(res))
-    case 500 => throw KairosDBResponseInternalServerErrorException(errors = getErrors(res))
+  private def wsRepsonseToResult[T](res: WSResponse, transform: (WSResponse => T), successStatusCode: Int = 200): T = res.status match {
+    case i if i == successStatusCode => transform(res)
+    case 400   => throw KairosDBResponseBadRequestException(errors = getErrors(res))
+    case 401   => throw KairosDBResponseUnauthorizedException(errors = getErrors(res))
+    case 500   => throw KairosDBResponseInternalServerErrorException(errors = getErrors(res))
+    case other => throw KairosDBResponseUnhandledException(other, getErrors(res))
+
   }
 }
