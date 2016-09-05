@@ -41,7 +41,7 @@ lazy val root = (project in file("."))
       // INTEGRATION TESTS
       // TODO investigate if we can do this with specs2
       "org.scalatest" %% "scalatest" % "2.2.6" % TestAndIntegrationTest,
-      "com.whisk" %% "docker-testkit-scalatest" % "0.9.0-M5" % TestAndIntegrationTest excludeAll(exclusions:_*)
+      "com.whisk" %% "docker-testkit-scalatest" % "0.9.0-M6" % TestAndIntegrationTest excludeAll(exclusions:_*)
     ),
     scalacOptions ++= Seq(
       "-feature",
@@ -80,7 +80,7 @@ releaseProcess <<= thisProjectRef apply { ref =>
     inquireVersions,
     runClean,
     runTest,
-    runIntegrationTest(ref),
+    //runIntegrationTest(ref),
     setReleaseVersion,
     commitReleaseVersion,
     tagRelease,
