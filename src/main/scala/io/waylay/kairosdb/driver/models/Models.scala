@@ -62,14 +62,21 @@ object KairosDBConfig {
     username: Option[String] = None,
     password: Option[String] = None
   ): KairosDBConfig = {
-    val uri = Uri()
+    val baseUri = Uri()
       .withScheme(scheme)
       .withHost(host)
       .withPort(port)
 
-    KairosDBConfig {
-      (for { user <- username; pass <- password} yield { uri.withUser(user).withPassword(pass) }) getOrElse uri
+    val uriWithCredentialsOpt = for {
+      user <- username
+      pass <- password
+    } yield {
+      baseUri.withUser(user).withPassword(pass)
     }
+
+    val serverUri = uriWithCredentialsOpt getOrElse baseUri
+
+    KairosDBConfig(serverUri)
   }
 
   def apply(javaUri: java.net.URI): KairosDBConfig = KairosDBConfig(Uri(javaUri))
@@ -150,8 +157,14 @@ object KairosQuery {
   * @param excludeTags By default, the result of the query includes tags and tag values associated with the data points.
   *                    If `excludeTags` is set to true, the tags will be excluded from the response.
   */
-case class Query(metricName: MetricName, tags: Seq[QueryTag] = Seq.empty, groupBys: Seq[GroupBy] = Seq.empty,
-  aggregators: Seq[Aggregator] = Seq.empty, limit: Option[Int] = None, order: Order = Order.defaultOrder, excludeTags: Boolean = false)
+case class Query(
+  metricName: MetricName,
+  tags: Seq[QueryTag] = Seq.empty,
+  groupBys: Seq[GroupBy] = Seq.empty,
+  aggregators: Seq[Aggregator] = Seq.empty,
+  limit: Option[Int] = None,
+  order: Order = Order.defaultOrder,
+  excludeTags: Boolean = false)
 
 /** @param timeZone The time zone for the time range of the query. If not specified, UTC is used. tz format, e.g. "Europe/Brussels"
   * @param cacheTime The amount of time in seconds to re use the cache from a previous query. When a query is made,
@@ -159,4 +172,8 @@ case class Query(metricName: MetricName, tags: Seq[QueryTag] = Seq.empty, groupB
   *                  cache file is within cache_time seconds from the current query, the cache is used.
   *                  Sending a query with a cacheTime set to 0 will always refresh the cache with new data from Cassandra.
   */
-case class QueryMetrics(metrics: Seq[Query], timeSpan: TimeSpan, timeZone: Option[String] = None, cacheTime: Option[Int] = None)
+case class QueryMetrics(
+  metrics: Seq[Query],
+  timeSpan: TimeSpan,
+  timeZone: Option[String] = None,
+  cacheTime: Option[Int] = None)
