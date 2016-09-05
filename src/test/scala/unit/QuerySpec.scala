@@ -3,7 +3,7 @@ package unit
 import java.time.Instant
 
 import io.waylay.kairosdb.driver.KairosDB
-import io.waylay.kairosdb.driver.KairosDB.{KairosDBResponseBadRequestException, KairosDBResponseInternalServerErrorException, KairosDBResponseParseException}
+import io.waylay.kairosdb.driver.KairosDB._
 import io.waylay.kairosdb.driver.models.Aggregator.{Average, Sum}
 import io.waylay.kairosdb.driver.models.GroupBy.{GroupByTags, GroupByType}
 import io.waylay.kairosdb.driver.models.KairosCompatibleType.KNumber
@@ -122,7 +122,7 @@ class QuerySpec extends Specification {
               |}
             """.stripMargin)
 
-          req.body.asJson.map(x => if(x == expected) Ok(response) else BadRequest) getOrElse BadRequest
+          req.body.asJson.map(x => if (x == expected) Ok(response) else BadRequest) getOrElse BadRequest
         }
       }
 
@@ -155,7 +155,7 @@ class QuerySpec extends Specification {
               Seq(GroupByType("number"),
                 GroupByTags(Seq("host"))), // TODO group by tag in the result has an extra field "group"
               Seq(TagResult("host", Seq("server1")), TagResult("customer", Seq("bar"))),
-              Seq( (Instant.ofEpochMilli(1364968800000L), KNumber(11019)), (Instant.ofEpochMilli(1366351200000L), KNumber(2843)) )
+              Seq((Instant.ofEpochMilli(1364968800000L), KNumber(11019)), (Instant.ofEpochMilli(1366351200000L), KNumber(2843)))
             )
           )
         )
@@ -220,7 +220,7 @@ class QuerySpec extends Specification {
               |{}
             """.stripMargin)
 
-          req.body.asJson.map(x => if(x == expected) Ok(response) else BadRequest) getOrElse BadRequest
+          req.body.asJson.map(x => if (x == expected) Ok(response) else BadRequest) getOrElse BadRequest
         }
       }
 
@@ -251,77 +251,156 @@ class QuerySpec extends Specification {
     }
 
     "handle bad request errors" in { implicit ee: ExecutionEnv =>
-        val mockWs = MockWS {
-          case ("POST", "http://localhost:8080/api/v1/datapoints/query") => Action { req =>
-            val json = Json.parse(
-              """
-                |{
-                |    "errors": [
-                |        "metrics[0].aggregate must be one of MIN,SUM,MAX,AVG,DEV",
-                |        "metrics[0].sampling.unit must be one of  SECONDS,MINUTES,HOURS,DAYS,WEEKS,YEARS"
-                |    ]
-                |}
-              """.stripMargin)
-            BadRequest(json) // reply to everything with BadRequest, just for testing
-          }
+      val mockWs = MockWS {
+        case ("POST", "http://localhost:8080/api/v1/datapoints/query") => Action { req =>
+          val json = Json.parse(
+            """
+              |{
+              |    "errors": [
+              |        "metrics[0].aggregate must be one of MIN,SUM,MAX,AVG,DEV",
+              |        "metrics[0].sampling.unit must be one of  SECONDS,MINUTES,HOURS,DAYS,WEEKS,YEARS"
+              |    ]
+              |}
+            """.stripMargin
+          )
+          BadRequest(json)
+
+          // reply to everything with BadRequest, just for testing
         }
+      }
 
-        val kairosDb = new KairosDB(mockWs, KairosDBConfig(), global)
+      val kairosDb = new KairosDB(mockWs, KairosDBConfig(), global)
+      val query1 = Query(
+        MetricName("abc.123"),
+        Seq(QueryTag("host", Seq("foo", "foo2")), QueryTag("customer", Seq("bar"))),
+        aggregators = Seq(Sum(10.minutes)),
+        limit = Some
+        (10000)
+      )
 
-        val query1 = Query(
-          MetricName("abc.123"),
-          Seq(QueryTag("host", Seq("foo", "foo2")), QueryTag("customer", Seq("bar"))),
-          aggregators = Seq(Sum(10.minutes)),
-          limit = Some(10000)
-        )
+      val qm = QueryMetrics(
+        Seq(query1),
+        TimeSpan(AbsoluteStartTime(Instant.ofEpochMilli(1357023600000L)), Some(RelativeEndTime(5.days))),
+        timeZone = Some("Asia/Kabul")
+      )
 
-        val qm = QueryMetrics(
-          Seq(query1),
-          TimeSpan(AbsoluteStartTime(Instant.ofEpochMilli(1357023600000L)), Some(RelativeEndTime(5.days))),
-          timeZone = Some("Asia/Kabul")
-        )
-
-        val r = kairosDb.queryMetrics(qm) must throwAn[KairosDBResponseBadRequestException].await(1, 3.seconds)
-        mockWs.close()
-        r
+      val r = kairosDb.queryMetrics(qm) must throwAn[KairosDBResponseBadRequestException].await(1, 3.seconds)
+      mockWs.close()
+      r
     }
 
     "handle internal server errors" in { implicit ee: ExecutionEnv =>
-        val mockWs = MockWS {
-          case ("POST", "http://localhost:8080/api/v1/datapoints/query") => Action { req =>
-            val json = Json.parse(
-              """
-                |{
-                |    "errors": [
-                |        "metrics[0].aggregate must be one of MIN,SUM,MAX,AVG,DEV",
-                |        "metrics[0].sampling.unit must be one of  SECONDS,MINUTES,HOURS,DAYS,WEEKS,YEARS"
-                |    ]
-                |}
-              """.stripMargin)
-            InternalServerError(json) // reply to everything with InternalServerError, just for testing
-          }
+      val mockWs = MockWS {
+        case ("POST", "http://localhost:8080/api/v1/datapoints/query") => Action { req =>
+          val json = Json.parse(
+
+            """
+              |{
+              |    "errors": [
+              |        "metrics[0].aggregate must be one of MIN,SUM,MAX,AVG,DEV",
+              |        "metrics[0].sampling.unit must be one of  SECONDS,MINUTES,HOURS,DAYS,WEEKS,YEARS"
+              |    ]
+              |}
+            """.
+
+              stripMargin)
+          InternalServerError(json)
+          // reply to everything with InternalServerError, just for testing
         }
+      }
 
-        val kairosDb = new KairosDB(mockWs, KairosDBConfig(), global)
+      val kairosDb = new KairosDB(mockWs, KairosDBConfig(), global)
 
-        val query1 = Query(
-          MetricName("abc.123"),
-          Seq(QueryTag("host", Seq("foo", "foo2")), QueryTag("customer", Seq("bar"))),
-          aggregators = Seq(Sum(10.minutes)),
-          limit = Some(10000)
-        )
+      val query1 = Query(
+        MetricName("abc.123"),
+        Seq(QueryTag("host", Seq("foo", "foo2")), QueryTag("customer", Seq("bar"))),
+        aggregators = Seq(Sum(10.minutes)),
+        limit = Some(10000)
+      )
 
-        val qm = QueryMetrics(
-          Seq(query1),
-          TimeSpan(AbsoluteStartTime(Instant.ofEpochMilli(1357023600000L)), Some(RelativeEndTime(5.days))),
-          timeZone = Some("Asia/Kabul")
-        )
+      val qm = QueryMetrics(
+        Seq(query1),
+        TimeSpan(AbsoluteStartTime(Instant.ofEpochMilli(1357023600000L)), Some(RelativeEndTime(5.days))),
+        timeZone = Some("Asia/Kabul")
+      )
 
-        val r = kairosDb.queryMetrics(qm) must throwAn[KairosDBResponseInternalServerErrorException].await(1, 3.seconds)
-        mockWs.close()
-        r
+      val r = kairosDb.queryMetrics(qm) must throwAn[KairosDBResponseInternalServerErrorException].await(1, 3.seconds)
+      mockWs.close()
+      r
+    }
+
+    "handle authorization server errors" in { implicit ee: ExecutionEnv =>
+      val mockWs = MockWS {
+        case ("POST", "http://localhost:8080/api/v1/datapoints/query") => Action { req =>
+          val json = Json.parse(
+            """
+              |{
+              |    "errors": [
+              |        "???"
+              |    ]
+              |}
+            """.stripMargin)
+          Unauthorized(json) // reply to everything with Unauthorized, just for testing
+        }
+      }
+
+      val kairosDb = new KairosDB(mockWs, KairosDBConfig(), global)
+
+      val query1 = Query(
+        MetricName("abc.123"),
+        Seq(QueryTag("host", Seq("foo", "foo2")), QueryTag("customer", Seq("bar"))),
+        aggregators = Seq(Sum(10.minutes)),
+        limit = Some(10000)
+      )
+
+      val qm = QueryMetrics(
+        Seq(query1),
+        TimeSpan(AbsoluteStartTime(Instant.ofEpochMilli(1357023600000L)), Some(RelativeEndTime(5.days))),
+        timeZone = Some("Asia/Kabul")
+      )
+
+      val r = kairosDb.queryMetrics(qm) must throwAn[KairosDBResponseUnauthorizedException].await(1, 3.seconds)
+      mockWs.close()
+      r
+    }
+
+    "handle any other request errors" in { implicit ee: ExecutionEnv =>
+      val mockWs = MockWS {
+        case ("POST", "http://localhost:8080/api/v1/datapoints/query") => Action { req =>
+          val json = Json.parse(
+            """
+              |{
+              |    "errors": [
+              |        "???"
+              |    ]
+              |}
+            """.stripMargin)
+          // 414 Request-URI Too Long
+          Status(414)(json)
+        }
+      }
+
+      val kairosDb = new KairosDB(mockWs, KairosDBConfig(), global)
+
+      val query1 = Query(
+        MetricName("abc.123"),
+        Seq(QueryTag("host", Seq("foo", "foo2")), QueryTag("customer", Seq("bar"))),
+        aggregators = Seq(Sum(10.minutes)),
+        limit = Some(10000)
+      )
+
+      val qm = QueryMetrics(
+        Seq(query1),
+        TimeSpan(AbsoluteStartTime(Instant.ofEpochMilli(1357023600000L)), Some(RelativeEndTime(5.days))),
+        timeZone = Some("Asia/Kabul")
+      )
+
+      val r = kairosDb.queryMetrics(qm) must throwAn[KairosDBResponseUnhandledException].await(1, 3.seconds)
+      mockWs.close()
+      r
     }
   }
+
 
   "KairosDB#queryMetricTags" should {
       "return a correct query response" in { implicit ee: ExecutionEnv =>
