@@ -45,13 +45,13 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">KairosDBResponseInternalServerErrorException</span><span class="params">(<span name="msg">msg: <span class="extype" name="scala.Predef.String">String</span> = <span class="defval" name="&quot;KairosDB returned HTTP 500 (Internal Server Error)&quot;">...</span></span>, <span name="errors">errors: <span class="extype" name="scala.Seq">Seq</span>[<span class="extype" name="scala.Predef.String">String</span>]</span>)</span><span class="result"> extends <a href="KairosDB$$KairosDBException.html" class="extype" name="io.waylay.kairosdb.driver.KairosDB.KairosDBException">KairosDBException</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">KairosDBResponseInternalServerErrorException</span><span class="params">(<span name="msg">msg: <span class="extype" name="scala.Predef.String">String</span> = <span class="defval" name="&quot;KairosDB returned HTTP 500 (Internal Server Error)&quot;">...</span></span>, <span name="errors">errors: <span class="extype" name="scala.Seq">Seq</span>[<span class="extype" name="scala.Predef.String">String</span>]</span>)</span><span class="result"> extends <a href="KairosDB$$KairosDBResponseException.html" class="extype" name="io.waylay.kairosdb.driver.KairosDB.KairosDBResponseException">KairosDBResponseException</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
       
           <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Thrown if an error occurs retrieving data</p></div><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
-          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="KairosDB$$KairosDBException.html" class="extype" name="io.waylay.kairosdb.driver.KairosDB.KairosDBException">KairosDBException</a>, <span class="extype" name="java.lang.Exception">Exception</span>, <span class="extype" name="java.lang.Throwable">Throwable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="KairosDB$$KairosDBResponseException.html" class="extype" name="io.waylay.kairosdb.driver.KairosDB.KairosDBResponseException">KairosDBResponseException</a>, <a href="KairosDB$$KairosDBException.html" class="extype" name="io.waylay.kairosdb.driver.KairosDB.KairosDBException">KairosDBException</a>, <span class="extype" name="java.lang.Exception">Exception</span>, <span class="extype" name="java.lang.Throwable">Throwable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
         
 
@@ -69,7 +69,7 @@
                 <span class="filtertype">Inherited<br />
                 </span>
                 <ol id="linearization">
-                  <li class="in" name="io.waylay.kairosdb.driver.KairosDB.KairosDBResponseInternalServerErrorException"><span>KairosDBResponseInternalServerErrorException</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="scala.Product"><span>Product</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="io.waylay.kairosdb.driver.KairosDB.KairosDBException"><span>KairosDBException</span></li><li class="in" name="java.lang.Exception"><span>Exception</span></li><li class="in" name="java.lang.Throwable"><span>Throwable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  <li class="in" name="io.waylay.kairosdb.driver.KairosDB.KairosDBResponseInternalServerErrorException"><span>KairosDBResponseInternalServerErrorException</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="scala.Product"><span>Product</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="io.waylay.kairosdb.driver.KairosDB.KairosDBResponseException"><span>KairosDBResponseException</span></li><li class="in" name="io.waylay.kairosdb.driver.KairosDB.KairosDBException"><span>KairosDBException</span></li><li class="in" name="java.lang.Exception"><span>Exception</span></li><li class="in" name="java.lang.Throwable"><span>Throwable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                 </ol>
               </div><div id="ancestors">
             <span class="filtertype"></span>
@@ -686,6 +686,8 @@
               <h3>Inherited from <span class="extype" name="scala.Product">Product</span></h3>
             </div><div class="parent" name="scala.Equals">
               <h3>Inherited from <span class="extype" name="scala.Equals">Equals</span></h3>
+            </div><div class="parent" name="io.waylay.kairosdb.driver.KairosDB.KairosDBResponseException">
+              <h3>Inherited from <a href="KairosDB$$KairosDBResponseException.html" class="extype" name="io.waylay.kairosdb.driver.KairosDB.KairosDBResponseException">KairosDBResponseException</a></h3>
             </div><div class="parent" name="io.waylay.kairosdb.driver.KairosDB.KairosDBException">
               <h3>Inherited from <a href="KairosDB$$KairosDBException.html" class="extype" name="io.waylay.kairosdb.driver.KairosDB.KairosDBException">KairosDBException</a></h3>
             </div><div class="parent" name="java.lang.Exception">
