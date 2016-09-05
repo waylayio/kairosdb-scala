@@ -80,7 +80,7 @@ releaseProcess <<= thisProjectRef apply { ref =>
     inquireVersions,
     runClean,
     runTest,
-    //runIntegrationTest(ref),
+    runIntegrationTest(ref),
     setReleaseVersion,
     commitReleaseVersion,
     tagRelease,
