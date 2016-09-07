@@ -8,7 +8,7 @@ import scala.concurrent.ExecutionContext._
 
 class ListTagNamesIntegrationSpec extends IntegrationSpec {
   "Listing tag names" should "only return tag of point that was just inserted" in {
-    val res = kairosdbContainer.getPorts().map(_ (DefaultKairosDbPort)).flatMap { kairosPort: Int =>
+    val res = kairosPort.flatMap { kairosPort =>
       val kairosDB = new KairosDB(wsClient, KairosDBConfig(port = kairosPort), global)
       kairosDB.addDataPoint(DataPoint(MetricName("my.new.metric"), KNumber(555), tags = Seq(Tag("aoeu", "snth")))) flatMap { _ =>
         kairosDB.listTagNames

@@ -28,7 +28,7 @@ class DeleteDataPointsByTagIntegrationSpec extends IntegrationSpec {
       DataPoint(MetricName("my.other.metric"), KNumber(555), instant.plusMillis(6), Seq(Tag("aoeu", "snth")))
     )
 
-    val res = kairosdbContainer.getPorts().map(_ (DefaultKairosDbPort)).flatMap { kairosPort: Int =>
+    val res = kairosPort.flatMap { kairosPort =>
       val kairosDB = new KairosDB(wsClient, KairosDBConfig(port = kairosPort), global)
 
       kairosDB.addDataPoints(dps) flatMap { _ =>

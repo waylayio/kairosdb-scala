@@ -17,7 +17,7 @@ class StringDataPointsIntegrationSpec extends IntegrationSpec {
     val start = Instant.ofEpochSecond(1470830000L)
     val qm = QueryMetrics(Seq(Query("my.new.metric", QueryTag("aoeu" -> "snth"))), start)
 
-    val res = kairosdbContainer.getPorts().map(_ (DefaultKairosDbPort)).flatMap { kairosPort: Int =>
+    val res = kairosPort.flatMap { kairosPort =>
       val kairosDB = new KairosDB(wsClient, KairosDBConfig(port = kairosPort), global)
 
       kairosDB.addDataPoint(DataPoint(MetricName("my.new.metric"), KString("my test string"), instant, Seq(Tag("aoeu", "snth")))) flatMap { _ =>

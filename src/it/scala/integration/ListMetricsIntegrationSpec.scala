@@ -8,7 +8,7 @@ import scala.concurrent.ExecutionContext.global
 
 class ListMetricsIntegrationSpec extends IntegrationSpec {
   "Listing metric names" should "after inserting a new datapoint into a metric, all metrics should contain this metric" in {
-    val res = kairosdbContainer.getPorts().map(_ (DefaultKairosDbPort)).flatMap { kairosPort: Int =>
+    val res = kairosPort.flatMap { kairosPort: Int =>
       val kairosDB = new KairosDB(wsClient, KairosDBConfig(port = kairosPort), global)
       kairosDB.addDataPoint(DataPoint(MetricName("my.new.metric"), KNumber(555), tags = Seq(Tag("aoeu", "snth")))) flatMap { _ =>
         kairosDB.listMetricNames

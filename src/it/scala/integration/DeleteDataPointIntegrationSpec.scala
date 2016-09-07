@@ -12,23 +12,24 @@ import io.waylay.kairosdb.driver.models._
 import scala.concurrent.ExecutionContext._
 
 class DeleteDataPointIntegrationSpec extends IntegrationSpec {
+
   "Inserting, deleting and then querying data points" should "return empty seq" in {
-     val instant = Instant.ofEpochSecond(1470837457L)
-      val start = Instant.ofEpochSecond(1470830000L)
-      val qm = QueryMetrics(Seq(Query("my.new.metric", QueryTag("aoeu" -> "snth"))), start)
+    val instant = Instant.ofEpochSecond(1470837457L)
+    val start = Instant.ofEpochSecond(1470830000L)
+    val qm = QueryMetrics(Seq(Query("my.new.metric", QueryTag("aoeu" -> "snth"))), start)
 
-      val res = kairosdbContainer.getPorts().map(_ (DefaultKairosDbPort)).flatMap { kairosPort: Int =>
-        val kairosDB = new KairosDB(wsClient, KairosDBConfig(port = kairosPort), global)
+    val res = kairosPort.flatMap { kairosPort: Int =>
+      val kairosDB = new KairosDB(wsClient, KairosDBConfig(port = kairosPort), global)
 
-        kairosDB.addDataPoint(DataPoint(MetricName("my.new.metric"), KNumber(555), instant, Seq(Tag("aoeu", "snth")))) flatMap { _ =>
-          kairosDB.deleteDataPoints(qm)
-        } flatMap { _ =>
-          kairosDB.queryMetrics(qm)
-        }
-      }.futureValue
+      kairosDB.addDataPoint(DataPoint(MetricName("my.new.metric"), KNumber(555), instant, Seq(Tag("aoeu", "snth")))) flatMap { _ =>
+        kairosDB.deleteDataPoints(qm)
+      } flatMap { _ =>
+        kairosDB.queryMetrics(qm)
+      }
+    }.futureValue
 
-      res should be(QueryResponse.Response(Seq(ResponseQuery(0, Seq(
-        Result("my.new.metric", Seq.empty, Seq.empty, Seq.empty )
-      )))))
+    res should be(QueryResponse.Response(Seq(ResponseQuery(0, Seq(
+      Result("my.new.metric", Seq.empty, Seq.empty, Seq.empty )
+    )))))
   }
 }

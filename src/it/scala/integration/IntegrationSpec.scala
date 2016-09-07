@@ -12,9 +12,13 @@ import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.time.{Millis, Second, Seconds, Span}
 import play.api.libs.ws.ahc.AhcWSClient
 
+import scala.concurrent.duration._
+
 trait IntegrationSpec extends FlatSpec with Matchers with ScalaFutures with StrictLogging with BeforeAndAfterAll
   with DockerKairosDBService
   with DockerTestKit {
+
+  override val StartContainersTimeout = 60.seconds
 
   implicit val pc = PatienceConfig(Span(20, Seconds), Span(1, Second))
   override def dockerInitPatienceInterval = PatienceConfig(scaled(Span(30, Seconds)), scaled(Span(10, Millis)))

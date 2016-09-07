@@ -97,8 +97,8 @@ case class HealthStatusResults(results: Seq[String])
 sealed trait HealthCheckResult
 
 object HealthCheckResult {
-  case class AllHealthy() extends HealthCheckResult
-  case class Unhealthy() extends HealthCheckResult
+  case object AllHealthy extends HealthCheckResult
+  case object Unhealthy extends HealthCheckResult
 }
 
 /** KairosDB only supports numbers and strings. Custom types can be defined */

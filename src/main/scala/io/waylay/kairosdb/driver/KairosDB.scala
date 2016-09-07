@@ -13,6 +13,8 @@ import play.api.libs.json._
 import play.api.libs.ws.{WSAuthScheme, WSClient, WSRequest, WSResponse}
 
 import scala.concurrent.{ExecutionContext, Future}
+import scala.util.{Failure, Success, Try}
+import scala.concurrent.duration._
 
 object KairosDB {
 
@@ -52,9 +54,10 @@ class KairosDB(wsClient: WSClient, config: KairosDBConfig, executionContext: Exe
       .url(uri / "api" / "v1" / "metricnames")
       .applyKairosDBAuth
       .get
-      .map { res =>
-        (res.json \ "results").validate[Seq[String]].asOpt.toSeq.flatten.map(MetricName)
+      .map {
+        wsRepsonseToResult(json => (json \ "results").validate[Seq[String]])
       }
+      .map(_.map(MetricName))
   }
 
   def listTagNames: Future[Seq[String]] = {
@@ -62,8 +65,8 @@ class KairosDB(wsClient: WSClient, config: KairosDBConfig, executionContext: Exe
       .url(uri / "api" / "v1" / "tagnames")
       .applyKairosDBAuth
       .get
-      .map { res =>
-        (res.json \ "results").validate[Seq[String]].asOpt.toSeq.flatten
+      .map {
+        wsRepsonseToResult(json => (json \ "results").validate[Seq[String]])
       }
   }
 
@@ -72,9 +75,9 @@ class KairosDB(wsClient: WSClient, config: KairosDBConfig, executionContext: Exe
       .url(uri / "api" / "v1" / "tagvalues")
       .applyKairosDBAuth
       .get
-      .map { res =>
-        (res.json \ "results").validate[Seq[String]].asOpt.toSeq.flatten
-      }
+      .map(
+        wsRepsonseToResult(json => (json \ "results").validate[Seq[String]])
+      )
   }
 
   def healthStatus: Future[HealthStatusResults] = {
@@ -82,8 +85,8 @@ class KairosDB(wsClient: WSClient, config: KairosDBConfig, executionContext: Exe
       .url(uri / "api" / "v1" / "health" / "status")
       .applyKairosDBAuth
       .get
-      .map { res =>
-        res.json.validate[Seq[String]].asOpt.toSeq.flatten
+      .map {
+        wsRepsonseToResult(_.validate[Seq[String]])
       }
       .map(HealthStatusResults)
   }
@@ -91,12 +94,16 @@ class KairosDB(wsClient: WSClient, config: KairosDBConfig, executionContext: Exe
   def healthCheck: Future[HealthCheckResult] = {
     wsClient
       .url(uri / "api" / "v1" / "health" / "check")
+      .withRequestTimeout(10.seconds)
       .applyKairosDBAuth
       .get
       .map(_.status)
       .map {
-        case 204 => AllHealthy()
-        case _   => Unhealthy()
+        case 204 => AllHealthy
+        case _   => Unhealthy
+      }
+      .recover {
+        case _ => Unhealthy
       }
   }
 
@@ -105,9 +112,9 @@ class KairosDB(wsClient: WSClient, config: KairosDBConfig, executionContext: Exe
       .url(uri / "api" / "v1" / "version")
       .applyKairosDBAuth
       .get
-      .map { res =>
-        (res.json \ "version").validate[String].get
-      }
+      .map (
+        wsRepsonseToResult(json => (json \ "version").validate[String])
+      )
   }
 
   def deleteMetric(metricName: MetricName): Future[Unit] = {
@@ -115,9 +122,7 @@ class KairosDB(wsClient: WSClient, config: KairosDBConfig, executionContext: Exe
       .url(uri / "api" / "v1" / "metric" / metricName.name)
       .applyKairosDBAuth
       .delete
-      .map { res =>
-        wsRepsonseToResult(res, _ => (), 204)
-      }
+      .map(emptyWsRepsonseToResult)
   }
 
   def addDataPoints(dataPoints: Seq[DataPoint]): Future[Unit] = {
@@ -127,9 +132,7 @@ class KairosDB(wsClient: WSClient, config: KairosDBConfig, executionContext: Exe
       .url(uri / "api" / "v1" / "datapoints")
       .applyKairosDBAuth
       .post(body)
-      .map { res =>
-        wsRepsonseToResult(res, _ => (), 204)
-      }
+      .map(emptyWsRepsonseToResult)
   }
 
   def addDataPoint(dataPoint: DataPoint): Future[Unit] = addDataPoints(Seq(dataPoint))
@@ -141,8 +144,8 @@ class KairosDB(wsClient: WSClient, config: KairosDBConfig, executionContext: Exe
       .url(uri / "api" / "v1" / "datapoints" / "query")
       .applyKairosDBAuth
       .post(query)
-      .map { res =>
-        wsRepsonseToResult(res, (x: WSResponse) => parseQueryResult(x.json))
+      .map {
+        wsRepsonseToResult(_.validate[Response])
       }
   }
 
@@ -157,13 +160,8 @@ class KairosDB(wsClient: WSClient, config: KairosDBConfig, executionContext: Exe
       .url(uri / "api" / "v1" / "datapoints" / "query" / "tags")
       .applyKairosDBAuth
       .post(query)
-      .map { res =>
-        val transform = (x: WSResponse) => x.json.validate[TagsResponse] match {
-          case JsSuccess(tagsResponse, jsPath) => tagsResponse
-          case JsError(errors) => throw KairosDBResponseParseException(errors = errors)
-        }
-
-        wsRepsonseToResult(res, transform)
+      .map {
+        wsRepsonseToResult(_.validate[TagsResponse])
       }
   }
 
@@ -182,7 +180,7 @@ class KairosDB(wsClient: WSClient, config: KairosDBConfig, executionContext: Exe
       .url(uri / "api" / "v1" / "datapoints" / "delete")
       .applyKairosDBAuth
       .post(query)
-      .map { res => wsRepsonseToResult(res, _ => (), 204) }
+      .map(emptyWsRepsonseToResult)
   }
 
   private def parseQueryResult(json: JsValue): Response = {
@@ -192,23 +190,60 @@ class KairosDB(wsClient: WSClient, config: KairosDBConfig, executionContext: Exe
     }
   }
 
-  private def getErrors(res: WSResponse): Seq[String] = (res.json \ "errors").validate[Seq[String]].asOpt.toSeq.flatten
+  private def getErrors(res: WSResponse): Seq[String] = {
+    Try(res.json) match {
+      case Success(json) =>
+        (json \ "errors").validate[Seq[String]].asOpt.toSeq.flatten
+      case Failure(_) =>
+        // not a json response like jetty default 401
+        Seq.empty
+    }
+
+  }
 
   private implicit class PimpedWSRequest(req: WSRequest) {
     def applyKairosDBAuth: WSRequest = {
-      (for {
+      val withAuthOption = for {
         user <- uri.user
         pass <-  uri.password
-      } yield req.withAuth(user, pass, WSAuthScheme.BASIC)) getOrElse req
+      } yield req.withAuth(user, pass, WSAuthScheme.BASIC)
+      withAuthOption getOrElse req
     }
   }
 
-  private def wsRepsonseToResult[T](res: WSResponse, transform: (WSResponse => T), successStatusCode: Int = 200): T = res.status match {
-    case i if i == successStatusCode => transform(res)
-    case 400   => throw KairosDBResponseBadRequestException(errors = getErrors(res))
-    case 401   => throw KairosDBResponseUnauthorizedException(errors = getErrors(res))
-    case 500   => throw KairosDBResponseInternalServerErrorException(errors = getErrors(res))
-    case other => throw KairosDBResponseUnhandledException(other, getErrors(res))
-
+  private val emptyWsRepsonseToResult = {
+    emptyHandling orElse PartialFunction(responseErrorHandling)
   }
+
+  private def wsRepsonseToResult[T](transform: JsValue => JsResult[T], successStatusCode: Int = 200) = {
+    withBodyHandling(transform) orElse PartialFunction(responseErrorHandling)
+  }
+
+  private def emptyHandling : PartialFunction[WSResponse, Unit] = {
+    case res if res.status == 204 => ()
+  }
+
+  private def withBodyHandling[T](transform: JsValue => JsResult[T], successStatusCode: Int = 200): PartialFunction[WSResponse, T] = {
+    case res if res.status == successStatusCode =>
+      Try(res.json) match {
+        case Success(json) =>
+          transform(json) match {
+            case JsSuccess(result, jsPath) => result
+            case JsError(errors) => throw KairosDBResponseParseException(errors = errors)
+          }
+        case Failure(e) =>
+          throw KairosDBResponseParseException("Failed to parse response body to json", Seq())
+      }
+  }
+
+  private def responseErrorHandling[T](res: WSResponse) = {
+    res.status match {
+      case 400   => throw KairosDBResponseBadRequestException(errors = getErrors(res))
+      case 401   => throw KairosDBResponseUnauthorizedException(errors = getErrors(res))
+      case 500   => throw KairosDBResponseInternalServerErrorException(errors = getErrors(res))
+      case other => throw KairosDBResponseUnhandledException(other, getErrors(res))
+    }
+  }
+
+
 }

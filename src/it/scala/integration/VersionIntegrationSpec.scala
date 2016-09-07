@@ -7,7 +7,7 @@ import scala.concurrent.ExecutionContext.global
 
 class VersionIntegrationSpec extends IntegrationSpec {
   "Getting the KairosDB version" should "return version" in {
-    val res = kairosdbContainer.getPorts().map(_ (DefaultKairosDbPort)).flatMap { kairosPort: Int =>
+    val res = kairosPort.flatMap { kairosPort =>
       new KairosDB(wsClient, KairosDBConfig(port = kairosPort), global).version
     }.futureValue
 
