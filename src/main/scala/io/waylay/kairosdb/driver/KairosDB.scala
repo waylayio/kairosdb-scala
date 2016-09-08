@@ -216,14 +216,14 @@ class KairosDB(wsClient: WSClient, config: KairosDBConfig, executionContext: Exe
   }
 
   private def wsRepsonseToResult[T](transform: JsValue => JsResult[T], successStatusCode: Int = 200) = {
-    withBodyHandling(transform) orElse PartialFunction(responseErrorHandling)
+    withBodyHandling(transform, successStatusCode) orElse PartialFunction(responseErrorHandling)
   }
 
   private def emptyHandling : PartialFunction[WSResponse, Unit] = {
     case res if res.status == 204 => ()
   }
 
-  private def withBodyHandling[T](transform: JsValue => JsResult[T], successStatusCode: Int = 200): PartialFunction[WSResponse, T] = {
+  private def withBodyHandling[T](transform: JsValue => JsResult[T], successStatusCode: Int): PartialFunction[WSResponse, T] = {
     case res if res.status == successStatusCode =>
       Try(res.json) match {
         case Success(json) =>

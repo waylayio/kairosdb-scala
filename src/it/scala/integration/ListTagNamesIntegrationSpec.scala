@@ -7,6 +7,7 @@ import io.waylay.kairosdb.driver.models.{DataPoint, KairosDBConfig, MetricName, 
 import scala.concurrent.ExecutionContext._
 
 class ListTagNamesIntegrationSpec extends IntegrationSpec {
+
   "Listing tag names" should "only return tag of point that was just inserted" in {
     val res = kairosPort.flatMap { kairosPort =>
       val kairosDB = new KairosDB(wsClient, KairosDBConfig(port = kairosPort), global)
@@ -15,6 +16,9 @@ class ListTagNamesIntegrationSpec extends IntegrationSpec {
       }
     }.futureValue
 
-    res should be(Seq("aoeu"))
+    // these appear automatically after a while
+    val withSystemtagsRemoved = res.toSet -- Set("method", "host")
+
+    withSystemtagsRemoved should be(Set("aoeu"))
   }
 }
