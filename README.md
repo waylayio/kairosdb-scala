@@ -13,7 +13,7 @@ A feature-complete Scala library to talk to KairosDB, a time series database.
 Add this to your build.sbt
 
 ```scala
-libraryDependencies += "io.waylay.kairosdb" %% "kairosdb-scala" % "1.0.0"
+libraryDependencies += "io.waylay.kairosdb" %% "kairosdb-scala" % "x.x.x"
 ```
 
 snapshots are available at: `https://oss.sonatype.org/content/repositories/snapshots`
