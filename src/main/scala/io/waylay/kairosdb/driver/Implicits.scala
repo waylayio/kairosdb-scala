@@ -34,12 +34,14 @@ object Implicits {
 
   implicit def instant2absoluteEndTime(in: Instant): AbsoluteEndTime = AbsoluteEndTime(in)
 
-  implicit def instantTuple2timespan(tup: (Instant, Instant)): TimeSpan = {
-    TimeSpan(AbsoluteStartTime(tup._1), Some(AbsoluteEndTime(tup._2)))
+  implicit def instantTuple2timespan(span: (Instant, Instant)): TimeSpan = {
+    val (start, end) = span
+    TimeSpan(AbsoluteStartTime(start), Some(AbsoluteEndTime(end)))
   }
 
-  implicit def finiteDurationTuple2timespan(tup: (FiniteDuration, FiniteDuration)): TimeSpan = {
-    TimeSpan(RelativeStartTime(tup._1), Some(RelativeEndTime(tup._2)))
+  implicit def finiteDurationTuple2timespan(span: (FiniteDuration, FiniteDuration)): TimeSpan = {
+    val (start, end) = span
+    TimeSpan(RelativeStartTime(start), Some(RelativeEndTime(end)))
   }
 
   implicit def relativeStartTime2timeSpan(start: RelativeStartTime): TimeSpan = TimeSpan(start)

@@ -5,12 +5,11 @@ import java.util.concurrent.TimeUnit
 
 import io.waylay.kairosdb.driver.models.GroupBy._
 import io.waylay.kairosdb.driver.models.KairosCompatibleType.{KNumber, KString}
-import io.waylay.kairosdb.driver.models.{Aggregator, KairosCompatibleType, RangeAggregator}
+import io.waylay.kairosdb.driver.models.{Aggregator, KairosCompatibleType, RangeAggregator, _}
 import io.waylay.kairosdb.driver.models.Aggregator._
 import io.waylay.kairosdb.driver.models.KairosQuery.{Order, QueryTag}
 import io.waylay.kairosdb.driver.models.QueryMetricTagsResponse.{TagsResponse, TagsResult}
 import io.waylay.kairosdb.driver.models.QueryResponse.{Response, ResponseQuery, Result, TagResult}
-import io.waylay.kairosdb.driver.models._
 import io.waylay.kairosdb.driver.models.RangeAggregator.Align.{AlignSampling, AlignStartTime}
 import io.waylay.kairosdb.driver.models.TimeSpan._
 import play.api.data.validation.ValidationError
@@ -22,42 +21,80 @@ import scala.concurrent.duration._
 object Formats {
 
   implicit val datapointWrites: Writes[DataPoint] = new Writes[DataPoint] {
-    override def writes(datapoint: DataPoint): JsValue = {
-      val tags: JsObject = JsObject(datapoint.tags.map(tag => (tag.name, JsString(tag.value))).toMap)
 
-      val ttl = datapoint.ttl.map(x => Json.obj("ttl" -> finiteDuration2ttl(x))).getOrElse(Json.obj())
+    implicit val datapointWithTimeStampWrites = new Writes[(Instant, KairosCompatibleType)] {
+      override def writes(point: (Instant, KairosCompatibleType)): JsValue = {
+        val (time, value) = point
+        Json.arr(
+          time.toEpochMilli,
+          value
+        )
+      }
+    }
+
+    override def writes(datapoint: DataPoint): JsValue = {
+      val tags = JsObject(
+        datapoint.tags.map(tag =>
+          (tag.name, JsString(tag.value))
+        ).toMap
+      )
+
+      val ttl = datapoint.ttl.fold(Json.obj())(x =>
+        Json.obj(
+          "ttl" -> finiteDuration2ttl(x)
+        )
+      )
 
       val value: JsObject = datapoint match {
         case dp: DataPointWithSingleValue =>
-          Json.obj("value" -> dp.value, "timestamp" -> JsNumber(instant2kairosLong(dp.timestamp)))
+          Json.obj(
+            "value" -> dp.value,
+            "timestamp" -> instant2kairosLong(dp.timestamp)
+          )
         case dp: DataPointWithMultipleValues =>
-          implicit val datapointWithTimeStampWrites = new Writes[(Instant, KairosCompatibleType)] {
-            override def writes(o: (Instant, KairosCompatibleType)): JsValue = {
-              JsArray(Seq(Json.toJson(o._1.toEpochMilli), Json.toJson(o._2)))
-            }
-          }
-
-          Json.obj("datapoints" -> Json.toJson(dp.values))
+          Json.obj(
+            "datapoints" -> dp.values
+          )
       }
 
-      Json.obj(
+      val nameTags = Json.obj(
         "name" -> JsString(datapoint.metricName.name),
         //      "type" -> kairosTypeForValue(datapoint.value), TODO custom types
         "tags" -> tags
-      ) ++ value ++ ttl
+      )
+
+      nameTags ++ value ++ ttl
     }
   }
 
   implicit val groupByWrites: Writes[GroupBy] = new Writes[GroupBy] {
     override def writes(groupBy: GroupBy): JsValue = {
-      val base = Json.obj("name" -> groupBy.name)
+      val base = Json.obj(
+        "name" -> groupBy.name
+      )
 
       groupBy match {
-        case GroupByBins(bins) => base ++ Json.obj("bins" -> bins)
-        case GroupByTags(tags) => base ++ Json.obj("tags" -> tags)
-        case GroupByTime(rangeSize, groupCount) => base ++ Json.obj("range_size" -> rangeSize, "group_count" -> groupCount.toString)
-        case GroupByValue(rangeSize) => base ++ Json.obj("range_size" -> rangeSize)
-        case GroupByType(typeName) => base ++ Json.obj("type" -> typeName)
+        case GroupByBins(bins) =>
+          base ++ Json.obj(
+            "bins" -> bins
+          )
+        case GroupByTags(tags) =>
+          base ++ Json.obj(
+            "tags" -> tags
+          )
+        case GroupByTime(rangeSize, groupCount) =>
+          base ++ Json.obj(
+            "range_size" -> rangeSize,
+            "group_count" -> groupCount.toString
+          )
+        case GroupByValue(rangeSize) =>
+          base ++ Json.obj(
+            "range_size" -> rangeSize
+          )
+        case GroupByType(typeName) =>
+          base ++ Json.obj(
+            "type" -> typeName
+          )
       }
     }
   }
@@ -122,40 +159,22 @@ object Formats {
   }
 
   implicit val aggregatorWrites: Writes[Aggregator] = new Writes[Aggregator] {
+
     override def writes(agg: Aggregator): JsValue = {
       agg match {
-        case percentileAgg: Percentile =>
-          Json.obj(
-            "name" -> percentileAgg.name,
-            "sampling" -> Json.toJson(percentileAgg.sampling),
-            "percentile" -> percentileAgg.percentile
-          ) ++
-            percentileAgg.timeZone.map(tz => Json.obj("time_zone" -> tz)).getOrElse(Json.obj()) ++
-            percentileAgg.align.map {
-              case AlignStartTime() => Json.obj("align_start_time" -> true)
-              case AlignSampling() => Json.obj("align_sampling" -> true)
-            }.getOrElse(Json.obj()) ++
-            percentileAgg.startTime.map(x => Json.obj("start_time" -> Json.toJson(x))).getOrElse(Json.obj())
 
         case diff: Diff =>
-          Json.obj("name" -> diff.name)
+          Json.obj(
+            "name" -> diff.name
+          )
 
         case divide: Divide =>
-          Json.obj("name" -> divide.name, "divisor" -> JsNumber(divide.divisor))
-
-        case rate: Rate =>
           Json.obj(
-            "name" -> rate.name,
-            "unit" -> unitName(rate.unit),
-            "sampling" -> Json.toJson(rate.sampling)
-          ) ++ rate.timezone.map(x => Json.obj("time_zone" -> x)).getOrElse(Json.obj())
-
-        case sampler: Sampler =>
-          Json.obj("name" -> sampler.name, "unit" -> unitName(sampler.unit)) ++ sampler.timezone.map(x => Json.obj("time_zone" -> x)).getOrElse(Json.obj())
+            "name" -> divide.name,
+            "divisor" -> JsNumber(divide.divisor)
+          )
 
         case saveAs: SaveAs =>
-          def tags2json(tags: Seq[Tag]): JsObject = JsObject(tags.map(tag => (tag.name, JsString(tag.value))))
-
           Json.obj(
             "name" -> saveAs.name,
             "metric_name" -> saveAs.metricName.name,
@@ -164,23 +183,97 @@ object Formats {
           )
 
         case scale: Scale =>
-          Json.obj("name" -> scale.name, "factor" -> scale.factor)
+          Json.obj(
+            "name" -> scale.name,
+            "factor" -> scale.factor
+          )
 
         case trim: Trim =>
-          Json.obj("name" -> trim.name, "trim" -> trim.trimWhat.value)
+          Json.obj(
+            "name" -> trim.name,
+            "trim" -> trim.trimWhat.value
+          )
+
+        case rate: Rate =>
+          rateAggregatorWrites.writes(rate)
+
+        case sampler: Sampler =>
+          samplerAggregatorWrites.writes(sampler)
+
+        case percentileAgg: Percentile =>
+          percentileAggregatorWrites.writes(percentileAgg)
 
         case rangeAgg: RangeAggregator =>
-          Json.obj(
-            "name" -> rangeAgg.name,
-            "sampling" -> Json.toJson(rangeAgg.sampling)
-          ) ++
-            rangeAgg.timeZone.map(tz => Json.obj("time_zone" -> tz)).getOrElse(Json.obj()) ++
-            rangeAgg.align.map {
-              case AlignStartTime() => Json.obj("align_start_time" -> true)
-              case AlignSampling() => Json.obj("align_sampling" -> true)
-            }.getOrElse(Json.obj()) ++
-            rangeAgg.startTime.map(x => Json.obj("start_time" -> Json.toJson(x))).getOrElse(Json.obj())
+          rangeAggregatorWrites.writes(rangeAgg)
       }
+    }
+
+    private def tags2json(tags: Seq[Tag]) = JsObject(
+      tags.map(tag =>
+        (tag.name, JsString(tag.value))
+      )
+    )
+  }
+
+  implicit val samplerAggregatorWrites = new Writes[Sampler] {
+    override def writes(sampler: Sampler): JsValue = {
+      val base = Json.obj(
+        "name" -> sampler.name,
+        "unit" -> unitName(sampler.unit)
+      )
+      val tz = sampler.timezone.fold(Json.obj())(x =>
+        Json.obj(
+          "time_zone" -> x
+        )
+      )
+      base ++ tz
+    }
+  }
+
+  implicit val rateAggregatorWrites = new Writes[Rate]{
+    override def writes(rate: Rate): JsValue = {
+      val base = Json.obj(
+        "name" -> rate.name,
+        "unit" -> unitName(rate.unit),
+        "sampling" -> Json.toJson(rate.sampling)
+      )
+      val ts = rate.timezone.fold(Json.obj())(x =>
+        Json.obj(
+          "time_zone" -> x
+        )
+      )
+      base ++ ts
+    }
+  }
+
+  implicit val rangeAggregatorWrites = new Writes[RangeAggregator]{
+    override def writes(rangeAgg: RangeAggregator): JsValue = {
+      Json.obj(
+        "name" -> rangeAgg.name,
+        "sampling" -> Json.toJson(rangeAgg.sampling)
+      ) ++
+        rangeAgg.timeZone.map(tz => Json.obj("time_zone" -> tz)).getOrElse(Json.obj()) ++
+        rangeAgg.align.map {
+          case AlignStartTime() => Json.obj("align_start_time" -> true)
+          case AlignSampling() => Json.obj("align_sampling" -> true)
+        }.getOrElse(Json.obj()) ++
+        rangeAgg.startTime.map(x => Json.obj("start_time" -> Json.toJson(x))).getOrElse(Json.obj())
+    }
+  }
+
+  implicit val percentileAggregatorWrites = new Writes[Percentile]{
+    override def writes(percentileAgg: Percentile): JsValue = {
+      Json.obj(
+        "name" -> percentileAgg.name,
+        "sampling" -> Json.toJson(percentileAgg.sampling),
+        "percentile" -> percentileAgg.percentile
+      ) ++
+        percentileAgg.timeZone.map(tz => Json.obj("time_zone" -> tz)).getOrElse(Json.obj()) ++
+        percentileAgg.align.map {
+          case AlignStartTime() => Json.obj("align_start_time" -> true)
+          case AlignSampling() => Json.obj("align_sampling" -> true)
+        }.getOrElse(Json.obj()) ++
+        percentileAgg.startTime.map(x => Json.obj("start_time" -> Json.toJson(x))).getOrElse(Json.obj())
     }
   }
 
@@ -197,7 +290,10 @@ object Formats {
 
   implicit val finiteDurationWrites: Writes[FiniteDuration] = new Writes[FiniteDuration] {
     override def writes(o: FiniteDuration): JsValue = {
-      Json.obj("unit" -> unitName(o.unit), "value" -> o.length.toString)
+      Json.obj(
+        "unit" -> unitName(o.unit),
+        "value" -> o.length.toString
+      )
     }
   }
 
@@ -224,29 +320,61 @@ object Formats {
 
   implicit val queryWrites: Writes[Query] = new Writes[Query] {
     override def writes(query: Query): JsValue = {
-      val tags = if(query.tags.isEmpty) Json.obj() else {
-        Json.obj("tags" -> query.tags.map(tag => Json.obj(tag.name -> tag.allowedValues)).reduce((x,y) => x ++ y))
+      val tags = if(query.tags.isEmpty) {
+        Json.obj()
+      } else {
+        Json.obj(
+          "tags" -> query.tags.map(tag =>
+            Json.obj(
+              tag.name -> tag.allowedValues
+            )
+          ).reduce((x,y) => x ++ y)
+        )
       }
 
-      val aggregators = if(query.aggregators.isEmpty) Json.obj() else {
-        Json.obj("aggregators" -> Json.toJson(query.aggregators))
+      val aggregators = if(query.aggregators.isEmpty){
+        Json.obj()
+      } else {
+        Json.obj(
+          "aggregators" -> query.aggregators
+        )
       }
 
-      val limit = query.limit.map(lim => Json.obj("limit" -> lim)).getOrElse(Json.obj())
+      val limit = query.limit.fold(Json.obj())(lim =>
+        Json.obj(
+          "limit" -> lim
+        )
+      )
 
-      val groupBys = if(query.groupBys.isEmpty) Json.obj() else {
-        Json.obj("group_by" -> Json.toJson(query.groupBys))
+      val groupBys = if(query.groupBys.isEmpty) {
+        Json.obj()
+      } else {
+        Json.obj(
+          "group_by" -> Json.toJson(query.groupBys)
+        )
       }
 
-      val excludeTags = if(query.excludeTags) Json.obj("exclude_tags" -> query.excludeTags) else Json.obj()
-
-      val order = if(query.order == Order.defaultOrder) Json.obj() else {
-        Json.obj("order" -> query.order.value)
+      val excludeTags = if(query.excludeTags){
+        Json.obj(
+          "exclude_tags" -> query.excludeTags
+        )
+      }else{
+        Json.obj()
       }
 
-      Json.obj(
+      val order = if(query.order == Order.defaultOrder) {
+        Json.obj()
+      } else {
+        Json.obj(
+          "order" -> query.order.value
+        )
+      }
+
+      val name = Json.obj(
         "name" -> query.metricName.name
-      ) ++ limit ++ tags ++ aggregators ++ groupBys ++ excludeTags ++ order
+      )
+
+      name ++ limit ++ tags ++ aggregators ++ groupBys ++ excludeTags ++ order
     }
   }
 

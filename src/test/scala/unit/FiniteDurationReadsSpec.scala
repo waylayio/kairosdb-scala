@@ -2,42 +2,51 @@ package unit
 
 import io.waylay.kairosdb.driver.models.json.Formats._
 import org.specs2.mutable.Specification
-import play.api.libs.json.Json
+import play.api.libs.json.{JsError, Json}
 
 import scala.concurrent.duration._
 
 class FiniteDurationReadsSpec extends Specification {
   "Finite duration reads" should {
+
     "read milliseconds" in {
-      Json.parse("""{"unit":"milliseconds","value":10}""").validate[FiniteDuration].get should be equalTo 10.millis
+      val json = Json.parse("""{"unit":"milliseconds","value":10}""")
+      json.validate[FiniteDuration].asOpt must beSome(10.millis)
     }
 
     "read seconds" in {
-      Json.parse("""{"unit":"seconds","value":10}""").validate[FiniteDuration].get should be equalTo 10.seconds
+      val json = Json.parse("""{"unit":"seconds","value":10}""")
+      json.validate[FiniteDuration].asOpt must beSome(10.seconds)
     }
 
     "read minutes" in {
-      Json.parse("""{"unit":"minutes","value":10}""").validate[FiniteDuration].get should be equalTo 10.minutes
+      val json = Json.parse("""{"unit":"minutes","value":10}""")
+      json.validate[FiniteDuration].asOpt must beSome(10.minutes)
     }
 
     "read hours" in {
-      Json.parse("""{"unit":"hours","value":10}""").validate[FiniteDuration].get should be equalTo 10.hours
+      val json = Json.parse("""{"unit":"hours","value":10}""")
+      json.validate[FiniteDuration].asOpt must beSome(10.hours)
     }
 
     "read days" in {
-      Json.parse("""{"unit":"days","value":10}""").validate[FiniteDuration].get should be equalTo 10.days
+      val json = Json.parse("""{"unit":"days","value":10}""")
+      json.validate[FiniteDuration].asOpt must beSome(10.days)
     }
 
     "read weeks" in {
-      Json.parse("""{"unit":"weeks","value":10}""").validate[FiniteDuration].get should be equalTo (10 * 7).days
+      val json = Json.parse("""{"unit":"weeks","value":10}""")
+      json.validate[FiniteDuration].asOpt must beSome((10 * 7).days)
     }
 
     "fail to read months" in {
-      Json.parse("""{"unit":"months","value":10}""").validate[FiniteDuration].isError should beTrue
+      val json = Json.parse("""{"unit":"months","value":10}""")
+      json.validate[FiniteDuration] must be equalTo JsError("unit must be one of: milliseconds, seconds, minutes, hours, days, weeks. (months and years are supported by KairosDB but not this driver)")
     }
 
     "fail to read years" in {
-      Json.parse("""{"unit":"years","value":10}""").validate[FiniteDuration].isError should beTrue
+      val json = Json.parse("""{"unit":"years","value":10}""")
+      json.validate[FiniteDuration] must be equalTo JsError("unit must be one of: milliseconds, seconds, minutes, hours, days, weeks. (months and years are supported by KairosDB but not this driver)")
     }
   }
 
