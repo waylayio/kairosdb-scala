@@ -1,9 +1,9 @@
 <!DOCTYPE html >
 <html>
         <head>
-          <title>AlignSampling - io.waylay.kairosdb.driver.models.RangeAggregator.Align.AlignSampling</title>
-          <meta name="description" content="AlignSampling - io.waylay.kairosdb.driver.models.RangeAggregator.Align.AlignSampling" />
-          <meta name="keywords" content="AlignSampling io.waylay.kairosdb.driver.models.RangeAggregator.Align.AlignSampling" />
+          <title>AlignStartTime - io.waylay.kairosdb.driver.models.RangeAggregator.Align.AlignStartTime</title>
+          <meta name="description" content="AlignStartTime - io.waylay.kairosdb.driver.models.RangeAggregator.Align.AlignStartTime" />
+          <meta name="keywords" content="AlignStartTime io.waylay.kairosdb.driver.models.RangeAggregator.Align.AlignStartTime" />
           <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
           
       <link href="../../../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
@@ -16,7 +16,7 @@
       <script type="text/javascript">
          if(top === self) {
             var url = '../../../../../index.html';
-            var hash = 'io.waylay.kairosdb.driver.models.RangeAggregator$$Align$$AlignSampling';
+            var hash = 'io.waylay.kairosdb.driver.models.RangeAggregator$$Align$$AlignStartTime$';
             var anchor = window.location.hash;
             var anchor_opt = '';
             if (anchor.length >= 1)
@@ -26,14 +26,14 @@
    	  </script>
     
         </head>
-        <body class="type">
+        <body class="value">
       <div id="definition">
-        <img alt="Class" src="../../../../../lib/class_big.png" />
+        <img alt="Object" src="../../../../../lib/object_big.png" />
         <p id="owner"><a href="../../../../package.html" class="extype" name="io">io</a>.<a href="../../../package.html" class="extype" name="io.waylay">waylay</a>.<a href="../../package.html" class="extype" name="io.waylay.kairosdb">kairosdb</a>.<a href="../package.html" class="extype" name="io.waylay.kairosdb.driver">driver</a>.<a href="package.html" class="extype" name="io.waylay.kairosdb.driver.models">models</a>.<a href="RangeAggregator$.html" class="extype" name="io.waylay.kairosdb.driver.models.RangeAggregator">RangeAggregator</a>.<a href="RangeAggregator$$Align$.html" class="extype" name="io.waylay.kairosdb.driver.models.RangeAggregator.Align">Align</a></p>
-        <h1>AlignSampling</h1><h3><span class="morelinks"><div>Related Doc:
+        <h1>AlignStartTime</h1><h3><span class="morelinks"><div>Related Doc:
             <a href="RangeAggregator$$Align$.html" class="extype" name="io.waylay.kairosdb.driver.models.RangeAggregator.Align">package Align</a>
           </div></span></h3><span class="permalink">
-      <a href="../../../../../index.html#io.waylay.kairosdb.driver.models.RangeAggregator$$Align$$AlignSampling" title="Permalink" target="_top">
+      <a href="../../../../../index.html#io.waylay.kairosdb.driver.models.RangeAggregator$$Align$$AlignStartTime$" title="Permalink" target="_top">
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -42,17 +42,15 @@
       <h4 id="signature" class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
-        <span class="kind">case class</span>
+        <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <span class="name">AlignSampling</span><span class="params">()</span><span class="result"> extends <a href="RangeAggregator$$Align.html" class="extype" name="io.waylay.kairosdb.driver.models.RangeAggregator.Align">Align</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">AlignStartTime</span><span class="result"> extends <a href="RangeAggregator$$Align.html" class="extype" name="io.waylay.kairosdb.driver.models.RangeAggregator.Align">Align</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
       
-          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Setting this to will cause the aggregation range to be aligned based on the sampling size. For example if
-your sample size is either milliseconds, seconds, minutes or hours then the start of the range will always be at
-the top of the hour. The effect of setting this to true is that your data will take the same shape when graphed
-as you refresh the data</p></div><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>When set, the time for the aggregated data point for each range will fall on the start of the range instead
+of being the value for the first data point within that range.</p></div><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
           <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="RangeAggregator$$Align.html" class="extype" name="io.waylay.kairosdb.driver.models.RangeAggregator.Align">Align</a>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
@@ -72,7 +70,7 @@ as you refresh the data</p></div><div class="toggleContainer block">
                 <span class="filtertype">Inherited<br />
                 </span>
                 <ol id="linearization">
-                  <li class="in" name="io.waylay.kairosdb.driver.models.RangeAggregator.Align.AlignSampling"><span>AlignSampling</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.Product"><span>Product</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="io.waylay.kairosdb.driver.models.RangeAggregator.Align"><span>Align</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  <li class="in" name="io.waylay.kairosdb.driver.models.RangeAggregator.Align.AlignStartTime"><span>AlignStartTime</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.Product"><span>Product</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="io.waylay.kairosdb.driver.models.RangeAggregator.Align"><span>Align</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                 </ol>
               </div><div id="ancestors">
             <span class="filtertype"></span>
@@ -89,27 +87,7 @@ as you refresh the data</p></div><div class="toggleContainer block">
 
       <div id="template">
         <div id="allMembers">
-        <div id="constructors" class="members">
-              <h3>Instance Constructors</h3>
-              <ol><li name="io.waylay.kairosdb.driver.models.RangeAggregator.Align.AlignSampling#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="&lt;init&gt;():io.waylay.kairosdb.driver.models.RangeAggregator.Align.AlignSampling"></a>
-      <a id="&lt;init&gt;:AlignSampling"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">new</span>
-      </span>
-      <span class="symbol">
-        <span class="name">AlignSampling</span><span class="params">()</span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../../../index.html#io.waylay.kairosdb.driver.models.RangeAggregator$$Align$$AlignSampling@&lt;init&gt;():io.waylay.kairosdb.driver.models.RangeAggregator.Align.AlignSampling" title="Permalink" target="_top">
-        <img src="../../../../../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
-      
-    </li></ol>
-            </div>
+        
 
         
 
@@ -129,7 +107,7 @@ as you refresh the data</p></div><div class="toggleContainer block">
         <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../../index.html#io.waylay.kairosdb.driver.models.RangeAggregator$$Align$$AlignSampling@!=(x$1:Any):Boolean" title="Permalink" target="_top">
+      <a href="../../../../../index.html#io.waylay.kairosdb.driver.models.RangeAggregator$$Align$$AlignStartTime$@!=(x$1:Any):Boolean" title="Permalink" target="_top">
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -146,7 +124,7 @@ as you refresh the data</p></div><div class="toggleContainer block">
         <span title="gt4s: $hash$hash" class="name">##</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../../index.html#io.waylay.kairosdb.driver.models.RangeAggregator$$Align$$AlignSampling@##():Int" title="Permalink" target="_top">
+      <a href="../../../../../index.html#io.waylay.kairosdb.driver.models.RangeAggregator$$Align$$AlignStartTime$@##():Int" title="Permalink" target="_top">
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -163,7 +141,7 @@ as you refresh the data</p></div><div class="toggleContainer block">
         <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../../index.html#io.waylay.kairosdb.driver.models.RangeAggregator$$Align$$AlignSampling@==(x$1:Any):Boolean" title="Permalink" target="_top">
+      <a href="../../../../../index.html#io.waylay.kairosdb.driver.models.RangeAggregator$$Align$$AlignStartTime$@==(x$1:Any):Boolean" title="Permalink" target="_top">
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -180,7 +158,7 @@ as you refresh the data</p></div><div class="toggleContainer block">
         <span class="name">asInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Any.asInstanceOf.T0">T0</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../../index.html#io.waylay.kairosdb.driver.models.RangeAggregator$$Align$$AlignSampling@asInstanceOf[T0]:T0" title="Permalink" target="_top">
+      <a href="../../../../../index.html#io.waylay.kairosdb.driver.models.RangeAggregator$$Align$$AlignStartTime$@asInstanceOf[T0]:T0" title="Permalink" target="_top">
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -197,7 +175,7 @@ as you refresh the data</p></div><div class="toggleContainer block">
         <span class="name">clone</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../../index.html#io.waylay.kairosdb.driver.models.RangeAggregator$$Align$$AlignSampling@clone():Object" title="Permalink" target="_top">
+      <a href="../../../../../index.html#io.waylay.kairosdb.driver.models.RangeAggregator$$Align$$AlignStartTime$@clone():Object" title="Permalink" target="_top">
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -220,11 +198,28 @@ as you refresh the data</p></div><div class="toggleContainer block">
         <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../../index.html#io.waylay.kairosdb.driver.models.RangeAggregator$$Align$$AlignSampling@eq(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+      <a href="../../../../../index.html#io.waylay.kairosdb.driver.models.RangeAggregator$$Align$$AlignStartTime$@eq(x$1:AnyRef):Boolean" title="Permalink" target="_top">
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#equals" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="equals(x$1:Any):Boolean"></a>
+      <a id="equals(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#io.waylay.kairosdb.driver.models.RangeAggregator$$Align$$AlignStartTime$@equals(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#finalize" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="finalize():Unit"></a>
       <a id="finalize():Unit"></a>
@@ -237,7 +232,7 @@ as you refresh the data</p></div><div class="toggleContainer block">
         <span class="name">finalize</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../../index.html#io.waylay.kairosdb.driver.models.RangeAggregator$$Align$$AlignSampling@finalize():Unit" title="Permalink" target="_top">
+      <a href="../../../../../index.html#io.waylay.kairosdb.driver.models.RangeAggregator$$Align$$AlignStartTime$@finalize():Unit" title="Permalink" target="_top">
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -260,7 +255,7 @@ as you refresh the data</p></div><div class="toggleContainer block">
         <span class="name">getClass</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.Class">Class</span>[_]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../../index.html#io.waylay.kairosdb.driver.models.RangeAggregator$$Align$$AlignSampling@getClass():Class[_]" title="Permalink" target="_top">
+      <a href="../../../../../index.html#io.waylay.kairosdb.driver.models.RangeAggregator$$Align$$AlignStartTime$@getClass():Class[_]" title="Permalink" target="_top">
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -277,7 +272,7 @@ as you refresh the data</p></div><div class="toggleContainer block">
         <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../../index.html#io.waylay.kairosdb.driver.models.RangeAggregator$$Align$$AlignSampling@isInstanceOf[T0]:Boolean" title="Permalink" target="_top">
+      <a href="../../../../../index.html#io.waylay.kairosdb.driver.models.RangeAggregator$$Align$$AlignStartTime$@isInstanceOf[T0]:Boolean" title="Permalink" target="_top">
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -294,7 +289,7 @@ as you refresh the data</p></div><div class="toggleContainer block">
         <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../../index.html#io.waylay.kairosdb.driver.models.RangeAggregator$$Align$$AlignSampling@ne(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+      <a href="../../../../../index.html#io.waylay.kairosdb.driver.models.RangeAggregator$$Align$$AlignStartTime$@ne(x$1:AnyRef):Boolean" title="Permalink" target="_top">
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -311,7 +306,7 @@ as you refresh the data</p></div><div class="toggleContainer block">
         <span class="name">notify</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../../index.html#io.waylay.kairosdb.driver.models.RangeAggregator$$Align$$AlignSampling@notify():Unit" title="Permalink" target="_top">
+      <a href="../../../../../index.html#io.waylay.kairosdb.driver.models.RangeAggregator$$Align$$AlignStartTime$@notify():Unit" title="Permalink" target="_top">
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -328,7 +323,7 @@ as you refresh the data</p></div><div class="toggleContainer block">
         <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../../index.html#io.waylay.kairosdb.driver.models.RangeAggregator$$Align$$AlignSampling@notifyAll():Unit" title="Permalink" target="_top">
+      <a href="../../../../../index.html#io.waylay.kairosdb.driver.models.RangeAggregator$$Align$$AlignStartTime$@notifyAll():Unit" title="Permalink" target="_top">
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -345,7 +340,7 @@ as you refresh the data</p></div><div class="toggleContainer block">
         <span class="name">synchronized</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">(<span name="arg0">arg0: ⇒ <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>)</span><span class="result">: <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../../index.html#io.waylay.kairosdb.driver.models.RangeAggregator$$Align$$AlignSampling@synchronized[T0](x$1:=&gt;T0):T0" title="Permalink" target="_top">
+      <a href="../../../../../index.html#io.waylay.kairosdb.driver.models.RangeAggregator$$Align$$AlignStartTime$@synchronized[T0](x$1:=&gt;T0):T0" title="Permalink" target="_top">
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -362,7 +357,7 @@ as you refresh the data</p></div><div class="toggleContainer block">
         <span class="name">wait</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../../index.html#io.waylay.kairosdb.driver.models.RangeAggregator$$Align$$AlignSampling@wait():Unit" title="Permalink" target="_top">
+      <a href="../../../../../index.html#io.waylay.kairosdb.driver.models.RangeAggregator$$Align$$AlignStartTime$@wait():Unit" title="Permalink" target="_top">
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -385,7 +380,7 @@ as you refresh the data</p></div><div class="toggleContainer block">
         <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>, <span name="arg1">arg1: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../../index.html#io.waylay.kairosdb.driver.models.RangeAggregator$$Align$$AlignSampling@wait(x$1:Long,x$2:Int):Unit" title="Permalink" target="_top">
+      <a href="../../../../../index.html#io.waylay.kairosdb.driver.models.RangeAggregator$$Align$$AlignStartTime$@wait(x$1:Long,x$2:Int):Unit" title="Permalink" target="_top">
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -408,7 +403,7 @@ as you refresh the data</p></div><div class="toggleContainer block">
         <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../../index.html#io.waylay.kairosdb.driver.models.RangeAggregator$$Align$$AlignSampling@wait(x$1:Long):Unit" title="Permalink" target="_top">
+      <a href="../../../../../index.html#io.waylay.kairosdb.driver.models.RangeAggregator$$Align$$AlignStartTime$@wait(x$1:Long):Unit" title="Permalink" target="_top">
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>

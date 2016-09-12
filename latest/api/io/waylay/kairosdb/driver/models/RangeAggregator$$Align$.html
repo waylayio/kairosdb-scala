@@ -90,48 +90,7 @@
         <div id="allMembers">
         
 
-        <div id="types" class="types members">
-              <h3>Type Members</h3>
-              <ol><li name="io.waylay.kairosdb.driver.models.RangeAggregator.Align.AlignSampling" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="AlignSamplingextendsRangeAggregator.AlignwithProductwithSerializable"></a>
-      <a id="AlignSampling:AlignSampling"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">case class</span>
-      </span>
-      <span class="symbol">
-        <a href="RangeAggregator$$Align$$AlignSampling.html"><span class="name">AlignSampling</span></a><span class="params">()</span><span class="result"> extends <a href="RangeAggregator$$Align.html" class="extype" name="io.waylay.kairosdb.driver.models.RangeAggregator.Align">Align</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../../../index.html#io.waylay.kairosdb.driver.models.RangeAggregator$$Align$@AlignSamplingextendsRangeAggregator.AlignwithProductwithSerializable" title="Permalink" target="_top">
-        <img src="../../../../../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
-      <p class="shortcomment cmt">Setting this to will cause the aggregation range to be aligned based on the sampling size.</p><div class="fullcomment"><div class="comment cmt"><p>Setting this to will cause the aggregation range to be aligned based on the sampling size. For example if
-your sample size is either milliseconds, seconds, minutes or hours then the start of the range will always be at
-the top of the hour. The effect of setting this to true is that your data will take the same shape when graphed
-as you refresh the data</p></div></div>
-    </li><li name="io.waylay.kairosdb.driver.models.RangeAggregator.Align.AlignStartTime" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="AlignStartTimeextendsRangeAggregator.AlignwithProductwithSerializable"></a>
-      <a id="AlignStartTime:AlignStartTime"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">case class</span>
-      </span>
-      <span class="symbol">
-        <a href="RangeAggregator$$Align$$AlignStartTime.html"><span class="name">AlignStartTime</span></a><span class="params">()</span><span class="result"> extends <a href="RangeAggregator$$Align.html" class="extype" name="io.waylay.kairosdb.driver.models.RangeAggregator.Align">Align</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../../../index.html#io.waylay.kairosdb.driver.models.RangeAggregator$$Align$@AlignStartTimeextendsRangeAggregator.AlignwithProductwithSerializable" title="Permalink" target="_top">
-        <img src="../../../../../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
-      <p class="shortcomment cmt">When set, the time for the aggregated data point for each range will fall on the start of the range instead
-of being the value for the first data point within that range.</p>
-    </li></ol>
-            </div>
+        
 
         
 
@@ -188,6 +147,44 @@ of being the value for the first data point within that range.</p>
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="io.waylay.kairosdb.driver.models.RangeAggregator.Align.AlignSampling" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="AlignSampling"></a>
+      <a id="AlignSampling:AlignSampling"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="RangeAggregator$$Align$$AlignSampling$.html"><span class="name">AlignSampling</span></a><span class="result"> extends <a href="RangeAggregator$$Align.html" class="extype" name="io.waylay.kairosdb.driver.models.RangeAggregator.Align">Align</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#io.waylay.kairosdb.driver.models.RangeAggregator$$Align$@AlignSampling" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Setting this to will cause the aggregation range to be aligned based on the sampling size.</p><div class="fullcomment"><div class="comment cmt"><p>Setting this to will cause the aggregation range to be aligned based on the sampling size. For example if
+your sample size is either milliseconds, seconds, minutes or hours then the start of the range will always be at
+the top of the hour. The effect of setting this to true is that your data will take the same shape when graphed
+as you refresh the data</p></div></div>
+    </li><li name="io.waylay.kairosdb.driver.models.RangeAggregator.Align.AlignStartTime" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="AlignStartTime"></a>
+      <a id="AlignStartTime:AlignStartTime"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="RangeAggregator$$Align$$AlignStartTime$.html"><span class="name">AlignStartTime</span></a><span class="result"> extends <a href="RangeAggregator$$Align.html" class="extype" name="io.waylay.kairosdb.driver.models.RangeAggregator.Align">Align</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#io.waylay.kairosdb.driver.models.RangeAggregator$$Align$@AlignStartTime" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">When set, the time for the aggregated data point for each range will fall on the start of the range instead
+of being the value for the first data point within that range.</p>
     </li><li name="scala.Any#asInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
       <a id="asInstanceOf[T0]:T0"></a>
