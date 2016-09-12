@@ -139,9 +139,9 @@ object KairosQuery {
   sealed trait Order { val value: String }
 
   object Order {
-    case class Ascending() extends Order { override val value = "asc" }
-    case class Descending() extends Order { override val value = "desc"}
-    val defaultOrder = Ascending()
+    case object Ascending extends Order { override val value = "asc" }
+    case object Descending extends Order { override val value = "desc"}
+    val defaultOrder = Ascending
   }
 }
 

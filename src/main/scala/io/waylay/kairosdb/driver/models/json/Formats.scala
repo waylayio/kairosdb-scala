@@ -254,8 +254,8 @@ object Formats {
       ) ++
         rangeAgg.timeZone.map(tz => Json.obj("time_zone" -> tz)).getOrElse(Json.obj()) ++
         rangeAgg.align.map {
-          case AlignStartTime() => Json.obj("align_start_time" -> true)
-          case AlignSampling() => Json.obj("align_sampling" -> true)
+          case AlignStartTime => Json.obj("align_start_time" -> true)
+          case AlignSampling => Json.obj("align_sampling" -> true)
         }.getOrElse(Json.obj()) ++
         rangeAgg.startTime.map(x => Json.obj("start_time" -> Json.toJson(x))).getOrElse(Json.obj())
     }
@@ -270,8 +270,8 @@ object Formats {
       ) ++
         percentileAgg.timeZone.map(tz => Json.obj("time_zone" -> tz)).getOrElse(Json.obj()) ++
         percentileAgg.align.map {
-          case AlignStartTime() => Json.obj("align_start_time" -> true)
-          case AlignSampling() => Json.obj("align_sampling" -> true)
+          case AlignStartTime => Json.obj("align_start_time" -> true)
+          case AlignSampling => Json.obj("align_sampling" -> true)
         }.getOrElse(Json.obj()) ++
         percentileAgg.startTime.map(x => Json.obj("start_time" -> Json.toJson(x))).getOrElse(Json.obj())
     }

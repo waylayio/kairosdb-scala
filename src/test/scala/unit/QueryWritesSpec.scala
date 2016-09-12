@@ -23,7 +23,7 @@ class QueryWritesSpec extends Specification {
     }
 
     "Correctly serialize a query with descending order" in {
-      val query = Query(MetricName("mymetric"), order = Order.Descending())
+      val query = Query(MetricName("mymetric"), order = Order.Descending)
       Json.toJson(query) must be equalTo Json.obj("name" -> "mymetric", "order" -> "desc")
     }
 
@@ -108,7 +108,7 @@ class QueryWritesSpec extends Specification {
     }
 
     "Correctly serialize a query with order" in {
-      val query = Query(MetricName("mymetric"), order = Descending())
+      val query = Query(MetricName("mymetric"), order = Descending)
       Json.toJson(query) must be equalTo Json.obj("name" -> "mymetric", "order" -> "desc")
     }
 

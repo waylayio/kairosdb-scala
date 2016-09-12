@@ -17,13 +17,13 @@ object RangeAggregator {
 
     /** When set, the time for the aggregated data point for each range will fall on the start of the range instead
       * of being the value for the first data point within that range. */
-    case class AlignStartTime() extends Align
+    case object AlignStartTime extends Align
 
     /** Setting this to will cause the aggregation range to be aligned based on the sampling size. For example if
       * your sample size is either milliseconds, seconds, minutes or hours then the start of the range will always be at
       * the top of the hour. The effect of setting this to true is that your data will take the same shape when graphed
       * as you refresh the data */
-    case class AlignSampling() extends Align
+    case object AlignSampling extends Align
 
   }
 }
@@ -148,15 +148,15 @@ object Aggregator {
       val value: String
     }
 
-    case class TrimFirst() extends TrimWhat {
+    case object TrimFirst extends TrimWhat {
       override val value = "FIRST"
     }
 
-    case class TrimLast() extends TrimWhat {
+    case object TrimLast extends TrimWhat {
       override val value = "LAST"
     }
 
-    case class TrimBoth() extends TrimWhat {
+    case object TrimBoth extends TrimWhat {
       override val value = "BOTH"
     }
 

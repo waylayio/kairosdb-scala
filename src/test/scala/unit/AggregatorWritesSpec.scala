@@ -40,7 +40,7 @@ class AggregatorWritesSpec extends Specification {
     }
 
     "correctly serialize with sampling aligning" in {
-      val aggregator = Average(1.minutes, align = Some(AlignSampling()))
+      val aggregator = Average(1.minutes, align = Some(AlignSampling))
       Json.toJson(aggregator) should be equalTo Json.obj(
         "name" -> "avg",
         "align_sampling" -> true,
@@ -52,7 +52,7 @@ class AggregatorWritesSpec extends Specification {
     }
 
     "correctly serialize with start time aligning" in {
-      val aggregator = Average(1.minute, align = Some(AlignStartTime()))
+      val aggregator = Average(1.minute, align = Some(AlignStartTime))
       Json.toJson(aggregator) should be equalTo Json.obj(
         "name" -> "avg",
         "align_start_time" -> true,
@@ -88,7 +88,7 @@ class AggregatorWritesSpec extends Specification {
     }
 
     "correctly serialize full example" in {
-      val aggregator = Average(3.days, Some(AbsoluteStartTime(Instant.ofEpochMilli(1469778777L))), Some(AlignSampling()), Some("Africa/Banjul"))
+      val aggregator = Average(3.days, Some(AbsoluteStartTime(Instant.ofEpochMilli(1469778777L))), Some(AlignSampling), Some("Africa/Banjul"))
       Json.toJson(aggregator) should be equalTo Json.obj(
         "name" -> "avg",
         "sampling" -> Json.obj(
@@ -104,7 +104,7 @@ class AggregatorWritesSpec extends Specification {
 
   "Standard deviation aggregator" should {
     "correcly serialize" in {
-      val aggregator = StandardDeviation(3.days, Some(AbsoluteStartTime(Instant.ofEpochMilli(1469778777L))), Some(AlignSampling()), Some("Africa/Banjul"))
+      val aggregator = StandardDeviation(3.days, Some(AbsoluteStartTime(Instant.ofEpochMilli(1469778777L))), Some(AlignSampling), Some("Africa/Banjul"))
       Json.toJson(aggregator) should be equalTo Json.obj(
         "name" -> "dev",
         "sampling" -> Json.obj(
@@ -120,7 +120,7 @@ class AggregatorWritesSpec extends Specification {
 
   "Count aggregator" should {
     "correcly serialize" in {
-      val aggregator = Count(3.days, Some(AbsoluteStartTime(Instant.ofEpochMilli(1469778777L))), Some(AlignSampling()), Some("Africa/Banjul"))
+      val aggregator = Count(3.days, Some(AbsoluteStartTime(Instant.ofEpochMilli(1469778777L))), Some(AlignSampling), Some("Africa/Banjul"))
       Json.toJson(aggregator) should be equalTo Json.obj(
         "name" -> "count",
         "sampling" -> Json.obj(
@@ -136,7 +136,7 @@ class AggregatorWritesSpec extends Specification {
 
   "First aggregator" should {
     "correcly serialize" in {
-      val aggregator = First(3.days, Some(AbsoluteStartTime(Instant.ofEpochMilli(1469778777L))), Some(AlignSampling()), Some("Africa/Banjul"))
+      val aggregator = First(3.days, Some(AbsoluteStartTime(Instant.ofEpochMilli(1469778777L))), Some(AlignSampling), Some("Africa/Banjul"))
       Json.toJson(aggregator) should be equalTo Json.obj(
         "name" -> "first",
         "sampling" -> Json.obj(
@@ -152,7 +152,7 @@ class AggregatorWritesSpec extends Specification {
 
   "Gaps aggregator" should {
     "correcly serialize" in {
-      val aggregator = Gaps(3.days, Some(AbsoluteStartTime(Instant.ofEpochMilli(1469778777L))), Some(AlignSampling()), Some("Africa/Banjul"))
+      val aggregator = Gaps(3.days, Some(AbsoluteStartTime(Instant.ofEpochMilli(1469778777L))), Some(AlignSampling), Some("Africa/Banjul"))
       Json.toJson(aggregator) should be equalTo Json.obj(
         "name" -> "gaps",
         "sampling" -> Json.obj(
@@ -168,7 +168,7 @@ class AggregatorWritesSpec extends Specification {
 
   "Last aggregator" should {
     "correcly serialize" in {
-      val aggregator = Last(3.days, Some(AbsoluteStartTime(Instant.ofEpochMilli(1469778777L))), Some(AlignSampling()), Some("Africa/Banjul"))
+      val aggregator = Last(3.days, Some(AbsoluteStartTime(Instant.ofEpochMilli(1469778777L))), Some(AlignSampling), Some("Africa/Banjul"))
       Json.toJson(aggregator) should be equalTo Json.obj(
         "name" -> "last",
         "sampling" -> Json.obj(
@@ -184,7 +184,7 @@ class AggregatorWritesSpec extends Specification {
 
   "Least squares aggregator" should {
     "correcly serialize" in {
-      val aggregator = LeastSquares(3.days, Some(AbsoluteStartTime(Instant.ofEpochMilli(1469778777L))), Some(AlignSampling()), Some("Africa/Banjul"))
+      val aggregator = LeastSquares(3.days, Some(AbsoluteStartTime(Instant.ofEpochMilli(1469778777L))), Some(AlignSampling), Some("Africa/Banjul"))
       Json.toJson(aggregator) should be equalTo Json.obj(
         "name" -> "least_squares",
         "sampling" -> Json.obj(
@@ -200,7 +200,7 @@ class AggregatorWritesSpec extends Specification {
 
   "Max aggregator" should {
     "correcly serialize" in {
-      val aggregator = Max(3.days, Some(AbsoluteStartTime(Instant.ofEpochMilli(1469778777L))), Some(AlignSampling()), Some("Africa/Banjul"))
+      val aggregator = Max(3.days, Some(AbsoluteStartTime(Instant.ofEpochMilli(1469778777L))), Some(AlignSampling), Some("Africa/Banjul"))
       Json.toJson(aggregator) should be equalTo Json.obj(
         "name" -> "max",
         "sampling" -> Json.obj(
@@ -216,7 +216,7 @@ class AggregatorWritesSpec extends Specification {
 
   "Min aggregator" should {
     "correcly serialize" in {
-      val aggregator = Min(3.days, Some(AbsoluteStartTime(Instant.ofEpochMilli(1469778777L))), Some(AlignSampling()), Some("Africa/Banjul"))
+      val aggregator = Min(3.days, Some(AbsoluteStartTime(Instant.ofEpochMilli(1469778777L))), Some(AlignSampling), Some("Africa/Banjul"))
       Json.toJson(aggregator) should be equalTo Json.obj(
         "name" -> "min",
         "sampling" -> Json.obj(
@@ -232,7 +232,7 @@ class AggregatorWritesSpec extends Specification {
 
   "Percentile aggregator" should {
     "correcly serialize 0.7 percentile" in {
-      val aggregator = Percentile(0.7, 3.days, Some(AbsoluteStartTime(Instant.ofEpochMilli(1469778777L))), Some(AlignSampling()), Some("Africa/Banjul"))
+      val aggregator = Percentile(0.7, 3.days, Some(AbsoluteStartTime(Instant.ofEpochMilli(1469778777L))), Some(AlignSampling), Some("Africa/Banjul"))
       Json.toJson(aggregator) should be equalTo Json.obj(
         "name" -> "percentile",
         "percentile" -> 0.7,
@@ -247,7 +247,7 @@ class AggregatorWritesSpec extends Specification {
     }
 
     "correcly serialize 1.0 percentile" in {
-      val aggregator = Percentile(1.0, 3.days, Some(AbsoluteStartTime(Instant.ofEpochMilli(1469778777L))), Some(AlignSampling()), Some("Africa/Banjul"))
+      val aggregator = Percentile(1.0, 3.days, Some(AbsoluteStartTime(Instant.ofEpochMilli(1469778777L))), Some(AlignSampling), Some("Africa/Banjul"))
       Json.toJson(aggregator) should be equalTo Json.obj(
         "name" -> "percentile",
         "percentile" -> 1.0,
@@ -262,7 +262,7 @@ class AggregatorWritesSpec extends Specification {
     }
 
     "correcly serialize 1.0 percentile when aligning start time" in {
-      val aggregator = Percentile(1.0, 3.days, Some(AbsoluteStartTime(Instant.ofEpochMilli(1469778777L))), Some(AlignStartTime()), Some("Africa/Banjul"))
+      val aggregator = Percentile(1.0, 3.days, Some(AbsoluteStartTime(Instant.ofEpochMilli(1469778777L))), Some(AlignStartTime), Some("Africa/Banjul"))
       Json.toJson(aggregator) should be equalTo Json.obj(
         "name" -> "percentile",
         "percentile" -> 1.0,
@@ -279,7 +279,7 @@ class AggregatorWritesSpec extends Specification {
 
   "Sum aggregator" should {
     "correcly serialize" in {
-      val aggregator = Sum(3.days, Some(AbsoluteStartTime(Instant.ofEpochMilli(1469778777L))), Some(AlignSampling()), Some("Africa/Banjul"))
+      val aggregator = Sum(3.days, Some(AbsoluteStartTime(Instant.ofEpochMilli(1469778777L))), Some(AlignSampling), Some("Africa/Banjul"))
       Json.toJson(aggregator) should be equalTo Json.obj(
         "name" -> "sum",
         "sampling" -> Json.obj(
@@ -385,21 +385,21 @@ class AggregatorWritesSpec extends Specification {
 
   "Trim aggregator" should {
     "correctly serialize trim last" in {
-      Json.toJson(Trim(TrimLast())) should be equalTo Json.obj(
+      Json.toJson(Trim(TrimLast)) should be equalTo Json.obj(
         "name" -> "trim",
         "trim" -> "LAST"
       )
     }
 
     "correctly serialize trim first" in {
-      Json.toJson(Trim(TrimBoth())) should be equalTo Json.obj(
+      Json.toJson(Trim(TrimBoth)) should be equalTo Json.obj(
         "name" -> "trim",
         "trim" -> "BOTH"
       )
     }
 
     "correctly serialize trim both" in {
-      Json.toJson(Trim(TrimFirst())) should be equalTo Json.obj(
+      Json.toJson(Trim(TrimFirst)) should be equalTo Json.obj(
         "name" -> "trim",
         "trim" -> "FIRST"
       )
