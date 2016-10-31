@@ -41,6 +41,8 @@ trait RangeAggregator extends Aggregator {
 
 object Aggregator {
 
+  // TODO why did we not use java.time.Duration instead of scala.concurrent.duration.Duration? We could introduce an implicit conversion
+
   case class Average(sampling: FiniteDuration, startTime: Option[AbsoluteStartTime] = None, align: Option[Align] = None, timeZone: Option[String] = None)
     extends RangeAggregator {
     override val name = "avg"

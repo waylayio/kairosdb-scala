@@ -102,11 +102,10 @@ object HealthCheckResult {
 }
 
 /** KairosDB only supports numbers and strings. Custom types can be defined */
-sealed trait KairosCompatibleType {
-  val value: Any
-}
+sealed trait KairosCompatibleType
 
 object KairosCompatibleType {
+  case object KNull extends KairosCompatibleType
   case class KNumber(value: BigDecimal) extends KairosCompatibleType
   case class KString(value: String) extends KairosCompatibleType
 }

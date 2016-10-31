@@ -3,7 +3,7 @@ package unit
 import java.time.Instant
 
 import io.waylay.kairosdb.driver.models.GroupBy.{GroupByTags, GroupByType}
-import io.waylay.kairosdb.driver.models.KairosCompatibleType.KNumber
+import io.waylay.kairosdb.driver.models.KairosCompatibleType.{KNull, KNumber}
 import io.waylay.kairosdb.driver.models.MetricName
 import io.waylay.kairosdb.driver.models.QueryResponse.{Response, ResponseQuery, Result, TagResult}
 import io.waylay.kairosdb.driver.models.json.Formats.responseReads
@@ -52,6 +52,10 @@ class ResponseReadsSpec extends Specification {
           |                      ],
           |                      [
           |                          1366351200000,
+          |                          null
+          |                      ],
+          |                      [
+          |                          1366987600000,
           |                          2843
           |                      ]
           |                  ]
@@ -70,7 +74,11 @@ class ResponseReadsSpec extends Specification {
               Seq(GroupByType("number"),
                 GroupByTags(Seq("host"))), // TODO group by tag in the result has an extra field "group"
               Seq(TagResult("host", Seq("server1")), TagResult("customer", Seq("bar"))),
-              Seq( (Instant.ofEpochMilli(1364968800000L), KNumber(11019)), (Instant.ofEpochMilli(1366351200000L), KNumber(2843)) )
+              Seq(
+                (Instant.ofEpochMilli(1364968800000L), KNumber(11019)),
+                (Instant.ofEpochMilli(1366351200000L), KNull),
+                (Instant.ofEpochMilli(1366351200000L), KNumber(2843))
+              )
             )
           )
         )
@@ -121,7 +129,10 @@ class ResponseReadsSpec extends Specification {
               MetricName("abc_123"),
               Seq.empty,
               Seq(TagResult("host", Seq("server1")), TagResult("customer", Seq("bar"))),
-              Seq( (Instant.ofEpochMilli(1364968800000L), KNumber(11019)), (Instant.ofEpochMilli(1366351200000L), KNumber(2843)) )
+              Seq(
+                (Instant.ofEpochMilli(1364968800000L), KNumber(11019)),
+                (Instant.ofEpochMilli(1366351200000L), KNumber(2843))
+              )
             )
           )
         )

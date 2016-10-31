@@ -4,7 +4,7 @@ import java.time.Instant
 import java.util.concurrent.TimeUnit
 
 import io.waylay.kairosdb.driver.models.GroupBy._
-import io.waylay.kairosdb.driver.models.KairosCompatibleType.{KNumber, KString}
+import io.waylay.kairosdb.driver.models.KairosCompatibleType.{KNull, KNumber, KString}
 import io.waylay.kairosdb.driver.models.{Aggregator, KairosCompatibleType, RangeAggregator, _}
 import io.waylay.kairosdb.driver.models.Aggregator._
 import io.waylay.kairosdb.driver.models.KairosQuery.{Order, QueryTag}
@@ -154,6 +154,7 @@ object Formats {
       o match {
         case KNumber(value) => JsNumber(value)
         case KString(value) => JsString(value)
+        case KNull          => JsNull
       }
     }
   }
@@ -401,7 +402,10 @@ object Formats {
   implicit val dataPointValueReads: Reads[(Instant, KairosCompatibleType)] = new Reads[(Instant, KairosCompatibleType)] {
     override def reads(json: JsValue): JsResult[(Instant, KairosCompatibleType)] = {
       val millisRes = json(0).validate[Long]
-      val valueRes = json(1).validate[KairosCompatibleType]
+      val valueRes = json(1).validateOpt[KairosCompatibleType].map{
+        case None        => KNull
+        case Some(value) => value
+      }
 
       for {
         millis <- millisRes
