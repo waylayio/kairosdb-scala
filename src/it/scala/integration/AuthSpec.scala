@@ -28,9 +28,6 @@ class AuthSpec extends IntegrationSpec {
   )
 
   "The health status" should " fail without auth" in {
-
-    cancel("waiting for https://github.com/whisklabs/docker-it-scala/issues/53")
-
     val res = kairosPort.flatMap { kairosPort =>
       val kairosDB = new KairosDB(wsClient, KairosDBConfig(port = kairosPort), global)
       kairosDB.healthStatus

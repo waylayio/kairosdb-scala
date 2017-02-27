@@ -1,7 +1,5 @@
 package integration
 
-import java.nio.file.{Path, Paths}
-
 import com.typesafe.scalalogging.StrictLogging
 import com.whisk.docker._
 
@@ -34,14 +32,12 @@ trait DockerKairosDBService extends DockerKit {
 private case class LoggingLogLineContains(str: String) extends DockerReadyChecker with StrictLogging{
 
   override def apply(container: DockerContainerState)(implicit docker: DockerCommandExecutor, ec: ExecutionContext): Future[Boolean] = {
-    for {
-      id <- container.id
-      _ <- docker.withLogStreamLines(id, withErr = true){m =>
+    container.id.map{id =>
+      docker.withLogStreamLines(id, withErr = true){m =>
         // drop newlines
         logger.info(m.dropRight(1))
         m.contains(str)
       }
-    } yield {
       true
     }
   }
