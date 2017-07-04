@@ -127,6 +127,7 @@ class KairosDB(wsClient: WSClient, config: KairosDBConfig, executionContext: Exe
 
   def addDataPoints(dataPoints: Seq[DataPoint]): Future[Unit] = {
     val body = Json.toJson(dataPoints)
+    logger.debug(Json.prettyPrint(body))
 
     wsClient
       .url(uri / "api" / "v1" / "datapoints")
@@ -139,7 +140,7 @@ class KairosDB(wsClient: WSClient, config: KairosDBConfig, executionContext: Exe
 
   def queryMetrics(queryMetrics: QueryMetrics): Future[Response] = {
     val query = Json.toJson(queryMetrics)
-
+    logger.debug(Json.prettyPrint(query))
     wsClient
       .url(uri / "api" / "v1" / "datapoints" / "query")
       .applyKairosDBAuth
@@ -155,7 +156,7 @@ class KairosDB(wsClient: WSClient, config: KairosDBConfig, executionContext: Exe
     */
   def queryMetricTags(queryMetrics: QueryMetrics): Future[TagsResponse] = {
     val query = Json.toJson(queryMetrics)
-
+    logger.debug(Json.prettyPrint(query))
     wsClient
       .url(uri / "api" / "v1" / "datapoints" / "query" / "tags")
       .applyKairosDBAuth
@@ -175,7 +176,7 @@ class KairosDB(wsClient: WSClient, config: KairosDBConfig, executionContext: Exe
     */
   def deleteDataPoints(queryMetrics: QueryMetrics): Future[Unit] = {
     val query = Json.toJson(queryMetrics)
-
+    logger.debug(Json.prettyPrint(query))
     wsClient
       .url(uri / "api" / "v1" / "datapoints" / "delete")
       .applyKairosDBAuth
