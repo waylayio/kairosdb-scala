@@ -1,7 +1,5 @@
 package integration
 
-import akka.actor.ActorSystem
-import akka.stream.ActorMaterializer
 import com.spotify.docker.client.DefaultDockerClient
 import com.typesafe.scalalogging.StrictLogging
 import com.whisk.docker.DockerFactory
@@ -11,6 +9,7 @@ import org.scalatest.{BeforeAndAfterAll, FlatSpec, Matchers}
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.time.{Millis, Second, Seconds, Span}
 import play.api.libs.ws.ahc.AhcWSClient
+import play.api.test.NoMaterializer
 
 import scala.concurrent.duration._
 
@@ -25,14 +24,11 @@ trait IntegrationSpec extends FlatSpec with Matchers with ScalaFutures with Stri
 
   override implicit val dockerFactory: DockerFactory = new SpotifyDockerFactory(DefaultDockerClient.fromEnv().build())
 
-  implicit val actorSystem = ActorSystem()
-  implicit val materializer = ActorMaterializer()
+  implicit val materializer = NoMaterializer
   val wsClient = AhcWSClient()
 
   override def afterAll(): Unit = {
     wsClient.close()
-    materializer.shutdown()
-    actorSystem.terminate()
     super.afterAll()
   }
 }

@@ -49,8 +49,8 @@ lazy val root = (project in file("."))
       "org.specs2" %% "specs2-core" % specs2Version % Test,
       "org.specs2" %% "specs2-junit" % specs2Version % Test,
       "de.leanovate.play-mockws" %% "play-mockws" % "2.6.0"  % Test,
-      "com.typesafe.play" %% "play-test" % playVersion % Test, // play-mockws depends on some types in this dependency
-      "com.typesafe.play" %% "play-ahc-ws" % playVersion % Test,
+      "com.typesafe.play" %% "play-test" % playVersion % TestAndIntegrationTest, // play-mockws depends on some types in this dependency
+      "com.typesafe.play" %% "play-ahc-ws" % playVersion % TestAndIntegrationTest,
 
       // INTEGRATION TESTS
       // TODO investigate if we can do this with specs2
