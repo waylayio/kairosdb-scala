@@ -7,6 +7,7 @@ import io.waylay.kairosdb.driver.models.KairosQuery.{Order, QueryTag}
 import io.waylay.kairosdb.driver.models.QueryResponse.TagResult
 
 import scala.concurrent.duration.FiniteDuration
+//import scala.collection.immutable.Seq
 
 /**
   * Metric names are case sensitive and can only contain the following characters: alphanumeric characters, period ”.”,
@@ -130,9 +131,9 @@ object KairosQuery {
   case class QueryTag(name: String, allowedValues: Seq[String])
 
   object QueryTag {
-    def apply(name: String, allowedValue: String): QueryTag = QueryTag(name, Seq(allowedValue))
-    def apply(tuple: (String, String)): QueryTag = QueryTag(tuple._1, tuple._2)
-    def apply(tuple: (String, String)*): Seq[QueryTag] = tuple.map(tup => QueryTag(tup))
+    //def apply(name: String, allowedValue: String): QueryTag = QueryTag(name, Seq(allowedValue))
+    def apply(tuple: (String, String)): QueryTag = QueryTag(tuple._1, Seq(tuple._2))
+    def apply(tuple: (String, String)*): Seq[QueryTag] = tuple.map(tup => QueryTag(tup)).to[Seq]
   }
 
   sealed trait Order { val value: String }

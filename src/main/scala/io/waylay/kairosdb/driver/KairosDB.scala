@@ -25,7 +25,7 @@ object KairosDB {
   abstract class KairosDBResponseException(msg: String) extends KairosDBException(msg)
 
   /** Thrown when the response by KairosDB can't be parsed */
-  case class KairosDBResponseParseException(msg: String = "Could not parse KairosDB response", errors: Seq[(JsPath, Seq[ValidationError])])
+  case class KairosDBResponseParseException(msg: String = "Could not parse KairosDB response", errors: Seq[(JsPath, Seq[JsonValidationError])])
     extends KairosDBResponseException(s"""$msg (errors: ${errors.mkString(", ")})""")
 
   /** Thrown when the request is invalid */

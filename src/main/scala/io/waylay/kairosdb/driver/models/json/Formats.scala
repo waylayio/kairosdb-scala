@@ -12,7 +12,6 @@ import io.waylay.kairosdb.driver.models.QueryMetricTagsResponse.{TagsResponse, T
 import io.waylay.kairosdb.driver.models.QueryResponse.{Response, ResponseQuery, Result, TagResult}
 import io.waylay.kairosdb.driver.models.RangeAggregator.Align.{AlignSampling, AlignStartTime}
 import io.waylay.kairosdb.driver.models.TimeSpan._
-import play.api.data.validation.ValidationError
 import play.api.libs.json._
 import play.api.libs.functional.syntax._
 
@@ -395,7 +394,7 @@ object Formats {
       val bigdecimalRes = json.validate[BigDecimal]
       val stringRes = json.validate[String]
 
-      bigdecimalRes map KNumber orElse stringRes.map(KString) orElse JsError(ValidationError("error.expected.jsstringOrJsnumber"))
+      bigdecimalRes map KNumber orElse stringRes.map(KString) orElse JsError("error.expected.jsstringOrJsnumber")
     }
   }
 

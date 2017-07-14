@@ -98,9 +98,11 @@ class AddDataPointsSpec extends Specification with FutureMatchers with ResultMat
         Seq(Tag("host", "server2"))
       )
 
-      val r = kairosDb.addDataPoints(Seq(datapoint1, datapoint2)) must beEqualTo(()).await(1, 3.seconds)
-      mockWs.close()
-      r
+      try {
+        kairosDb.addDataPoints(Seq(datapoint1, datapoint2)) must beEqualTo(()).await(1, 3.seconds)
+      }finally {
+        mockWs.close()
+      }
     }
   }
 }
