@@ -9,7 +9,7 @@ val dockerTestkitVersion = "0.9.4"
 val scalaTestVersion = "3.0.1"
 
 val scala2_11 = "2.11.8"
-val scala2_12 = "2.12.1"
+val scala2_12 = "2.12.2"
 
 scalaVersion := scala2_12
 crossScalaVersions := Seq(scala2_11, scala2_12)
@@ -111,4 +111,9 @@ git.remoteRepo := "git@github.com:waylayio/kairosdb-scala.git"
 
 lazy val examples = project
   .dependsOn(root)
-  .settings(scalaVersion := "2.11.8")
+  .settings(
+    scalaVersion := scala2_12,
+    libraryDependencies ++= Seq(
+      "com.typesafe.play" %% "play-ahc-ws" % playVersion
+    )
+  )
