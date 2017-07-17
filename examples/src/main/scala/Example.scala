@@ -6,7 +6,7 @@ import io.waylay.kairosdb.driver.models.KairosCompatibleType.KNumber
 import io.waylay.kairosdb.driver.models.KairosQuery.QueryTag
 import io.waylay.kairosdb.driver.models.TimeSpan.RelativeStartTime
 import io.waylay.kairosdb.driver.models._
-import play.api.libs.ws.ahc.AhcWSClient
+import play.api.libs.ws.ahc.StandaloneAhcWSClient
 
 import scala.concurrent.duration._
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -16,7 +16,7 @@ object Example extends App {
 
   implicit val actorSystem = ActorSystem()
   implicit val actorMaterializer = ActorMaterializer()
-  val wsClient = AhcWSClient()
+  val wsClient = StandaloneAhcWSClient()
   val kairosDB = new KairosDB(wsClient, KairosDBConfig(), global)
 
   val res = for {
