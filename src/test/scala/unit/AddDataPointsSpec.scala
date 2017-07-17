@@ -43,7 +43,7 @@ class AddDataPointsSpec extends Specification with FutureMatchers with ResultMat
       val kairosDb = new KairosDB(mockWs, KairosDBConfig(), global)
       val datapoint = DataPointWithSingleValue(MetricName("archive_file_search"), KNumber(321), Instant.ofEpochMilli(1470062449000L), Seq(Tag("host", "server2")))
 
-      val r = kairosDb.addDataPoints(Seq(datapoint)) must beEqualTo(()).await(1, 3.seconds)
+      val r = kairosDb.addDataPoints(Seq(datapoint)) must beEqualTo(()).await(1, 10.seconds)
       mockWs.close()
       r
     }
@@ -99,7 +99,7 @@ class AddDataPointsSpec extends Specification with FutureMatchers with ResultMat
       )
 
       try {
-        kairosDb.addDataPoints(Seq(datapoint1, datapoint2)) must beEqualTo(()).await(1, 3.seconds)
+        kairosDb.addDataPoints(Seq(datapoint1, datapoint2)) must beEqualTo(()).await(1, 10.seconds)
       }finally {
         mockWs.close()
       }

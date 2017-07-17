@@ -56,7 +56,7 @@ class ErrorsSpec extends Specification{
         timeZone = Some("Asia/Kabul")
       )
 
-      val r = kairosDb.queryMetrics(qm) must throwAn[KairosDBResponseBadRequestException].await(1, 3.seconds)
+      val r = kairosDb.queryMetrics(qm) must throwAn[KairosDBResponseBadRequestException].await(1, 10.seconds)
       mockWs.close()
       r
     }
@@ -78,7 +78,7 @@ class ErrorsSpec extends Specification{
       }
 
       val kairosDb = new KairosDB(mockWs, KairosDBConfig(), global)
-      val r = kairosDb.healthStatus must throwAn[KairosDBResponseInternalServerErrorException].await(1, 3.seconds)
+      val r = kairosDb.healthStatus must throwAn[KairosDBResponseInternalServerErrorException].await(1, 10.seconds)
       mockWs.close()
       r
     }
@@ -91,7 +91,7 @@ class ErrorsSpec extends Specification{
       }
 
       val kairosDb = new KairosDB(mockWs, KairosDBConfig(), global)
-      val r = kairosDb.healthStatus must throwAn[KairosDBResponseUnauthorizedException].await(1, 3.seconds)
+      val r = kairosDb.healthStatus must throwAn[KairosDBResponseUnauthorizedException].await(1, 10.seconds)
       mockWs.close()
       r
     }
@@ -114,7 +114,7 @@ class ErrorsSpec extends Specification{
 
       val kairosDb = new KairosDB(mockWs, KairosDBConfig(), global)
 
-      val r = kairosDb.healthStatus must throwAn[KairosDBResponseUnhandledException].await(1, 3.seconds)
+      val r = kairosDb.healthStatus must throwAn[KairosDBResponseUnhandledException].await(1, 10.seconds)
       mockWs.close()
       r
     }

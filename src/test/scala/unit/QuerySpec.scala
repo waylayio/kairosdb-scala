@@ -163,7 +163,7 @@ class QuerySpec extends Specification {
         )
       ))
 
-      val r = kairosDb.queryMetrics(qm) must be_==(expected).await(1, 3.seconds)
+      val r = kairosDb.queryMetrics(qm) must be_==(expected).await(1, 10.seconds)
       mockWs.close()
       r
     }
@@ -247,7 +247,7 @@ class QuerySpec extends Specification {
         timeZone = Some("Asia/Kabul")
       )
 
-      val r = kairosDb.queryMetrics(qm) must throwA[KairosDBResponseParseException].await(1, 3.seconds)
+      val r = kairosDb.queryMetrics(qm) must throwA[KairosDBResponseParseException].await(1, 10.seconds)
       mockWs.close()
       r
     }
@@ -330,7 +330,7 @@ class QuerySpec extends Specification {
           )
         ))
 
-        val r = kairosDb.queryMetricTags(qm) must be_==(expected).await(1, 3.seconds)
+        val r = kairosDb.queryMetricTags(qm) must be_==(expected).await(1, 10.seconds)
         mockWs.close()
         r
       }
@@ -413,7 +413,7 @@ class QuerySpec extends Specification {
         timeZone = Some("Asia/Kabul")
       )
 
-      val r = kairosDb.deleteDataPoints(qm) must be_==(()).await(1, 3.seconds)
+      val r = kairosDb.deleteDataPoints(qm) must be_==(()).await(1, 10.seconds)
       mockWs.close()
       r
     }
