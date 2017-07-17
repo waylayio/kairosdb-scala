@@ -128,7 +128,7 @@ class QuerySpec extends Specification {
         }
       }
 
-      val kairosDb = new KairosDB(mockWs, KairosDBConfig(), global)
+      val kairosDb = new KairosDB(StandaloneMockWs(mockWs), KairosDBConfig(), global)
 
       val query1 = Query(
         MetricName("abc.123"),
@@ -226,7 +226,7 @@ class QuerySpec extends Specification {
         }
       }
 
-      val kairosDb = new KairosDB(mockWs, KairosDBConfig(), global)
+      val kairosDb = new KairosDB(StandaloneMockWs(mockWs), KairosDBConfig(), global)
 
       val query1 = Query(
         MetricName("abc.123"),
@@ -309,7 +309,7 @@ class QuerySpec extends Specification {
           }
         }
 
-        val kairosDb = new KairosDB(mockWs, KairosDBConfig(), global)
+        val kairosDb = new KairosDB(StandaloneMockWs(mockWs), KairosDBConfig(), global)
 
         val query1 = Query(MetricName("abc.123"), Seq(QueryTag("host", Seq("foo"))))
         val query2 = Query(MetricName("xyz.123"), Seq(QueryTag("host", Seq("foo"))))
@@ -392,7 +392,7 @@ class QuerySpec extends Specification {
         }
       }
 
-      val kairosDb = new KairosDB(mockWs, KairosDBConfig(), global)
+      val kairosDb = new KairosDB(StandaloneMockWs(mockWs), KairosDBConfig(), global)
 
       val query1 = Query(
         MetricName("abc.123"),

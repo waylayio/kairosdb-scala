@@ -2,11 +2,13 @@ import sbt.Keys.thisProjectRef
 
 organization in ThisBuild := "io.waylay.kairosdb"
 
-val playVersion = "2.6.1"
+val playWsVersion = "1.0.1"
+val playJsonVersion = "2.6.2"
 val akkaVersion = "2.5.3"
 val specs2Version = "3.9.2"
 val dockerTestkitVersion = "0.9.4"
 val scalaTestVersion = "3.0.1"
+val playVersion = "2.6.1" // test only
 
 val scala2_11 = "2.11.8"
 val scala2_12 = "2.12.2"
@@ -37,20 +39,22 @@ lazy val root = (project in file("."))
     // Be wary of adding extra dependencies (especially the Waylay common dependencies)
     // They may pull in a newer Netty version, breaking play-ws
     libraryDependencies ++= Seq(
-      "com.typesafe.play" %% "play-json" % playVersion,
+      "com.typesafe.play" %% "play-json" % playJsonVersion,
+      "com.typesafe.play" %% "play-ws-standalone" % playWsVersion,
+      "com.typesafe.play" %% "play-ws-standalone-json" % playWsVersion,
       "com.typesafe.scala-logging" %% "scala-logging" % "3.5.0",
       "com.typesafe.akka" %% "akka-actor" % akkaVersion,
 
 
-      "com.typesafe.play" %% "play-ws" % playVersion,
       "io.lemonlabs" %% "scala-uri" % "0.4.16",
 
       // TEST
       "org.specs2" %% "specs2-core" % specs2Version % Test,
       "org.specs2" %% "specs2-junit" % specs2Version % Test,
       "de.leanovate.play-mockws" %% "play-mockws" % "2.6.0"  % Test,
+      "com.typesafe.play" %% "play-ahc-ws" % playVersion  % TestAndIntegrationTest, // neede for play-mockws
       "com.typesafe.play" %% "play-test" % playVersion % TestAndIntegrationTest, // play-mockws depends on some types in this dependency
-      "com.typesafe.play" %% "play-ahc-ws" % playVersion % TestAndIntegrationTest,
+      "com.typesafe.play" %% "play-ahc-ws-standalone" % playWsVersion % TestAndIntegrationTest,
 
       // INTEGRATION TESTS
       // TODO investigate if we can do this with specs2
@@ -114,6 +118,6 @@ lazy val examples = project
   .settings(
     scalaVersion := scala2_12,
     libraryDependencies ++= Seq(
-      "com.typesafe.play" %% "play-ahc-ws" % playVersion
+      "com.typesafe.play" %% "play-ahc-ws-standalone" % playWsVersion
     )
   )

@@ -68,7 +68,7 @@ class QueryMetricTagsSpec extends Specification with FutureMatchers with ResultM
         }
       }
 
-      val kairosDb = new KairosDB(mockWs, KairosDBConfig(), global)
+      val kairosDb = new KairosDB(StandaloneMockWs(mockWs), KairosDBConfig(), global)
       val query = Query(MetricName("abc.123"), Seq(QueryTag("host", Seq("foo"))))
       val qm = QueryMetrics(Seq(query), TimeSpan(AbsoluteStartTime(Instant.ofEpochMilli(1357023600000L)), Some(RelativeEndTime(5.days))))
       val expected = QueryResponse.Response(Seq.empty) // TODO

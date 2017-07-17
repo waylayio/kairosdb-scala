@@ -26,7 +26,7 @@ class HealthSpec extends Specification with FutureMatchers with ResultMatchers {
         }
       }
 
-      val kairosDb = new KairosDB(mockWs, KairosDBConfig(), global)
+      val kairosDb = new KairosDB(StandaloneMockWs(mockWs), KairosDBConfig(), global)
 
       val r = kairosDb.healthStatus must beEqualTo(expected).await(1, 10.seconds)
       mockWs.close()
@@ -42,7 +42,7 @@ class HealthSpec extends Specification with FutureMatchers with ResultMatchers {
         }
       }
 
-      val kairosDb = new KairosDB(mockWs, KairosDBConfig(), global)
+      val kairosDb = new KairosDB(StandaloneMockWs(mockWs), KairosDBConfig(), global)
 
       val r = kairosDb.healthCheck must beEqualTo(AllHealthy).await(1, 10.seconds)
       mockWs.close()
@@ -56,7 +56,7 @@ class HealthSpec extends Specification with FutureMatchers with ResultMatchers {
         }
       }
 
-      val kairosDb = new KairosDB(mockWs, KairosDBConfig(), global)
+      val kairosDb = new KairosDB(StandaloneMockWs(mockWs), KairosDBConfig(), global)
 
       val r = kairosDb.healthCheck must beEqualTo(Unhealthy).await(1, 10.seconds)
       mockWs.close()

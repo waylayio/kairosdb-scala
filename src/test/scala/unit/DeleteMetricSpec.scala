@@ -21,7 +21,7 @@ class DeleteMetricSpec extends Specification with FutureMatchers with ResultMatc
         }
       }
 
-      val kairosDb = new KairosDB(mockWs, KairosDBConfig(), global)
+      val kairosDb = new KairosDB(StandaloneMockWs(mockWs), KairosDBConfig(), global)
 
       try {
         kairosDb.deleteMetric(MetricName("my.metric.123")) must beEqualTo(()).await(1, 3.seconds)

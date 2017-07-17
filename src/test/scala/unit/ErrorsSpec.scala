@@ -41,7 +41,7 @@ class ErrorsSpec extends Specification{
         }
       }
 
-      val kairosDb = new KairosDB(mockWs, KairosDBConfig(), global)
+      val kairosDb = new KairosDB(StandaloneMockWs(mockWs), KairosDBConfig(), global)
       val query1 = Query(
         MetricName("abc.123"),
         Seq(QueryTag("host", Seq("foo", "foo2")), QueryTag("customer", Seq("bar"))),
@@ -77,7 +77,7 @@ class ErrorsSpec extends Specification{
         }
       }
 
-      val kairosDb = new KairosDB(mockWs, KairosDBConfig(), global)
+      val kairosDb = new KairosDB(StandaloneMockWs(mockWs), KairosDBConfig(), global)
       val r = kairosDb.healthStatus must throwAn[KairosDBResponseInternalServerErrorException].await(1, 10.seconds)
       mockWs.close()
       r
@@ -90,7 +90,7 @@ class ErrorsSpec extends Specification{
         }
       }
 
-      val kairosDb = new KairosDB(mockWs, KairosDBConfig(), global)
+      val kairosDb = new KairosDB(StandaloneMockWs(mockWs), KairosDBConfig(), global)
       val r = kairosDb.healthStatus must throwAn[KairosDBResponseUnauthorizedException].await(1, 10.seconds)
       mockWs.close()
       r
@@ -112,7 +112,7 @@ class ErrorsSpec extends Specification{
         }
       }
 
-      val kairosDb = new KairosDB(mockWs, KairosDBConfig(), global)
+      val kairosDb = new KairosDB(StandaloneMockWs(mockWs), KairosDBConfig(), global)
 
       val r = kairosDb.healthStatus must throwAn[KairosDBResponseUnhandledException].await(1, 10.seconds)
       mockWs.close()

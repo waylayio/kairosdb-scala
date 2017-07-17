@@ -24,7 +24,7 @@ class ListTagNamesSpec extends Specification with FutureMatchers with ResultMatc
         }
       }
 
-      val kairosDb = new KairosDB(mockWs, KairosDBConfig(), global)
+      val kairosDb = new KairosDB(StandaloneMockWs(mockWs), KairosDBConfig(), global)
 
       val r = kairosDb.listTagNames must be_==(expected).await(1, 3.seconds)
       mockWs.close()

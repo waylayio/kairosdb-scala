@@ -24,7 +24,7 @@ class ListMetricNamesSpec extends Specification with FutureMatchers with ResultM
         }
       }
 
-      val kairosDb = new KairosDB(mockWs, KairosDBConfig(), global)
+      val kairosDb = new KairosDB(StandaloneMockWs(mockWs), KairosDBConfig(), global)
 
       val r = kairosDb.listMetricNames must be_==(expected.map(MetricName)).await(1, 3.seconds)
       mockWs.close()

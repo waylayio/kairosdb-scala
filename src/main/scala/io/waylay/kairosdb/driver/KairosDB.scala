@@ -8,9 +8,11 @@ import io.waylay.kairosdb.driver.KairosDB._
 import io.waylay.kairosdb.driver.models.QueryMetricTagsResponse.TagsResponse
 import io.waylay.kairosdb.driver.models.json.Formats._
 import io.waylay.kairosdb.driver.models.QueryResponse.Response
-import play.api.data.validation.ValidationError
 import play.api.libs.json._
-import play.api.libs.ws.{WSAuthScheme, WSClient, WSRequest, WSResponse}
+import play.api.libs.ws.{StandaloneWSClient, StandaloneWSRequest, StandaloneWSResponse, WSAuthScheme}
+import play.api.libs.ws.JsonBodyWritables._
+import play.api.libs.ws.JsonBodyReadables._
+
 
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Success, Try}
@@ -45,7 +47,7 @@ object KairosDB {
     extends KairosDBResponseException(s"""KairosDB returned unhandled HTTP $statusCode (???) (errors: ${errors.mkString(", ")})""")
 }
 
-class KairosDB(wsClient: WSClient, config: KairosDBConfig, executionContext: ExecutionContext) extends StrictLogging {
+class KairosDB(wsClient: StandaloneWSClient, config: KairosDBConfig, executionContext: ExecutionContext) extends StrictLogging {
   implicit val ec = executionContext
   val uri = config.uri
 
@@ -184,15 +186,8 @@ class KairosDB(wsClient: WSClient, config: KairosDBConfig, executionContext: Exe
       .map(emptyWsRepsonseToResult)
   }
 
-  private def parseQueryResult(json: JsValue): Response = {
-    json.validate[Response] match {
-      case JsSuccess(res, jsPath) => res
-      case JsError(errors) => throw KairosDBResponseParseException(errors = errors)
-    }
-  }
-
-  private def getErrors(res: WSResponse): Seq[String] = {
-    Try(res.json) match {
+  private def getErrors(res: StandaloneWSResponse): Seq[String] = {
+    Try(res.body[JsValue]) match {
       case Success(json) =>
         (json \ "errors").validate[Seq[String]].asOpt.toSeq.flatten
       case Failure(_) =>
@@ -202,8 +197,8 @@ class KairosDB(wsClient: WSClient, config: KairosDBConfig, executionContext: Exe
 
   }
 
-  private implicit class PimpedWSRequest(req: WSRequest) {
-    def applyKairosDBAuth: WSRequest = {
+  private implicit class PimpedWSRequest(req: StandaloneWSRequest) {
+    def applyKairosDBAuth: StandaloneWSRequest = {
       val withAuthOption = for {
         user <- uri.user
         pass <-  uri.password
@@ -220,13 +215,13 @@ class KairosDB(wsClient: WSClient, config: KairosDBConfig, executionContext: Exe
     withBodyHandling(transform, successStatusCode) orElse PartialFunction(responseErrorHandling)
   }
 
-  private def emptyHandling : PartialFunction[WSResponse, Unit] = {
+  private def emptyHandling : PartialFunction[StandaloneWSResponse, Unit] = {
     case res if res.status == 204 => ()
   }
 
-  private def withBodyHandling[T](transform: JsValue => JsResult[T], successStatusCode: Int): PartialFunction[WSResponse, T] = {
+  private def withBodyHandling[T](transform: JsValue => JsResult[T], successStatusCode: Int): PartialFunction[StandaloneWSResponse, T] = {
     case res if res.status == successStatusCode =>
-      Try(res.json) match {
+      Try(res.body[JsValue]) match {
         case Success(json) =>
           transform(json) match {
             case JsSuccess(result, jsPath) => result
@@ -237,7 +232,7 @@ class KairosDB(wsClient: WSClient, config: KairosDBConfig, executionContext: Exe
       }
   }
 
-  private def responseErrorHandling[T](res: WSResponse) = {
+  private def responseErrorHandling[T](res: StandaloneWSResponse) = {
     res.status match {
       case 400   => throw KairosDBResponseBadRequestException(errors = getErrors(res))
       case 401   => throw KairosDBResponseUnauthorizedException(errors = getErrors(res))

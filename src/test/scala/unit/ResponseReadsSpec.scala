@@ -77,14 +77,14 @@ class ResponseReadsSpec extends Specification {
               Seq(
                 (Instant.ofEpochMilli(1364968800000L), KNumber(11019)),
                 (Instant.ofEpochMilli(1366351200000L), KNull),
-                (Instant.ofEpochMilli(1366351200000L), KNumber(2843))
+                (Instant.ofEpochMilli(1366987600000L), KNumber(2843))
               )
             )
           )
         )
       ))
 
-      responseReads.reads(json) should beAnInstanceOf[JsSuccess[Response]]
+      responseReads.reads(json) must beEqualTo(JsSuccess(expected))
     }
 
     "Correctly read example without group_by" in {
@@ -138,7 +138,7 @@ class ResponseReadsSpec extends Specification {
         )
       ))
 
-      responseReads.reads(json) should beAnInstanceOf[JsSuccess[Response]]
+      responseReads.reads(json) must beEqualTo(JsSuccess(expected))
     }
   }
 }

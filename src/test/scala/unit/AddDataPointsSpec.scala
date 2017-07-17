@@ -40,7 +40,7 @@ class AddDataPointsSpec extends Specification with FutureMatchers with ResultMat
         }
       }
 
-      val kairosDb = new KairosDB(mockWs, KairosDBConfig(), global)
+      val kairosDb = new KairosDB(StandaloneMockWs(mockWs), KairosDBConfig(), global)
       val datapoint = DataPointWithSingleValue(MetricName("archive_file_search"), KNumber(321), Instant.ofEpochMilli(1470062449000L), Seq(Tag("host", "server2")))
 
       val r = kairosDb.addDataPoints(Seq(datapoint)) must beEqualTo(()).await(1, 10.seconds)
@@ -80,7 +80,7 @@ class AddDataPointsSpec extends Specification with FutureMatchers with ResultMat
         }
       }
 
-      val kairosDb = new KairosDB(mockWs, KairosDBConfig(), global)
+      val kairosDb = new KairosDB(StandaloneMockWs(mockWs), KairosDBConfig(), global)
       val datapoint1 = DataPointWithMultipleValues(
         MetricName("archive_file_tracked"),
         Seq(

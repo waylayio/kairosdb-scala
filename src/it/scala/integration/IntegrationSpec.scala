@@ -8,7 +8,7 @@ import com.whisk.docker.scalatest.DockerTestKit
 import org.scalatest.{BeforeAndAfterAll, FlatSpec, Matchers}
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.time.{Millis, Second, Seconds, Span}
-import play.api.libs.ws.ahc.AhcWSClient
+import play.api.libs.ws.ahc.StandaloneAhcWSClient
 import play.api.test.NoMaterializer
 
 import scala.concurrent.duration._
@@ -25,7 +25,7 @@ trait IntegrationSpec extends FlatSpec with Matchers with ScalaFutures with Stri
   override implicit val dockerFactory: DockerFactory = new SpotifyDockerFactory(DefaultDockerClient.fromEnv().build())
 
   implicit val materializer = NoMaterializer
-  val wsClient = AhcWSClient()
+  val wsClient = StandaloneAhcWSClient()
 
   override def afterAll(): Unit = {
     wsClient.close()
