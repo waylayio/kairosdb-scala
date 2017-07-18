@@ -16,6 +16,10 @@ import scala.concurrent.duration._
 
 
 class HealthSpec extends Specification with FutureMatchers with ResultMatchers {
+
+  // for fixing test runs in travis, could be related to deprecated play global state
+  sequential
+
   "KairosDB#healthStatus" should {
     "return the health status" in { implicit ee: ExecutionEnv =>
       val expected = HealthStatusResults(Seq("JVM-Thread-Deadlock: OK","Datastore-Query: OK"))

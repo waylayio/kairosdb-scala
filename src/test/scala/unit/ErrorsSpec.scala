@@ -20,6 +20,7 @@ import scala.concurrent.duration._
 
 class ErrorsSpec extends Specification{
 
+  // for fixing test runs in travis, could be related to deprecated play global state
   sequential
 
   "the shared error handling should" should {

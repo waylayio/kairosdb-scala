@@ -17,6 +17,10 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
 
 class AddDataPointsSpec extends Specification with FutureMatchers with ResultMatchers {
+
+  // for fixing test runs in travis, could be related to deprecated play global state
+  sequential
+
   "KairosDB#addDataPoints" should {
     "add a single data point" in { implicit ee: ExecutionEnv =>
       val mockWs = MockWS {

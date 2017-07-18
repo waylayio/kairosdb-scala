@@ -24,6 +24,9 @@ import scala.concurrent.duration._
 
 class QuerySpec extends Specification {
 
+  // for fixing test runs in travis, could be related to deprecated play global state
+  sequential
+
   "KairosDB#queryMetrics" should {
 
     "return a correct query response" in { implicit ee: ExecutionEnv =>
