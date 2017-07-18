@@ -20,6 +20,8 @@ import scala.concurrent.duration._
 
 class ErrorsSpec extends Specification{
 
+  sequential
+
   "the shared error handling should" should {
 
     "handle bad request errors" in { implicit ee: ExecutionEnv =>
