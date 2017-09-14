@@ -20,20 +20,59 @@ class AddAndQueryDataPointsIntegrationSpec extends IntegrationSpec {
     val start = Instant.ofEpochSecond(1470830000L)
     val qm = QueryMetrics(Seq(Query("my.new.metric", QueryTag("aoeu" -> "snth"))), start)
 
-    val res = kairosPort.flatMap { kairosPort =>
-      val kairosDB = new KairosDB(wsClient, KairosDBConfig(port = kairosPort), global)
+    val res = for{
+      port   <- kairosPort
+      kairosDB = new KairosDB(wsClient, KairosDBConfig(port = port), global)
+      _      <- kairosDB.addDataPoint(DataPoint(MetricName("my.new.metric"), KNumber(555), instant, Seq(Tag("aoeu", "snth"))))
+      result <- kairosDB.queryMetrics(qm)
+    }yield{
+      result
+    }
 
-      for{
-        _   <- kairosDB.addDataPoint(DataPoint(MetricName("my.new.metric"), KNumber(555), instant, Seq(Tag("aoeu", "snth"))))
-        res <- kairosDB.queryMetrics(qm)
-      }yield{
-        res
-      }
-    }.futureValue
-
-    res should be(QueryResponse.Response(Seq(ResponseQuery(1, Seq(
-      Result("my.new.metric", Seq(GroupBy.GroupByType("number")), Seq(TagResult("aoeu", Seq("snth"))), Seq( (instant, KNumber(555)) ) )
+    res.futureValue should be(QueryResponse.Response(Seq(ResponseQuery(1, Seq(
+      Result("my.new.metric", Seq(GroupBy.GroupByType("number")), Seq(TagResult("aoeu", Seq("snth"))), Seq((instant, KNumber(555))))
     )))))
+  }
+
+  it should "work for multiple data points with gzip compression" in {
+    val instant = Instant.ofEpochSecond(1470837457L)
+    val start = Instant.ofEpochSecond(1470830000L)
+    val metric2 = MetricName("my.new.metric2")
+    val qm = QueryMetrics(Seq(Query(metric2.name)), start)
+
+    val dps = Seq(
+      DataPoint(metric2, KNumber(111), instant.plusMillis(1), Seq(Tag("aoeu", "123"))),
+      DataPoint(metric2, KNumber(222), instant.plusMillis(2), Seq(Tag("snth", "321"))),
+      DataPoint(metric2, KNumber(333), instant.plusMillis(3), Seq(Tag("aoeu", "456"))),
+    )
+
+    val res = for{
+      port   <- kairosPort
+      kairosDB = new KairosDB(wsClient, KairosDBConfig(port = port), global)
+      _      <- kairosDB.addDataPoints(dps, gzip = true)
+      result <- kairosDB.queryMetrics(qm)
+    }yield{
+      result
+    }
+
+    res.futureValue should be(
+      QueryResponse.Response(
+        Seq(
+          ResponseQuery(3, Seq(
+            Result(
+              "my.new.metric2",
+              Seq(GroupBy.GroupByType("number")),
+              List(TagResult("aoeu", List("123", "456")), TagResult("snth", List("321"))),
+              Seq(
+                instant.plusMillis(1) -> KNumber(111),
+                instant.plusMillis(2) -> KNumber(222),
+                instant.plusMillis(3) -> KNumber(333)
+              )
+            )
+          ))
+        )
+      )
+    )
   }
 
   it should "work for an aggregate query with nulls" in {
@@ -53,19 +92,17 @@ class AddAndQueryDataPointsIntegrationSpec extends IntegrationSpec {
       ))
     ), TimeSpan(start, Some(end)))
 
-    val res = kairosPort.flatMap { kairosPort =>
-      val kairosDB = new KairosDB(wsClient, KairosDBConfig(port = kairosPort), global)
+    val res = for{
+      port    <- kairosPort
+      kairosDB = new KairosDB(wsClient, KairosDBConfig(port = port), global)
+      _       <- kairosDB.addDataPoint(datapoint)
+      _       <- kairosDB.addDataPoint(datapoint.copy(timestamp = secondPoint))
+      results <- kairosDB.queryMetrics(qm)
+    }yield{
+      results
+    }
 
-      for{
-        _       <- kairosDB.addDataPoint(datapoint)
-        _       <- kairosDB.addDataPoint(datapoint.copy(timestamp = secondPoint))
-        results <-  kairosDB.queryMetrics(qm)
-      }yield{
-        results
-      }
-    }.futureValue
-
-    res should be(QueryResponse.Response(Seq(ResponseQuery(2, Seq(
+    res.futureValue should be(QueryResponse.Response(Seq(ResponseQuery(2, Seq(
       Result("my.new.metric", Seq(GroupBy.GroupByType("number")), Seq(TagResult("aoeu", Seq("snth"))), Seq(
         (Instant.parse("1970-01-02T00:00:00Z"), KNumber(555)),
         (Instant.parse("1970-01-03T00:00:00Z"), KNull),

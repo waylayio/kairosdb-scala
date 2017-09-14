@@ -8,21 +8,21 @@ import io.waylay.kairosdb.driver.models._
 import mockws.MockWS
 import org.specs2.mutable.Specification
 import play.api.libs.json.Json
-import play.api.mvc.Action
 import play.api.mvc.Results._
 import org.specs2.concurrent.ExecutionEnv
 import org.specs2.matcher.{FutureMatchers, ResultMatchers}
+import play.api.mvc.Result
 
-import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
 
-class AddDataPointsSpec extends Specification with FutureMatchers with ResultMatchers {
+class AddDataPointsSpec(implicit ee: ExecutionEnv) extends Specification with FutureMatchers with ResultMatchers with MockHelper {
 
   // for fixing test runs in travis, could be related to deprecated play global state
   sequential
 
   "KairosDB#addDataPoints" should {
-    "add a single data point" in { implicit ee: ExecutionEnv =>
+
+    "add a single data point" in {
       val mockWs = MockWS {
         case ("POST", "http://localhost:8080/api/v1/datapoints") => Action { req =>
           val expected = Json.parse(
@@ -38,13 +38,13 @@ class AddDataPointsSpec extends Specification with FutureMatchers with ResultMat
               |  }
               |]
             """.stripMargin)
-          req.body.asJson.map { json =>
+          req.body.asJson.fold[Result](BadRequest){ json =>
             if(json == expected) NoContent else BadRequest
-          } getOrElse BadRequest
+          }
         }
       }
 
-      val kairosDb = new KairosDB(StandaloneMockWs(mockWs), KairosDBConfig(), global)
+      val kairosDb = new KairosDB(StandaloneMockWs(mockWs), KairosDBConfig(), ee.ec)
       val datapoint = DataPointWithSingleValue(MetricName("archive_file_search"), KNumber(321), Instant.ofEpochMilli(1470062449000L), Seq(Tag("host", "server2")))
 
       val r = kairosDb.addDataPoints(Seq(datapoint)) must beEqualTo(()).await(1, 10.seconds)
@@ -52,7 +52,7 @@ class AddDataPointsSpec extends Specification with FutureMatchers with ResultMat
       r
     }
 
-    "add a multiple data points" in { implicit ee: ExecutionEnv =>
+    "add a multiple data points" in {
       val mockWs = MockWS {
         case ("POST", "http://localhost:8080/api/v1/datapoints") => Action { req =>
           val expected = Json.parse(
@@ -84,7 +84,7 @@ class AddDataPointsSpec extends Specification with FutureMatchers with ResultMat
         }
       }
 
-      val kairosDb = new KairosDB(StandaloneMockWs(mockWs), KairosDBConfig(), global)
+      val kairosDb = new KairosDB(StandaloneMockWs(mockWs), KairosDBConfig(), ee.ec)
       val datapoint1 = DataPointWithMultipleValues(
         MetricName("archive_file_tracked"),
         Seq(

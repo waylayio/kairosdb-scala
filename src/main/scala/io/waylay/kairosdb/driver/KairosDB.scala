@@ -1,5 +1,9 @@
 package io.waylay.kairosdb.driver
 
+import java.io.ByteArrayOutputStream
+import java.util.zip.GZIPOutputStream
+
+import akka.util.ByteString
 import io.waylay.kairosdb.driver.models._
 import io.waylay.kairosdb.driver.models.HealthCheckResult._
 import com.netaporter.uri.dsl._
@@ -10,9 +14,9 @@ import io.waylay.kairosdb.driver.models.json.Formats._
 import io.waylay.kairosdb.driver.models.QueryResponse.Response
 import play.api.libs.json._
 import play.api.libs.ws.{StandaloneWSClient, StandaloneWSRequest, StandaloneWSResponse, WSAuthScheme}
+import play.api.libs.ws.DefaultBodyWritables._
 import play.api.libs.ws.JsonBodyWritables._
 import play.api.libs.ws.JsonBodyReadables._
-
 
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Success, Try}
@@ -127,14 +131,26 @@ class KairosDB(wsClient: StandaloneWSClient, config: KairosDBConfig, executionCo
       .map(emptyWsRepsonseToResult)
   }
 
-  def addDataPoints(dataPoints: Seq[DataPoint]): Future[Unit] = {
+  def addDataPoints(dataPoints: Seq[DataPoint], gzip: Boolean = false): Future[Unit] = {
     val body = Json.toJson(dataPoints)
     logger.debug(Json.prettyPrint(body))
+
+    val (actualBody, contentType) = if(gzip){
+      val buff = new ByteArrayOutputStream()
+      val gzos = new GZIPOutputStream(buff)
+      gzos.write(Json.toBytes(body))
+      gzos.finish()
+      val gzipBody = buff.toByteArray
+      (gzipBody, "application/gzip")
+    }else{
+      (Json.toBytes(body), "application/json")
+    }
 
     wsClient
       .url(uri / "api" / "v1" / "datapoints")
       .applyKairosDBAuth
-      .post(body)
+      .addHttpHeaders("Content-Type" -> contentType)
+      .post(ByteString(actualBody))
       .map(emptyWsRepsonseToResult)
   }
 

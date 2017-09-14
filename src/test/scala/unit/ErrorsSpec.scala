@@ -12,20 +12,19 @@ import mockws.MockWS
 import org.specs2.concurrent.ExecutionEnv
 import org.specs2.mutable.Specification
 import play.api.libs.json.Json
-import play.api.mvc.Action
 import play.api.mvc.Results._
 
 import scala.concurrent.ExecutionContext.Implicits._
 import scala.concurrent.duration._
 
-class ErrorsSpec extends Specification{
+class ErrorsSpec(implicit ee: ExecutionEnv) extends Specification with MockHelper{
 
   // for fixing test runs in travis, could be related to deprecated play global state
   sequential
 
   "the shared error handling should" should {
 
-    "handle bad request errors" in { implicit ee: ExecutionEnv =>
+    "handle bad request errors" in {
       val mockWs = MockWS {
         case ("POST", "http://localhost:8080/api/v1/datapoints/query") => Action { req =>
           val json = Json.parse(
@@ -66,7 +65,7 @@ class ErrorsSpec extends Specification{
       }
     }
 
-    "handle internal server errors" in { implicit ee: ExecutionEnv =>
+    "handle internal server errors" in {
       val mockWs = MockWS {
         case ("GET", "http://localhost:8080/api/v1/health/status") => Action { req =>
           val json = Json.parse(
@@ -90,7 +89,7 @@ class ErrorsSpec extends Specification{
       }
     }
 
-    "handle authorization server errors" in { implicit ee: ExecutionEnv =>
+    "handle authorization server errors" in {
       val mockWs = MockWS {
         case ("GET", "http://localhost:8080/api/v1/health/status") => Action { req =>
           Unauthorized("<html></html>") // this is a html jetty 401 response
@@ -105,7 +104,7 @@ class ErrorsSpec extends Specification{
       }
     }
 
-    "handle any other request errors" in { implicit ee: ExecutionEnv =>
+    "handle any other request errors" in {
       val mockWs = MockWS {
         case ("GET", "http://localhost:8080/api/v1/health/status") => Action { req =>
           val json = Json.parse(

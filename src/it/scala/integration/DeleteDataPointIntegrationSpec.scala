@@ -6,7 +6,7 @@ import io.waylay.kairosdb.driver.KairosDB
 import io.waylay.kairosdb.driver.Implicits._
 import io.waylay.kairosdb.driver.models.KairosCompatibleType.KNumber
 import io.waylay.kairosdb.driver.models.KairosQuery.QueryTag
-import io.waylay.kairosdb.driver.models.QueryResponse.{ResponseQuery, Result, TagResult}
+import io.waylay.kairosdb.driver.models.QueryResponse.{ResponseQuery, Result}
 import io.waylay.kairosdb.driver.models._
 
 import scala.concurrent.ExecutionContext._

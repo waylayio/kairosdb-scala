@@ -15,21 +15,19 @@ import io.waylay.kairosdb.driver.models._
 import mockws.MockWS
 import org.specs2.mutable.Specification
 import play.api.libs.json.Json
-import play.api.mvc.Action
 import play.api.mvc.Results._
 import org.specs2.concurrent.ExecutionEnv
 
-import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
 
-class QuerySpec extends Specification {
+class QuerySpec(implicit ee: ExecutionEnv) extends Specification with MockHelper{
 
   // for fixing test runs in travis, could be related to deprecated play global state
   sequential
 
   "KairosDB#queryMetrics" should {
 
-    "return a correct query response" in { implicit ee: ExecutionEnv =>
+    "return a correct query response" in {
       val mockWs = MockWS {
         case ("POST", "http://localhost:8080/api/v1/datapoints/query") => Action { req =>
           val expected = Json.parse(
@@ -131,7 +129,7 @@ class QuerySpec extends Specification {
         }
       }
 
-      val kairosDb = new KairosDB(StandaloneMockWs(mockWs), KairosDBConfig(), global)
+      val kairosDb = new KairosDB(StandaloneMockWs(mockWs), KairosDBConfig(), ee.ec)
 
       val query1 = Query(
         MetricName("abc.123"),
@@ -171,7 +169,7 @@ class QuerySpec extends Specification {
       r
     }
 
-    "return a failed future if KairosDB sends unparseable JSON" in { implicit ee: ExecutionEnv =>
+    "return a failed future if KairosDB sends unparseable JSON" in {
       val mockWs = MockWS {
         case ("POST", "http://localhost:8080/api/v1/datapoints/query") => Action { req =>
           val expected = Json.parse(
@@ -229,7 +227,7 @@ class QuerySpec extends Specification {
         }
       }
 
-      val kairosDb = new KairosDB(StandaloneMockWs(mockWs), KairosDBConfig(), global)
+      val kairosDb = new KairosDB(StandaloneMockWs(mockWs), KairosDBConfig(), ee.ec)
 
       val query1 = Query(
         MetricName("abc.123"),
@@ -259,7 +257,7 @@ class QuerySpec extends Specification {
 
   "KairosDB#queryMetricTags" should {
 
-      "return a correct query response" in { implicit ee: ExecutionEnv =>
+      "return a correct query response" in {
         val mockWs = MockWS {
           case ("POST", "http://localhost:8080/api/v1/datapoints/query/tags") => Action { req =>
             val expected = Json.parse(
@@ -312,7 +310,7 @@ class QuerySpec extends Specification {
           }
         }
 
-        val kairosDb = new KairosDB(StandaloneMockWs(mockWs), KairosDBConfig(), global)
+        val kairosDb = new KairosDB(StandaloneMockWs(mockWs), KairosDBConfig(), ee.ec)
 
         val query1 = Query(MetricName("abc.123"), Seq(QueryTag("host", Seq("foo"))))
         val query2 = Query(MetricName("xyz.123"), Seq(QueryTag("host", Seq("foo"))))
@@ -341,7 +339,7 @@ class QuerySpec extends Specification {
 
   "KairosDB#deleteDataPoints" should {
 
-    "send a correct query" in { implicit ee: ExecutionEnv =>
+    "send a correct query" in {
       val mockWs = MockWS {
         case ("POST", "http://localhost:8080/api/v1/datapoints/delete") => Action { req =>
           val expected = Json.parse(
@@ -395,7 +393,7 @@ class QuerySpec extends Specification {
         }
       }
 
-      val kairosDb = new KairosDB(StandaloneMockWs(mockWs), KairosDBConfig(), global)
+      val kairosDb = new KairosDB(StandaloneMockWs(mockWs), KairosDBConfig(), ee.ec)
 
       val query1 = Query(
         MetricName("abc.123"),

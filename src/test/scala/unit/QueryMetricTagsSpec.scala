@@ -9,18 +9,19 @@ import io.waylay.kairosdb.driver.models._
 import mockws.MockWS
 import org.specs2.mutable.Specification
 import play.api.libs.json.Json
-import play.api.mvc.Action
 import play.api.mvc.Results._
 import org.specs2.concurrent.ExecutionEnv
 import org.specs2.matcher.{FutureMatchers, ResultMatchers}
 
-import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
 
 
-class QueryMetricTagsSpec extends Specification with FutureMatchers with ResultMatchers {
+class QueryMetricTagsSpec(implicit ee: ExecutionEnv) extends Specification with FutureMatchers with ResultMatchers with MockHelper {
+
   "KairosDB#queryMetricTags" should {
-    "query metric tags" in { implicit ee: ExecutionEnv => skipped { // TODO Response parsing in KairosDB#queryMetricTags is not implemented yet
+
+    "query metric tags" in {
+      skipped { // TODO Response parsing in KairosDB#queryMetricTags is not implemented yet
       val mockWs = MockWS {
         case ("POST", "http://localhost/api/v1/datapoints/query/tags") => Action { req =>
           val expected = Json.parse(
@@ -68,7 +69,7 @@ class QueryMetricTagsSpec extends Specification with FutureMatchers with ResultM
         }
       }
 
-      val kairosDb = new KairosDB(StandaloneMockWs(mockWs), KairosDBConfig(), global)
+      val kairosDb = new KairosDB(StandaloneMockWs(mockWs), KairosDBConfig(), ee.ec)
       val query = Query(MetricName("abc.123"), Seq(QueryTag("host", Seq("foo"))))
       val qm = QueryMetrics(Seq(query), TimeSpan(AbsoluteStartTime(Instant.ofEpochMilli(1357023600000L)), Some(RelativeEndTime(5.days))))
       val expected = QueryResponse.Response(Seq.empty) // TODO
