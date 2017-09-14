@@ -3,7 +3,6 @@ package io.waylay.kairosdb.driver
 import java.io.ByteArrayOutputStream
 import java.util.zip.GZIPOutputStream
 
-import akka.util.ByteString
 import io.waylay.kairosdb.driver.models._
 import io.waylay.kairosdb.driver.models.HealthCheckResult._
 import com.netaporter.uri.dsl._
@@ -150,7 +149,7 @@ class KairosDB(wsClient: StandaloneWSClient, config: KairosDBConfig, executionCo
       .url(uri / "api" / "v1" / "datapoints")
       .applyKairosDBAuth
       .addHttpHeaders("Content-Type" -> contentType)
-      .post(ByteString(actualBody))
+      .post(actualBody)
       .map(emptyWsRepsonseToResult)
   }
 
