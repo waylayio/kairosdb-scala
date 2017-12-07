@@ -3,17 +3,17 @@ package io.waylay.kairosdb.driver.models.json
 import java.time.Instant
 import java.util.concurrent.TimeUnit
 
+import io.waylay.kairosdb.driver.models.Aggregator._
 import io.waylay.kairosdb.driver.models.GroupBy._
 import io.waylay.kairosdb.driver.models.KairosCompatibleType.{KNull, KNumber, KString}
-import io.waylay.kairosdb.driver.models.{Aggregator, KairosCompatibleType, RangeAggregator, _}
-import io.waylay.kairosdb.driver.models.Aggregator._
 import io.waylay.kairosdb.driver.models.KairosQuery.{Order, QueryTag}
 import io.waylay.kairosdb.driver.models.QueryMetricTagsResponse.{TagsResponse, TagsResult}
 import io.waylay.kairosdb.driver.models.QueryResponse.{Response, ResponseQuery, Result, TagResult}
 import io.waylay.kairosdb.driver.models.RangeAggregator.Align.{AlignSampling, AlignStartTime}
 import io.waylay.kairosdb.driver.models.TimeSpan._
-import play.api.libs.json._
+import io.waylay.kairosdb.driver.models.{Aggregator, KairosCompatibleType, RangeAggregator, _}
 import play.api.libs.functional.syntax._
+import play.api.libs.json._
 
 import scala.concurrent.duration._
 
@@ -47,6 +47,7 @@ object Formats {
       val value: JsObject = datapoint match {
         case dp: DataPointWithSingleValue =>
           Json.obj(
+            "type" -> dp.value.kairosType,
             "value" -> dp.value,
             "timestamp" -> instant2kairosLong(dp.timestamp)
           )
@@ -124,7 +125,9 @@ object Formats {
       for {
         unit <- unitRes
         value <- valueRes
-      } yield { unit(value) }
+      } yield {
+        unit(value)
+      }
     }
   }
 
@@ -137,7 +140,9 @@ object Formats {
           for {
             rangeSize <- (json \ "range_size").validate[FiniteDuration]
             groupCount <- (json \ "group_count").validate[String] // not sure if this is correct
-          } yield { GroupByTime(rangeSize, groupCount.toInt) }
+          } yield {
+            GroupByTime(rangeSize, groupCount.toInt)
+          }
         case "value" =>
           (json \ "range_size").validate[Int] map GroupByValue
         case "bin" =>
@@ -153,7 +158,7 @@ object Formats {
       o match {
         case KNumber(value) => JsNumber(value)
         case KString(value) => JsString(value)
-        case KNull          => JsNull
+        case KNull => JsNull
       }
     }
   }
@@ -179,7 +184,7 @@ object Formats {
             "name" -> saveAs.name,
             "metric_name" -> saveAs.metricName.name,
             "tags" -> tags2json(saveAs.tags),
-            "ttl" ->  finiteDuration2ttl(saveAs.ttl)
+            "ttl" -> finiteDuration2ttl(saveAs.ttl)
           )
 
         case scale: Scale =>
@@ -230,7 +235,7 @@ object Formats {
     }
   }
 
-  implicit val rateAggregatorWrites = new Writes[Rate]{
+  implicit val rateAggregatorWrites = new Writes[Rate] {
     override def writes(rate: Rate): JsValue = {
       val base = Json.obj(
         "name" -> rate.name,
@@ -246,7 +251,7 @@ object Formats {
     }
   }
 
-  implicit val rangeAggregatorWrites = new Writes[RangeAggregator]{
+  implicit val rangeAggregatorWrites = new Writes[RangeAggregator] {
     override def writes(rangeAgg: RangeAggregator): JsValue = {
       Json.obj(
         "name" -> rangeAgg.name,
@@ -261,7 +266,7 @@ object Formats {
     }
   }
 
-  implicit val percentileAggregatorWrites = new Writes[Percentile]{
+  implicit val percentileAggregatorWrites = new Writes[Percentile] {
     override def writes(percentileAgg: Percentile): JsValue = {
       Json.obj(
         "name" -> percentileAgg.name,
@@ -320,7 +325,7 @@ object Formats {
 
   implicit val queryWrites: Writes[Query] = new Writes[Query] {
     override def writes(query: Query): JsValue = {
-      val tags = if(query.tags.isEmpty) {
+      val tags = if (query.tags.isEmpty) {
         Json.obj()
       } else {
         Json.obj(
@@ -328,11 +333,11 @@ object Formats {
             Json.obj(
               tag.name -> tag.allowedValues
             )
-          ).reduce((x,y) => x ++ y)
+          ).reduce((x, y) => x ++ y)
         )
       }
 
-      val aggregators = if(query.aggregators.isEmpty){
+      val aggregators = if (query.aggregators.isEmpty) {
         Json.obj()
       } else {
         Json.obj(
@@ -346,7 +351,7 @@ object Formats {
         )
       )
 
-      val groupBys = if(query.groupBys.isEmpty) {
+      val groupBys = if (query.groupBys.isEmpty) {
         Json.obj()
       } else {
         Json.obj(
@@ -354,15 +359,15 @@ object Formats {
         )
       }
 
-      val excludeTags = if(query.excludeTags){
+      val excludeTags = if (query.excludeTags) {
         Json.obj(
           "exclude_tags" -> query.excludeTags
         )
-      }else{
+      } else {
         Json.obj()
       }
 
-      val order = if(query.order == Order.defaultOrder) {
+      val order = if (query.order == Order.defaultOrder) {
         Json.obj()
       } else {
         Json.obj(
@@ -383,7 +388,7 @@ object Formats {
   implicit val tagResultSeqReads = new Reads[Seq[TagResult]] {
     override def reads(json: JsValue) = {
       json.validate[JsObject] flatMap { obj =>
-        JsArray(obj.fields map  { case (key, maybeValues) => Json.obj("name" -> key, "values" -> maybeValues) }).validate[Seq[TagResult]]
+        JsArray(obj.fields map { case (key, maybeValues) => Json.obj("name" -> key, "values" -> maybeValues) }).validate[Seq[TagResult]]
       }
 
     }
@@ -391,24 +396,21 @@ object Formats {
 
   implicit val kairosCompatibleTypeReads: Reads[KairosCompatibleType] = new Reads[KairosCompatibleType] {
     override def reads(json: JsValue): JsResult[KairosCompatibleType] = {
-      val bigdecimalRes = json.validate[BigDecimal]
-      val stringRes = json.validate[String]
-
-      bigdecimalRes map KNumber orElse stringRes.map(KString) orElse JsError("error.expected.jsstringOrJsnumber")
+      json.validate[String].map(KString) orElse json.validate[BigDecimal].map(KNumber) orElse JsError("error.expected.jsstringOrJsnumber")
     }
   }
 
   implicit val dataPointValueReads: Reads[(Instant, KairosCompatibleType)] = new Reads[(Instant, KairosCompatibleType)] {
     override def reads(json: JsValue): JsResult[(Instant, KairosCompatibleType)] = {
       val millisRes = json(0).validate[Long]
-      val valueRes = json(1).validateOpt[KairosCompatibleType].map{
-        case None        => KNull
+      val valueRes = json(1).validateOpt[KairosCompatibleType].map {
+        case None => KNull
         case Some(value) => value
       }
 
       for {
         millis <- millisRes
-        value  <- valueRes
+        value <- valueRes
       } yield (Instant.ofEpochMilli(millis), value)
     }
   }
@@ -418,26 +420,26 @@ object Formats {
   }
 
   implicit val resultReads = (
-      (JsPath \ "name").read[MetricName] and
+    (JsPath \ "name").read[MetricName] and
       (JsPath \ "group_by").read[Seq[GroupBy]].orElse(new Reads[Seq[GroupBy]] {
         // return empty seq if path not found
         override def reads(json: JsValue) = JsSuccess(Seq.empty[GroupBy])
       }) and
       (JsPath \ "tags").read[Seq[TagResult]] and
       (JsPath \ "values").read[Seq[(Instant, KairosCompatibleType)]]
-    )(Result.apply _)
+    ) (Result.apply _)
 
   implicit val responseQueryReads = (
     (JsPath \ "sample_size").read[Int] and
       (JsPath \ "results").read[Seq[Result]]
-    )(ResponseQuery.apply _)
+    ) (ResponseQuery.apply _)
 
   implicit val responseReads = Json.reads[Response]
 
   implicit val tagsResultReads = (
     (JsPath \ "name").read[MetricName] and
       (JsPath \ "tags").read[Seq[TagResult]]
-    )(TagsResult.apply _)
+    ) (TagsResult.apply _)
 
   implicit val responseTagsReads = Json.reads[TagsResponse]
 
@@ -458,8 +460,8 @@ object Formats {
 
   private def finiteDuration2ttl(dur: FiniteDuration): Long = {
     // if value is > 0 and < 1 second, set it to a second or KairosDB will not set a TTL
-    if(dur.toSeconds != 0) dur.toSeconds
-    else if(dur.toSeconds == 0 && dur != 0.seconds) 1
+    if (dur.toSeconds != 0) dur.toSeconds
+    else if (dur.toSeconds == 0 && dur != 0.seconds) 1
     else 0
   }
 }

@@ -26,28 +26,12 @@ object KairosDB {
   /** Parent exception for all exceptions this driver may throw */
   class KairosDBException(msg: String) extends Exception(msg)
 
-  /** Parent exception for all exception this driver may throw when querying data */
-  abstract class KairosDBResponseException(msg: String) extends KairosDBException(msg)
-
   /** Thrown when the response by KairosDB can't be parsed */
   case class KairosDBResponseParseException(msg: String = "Could not parse KairosDB response", errors: Seq[(JsPath, Seq[JsonValidationError])])
-    extends KairosDBResponseException(s"""$msg (errors: ${errors.mkString(", ")})""")
+    extends KairosDBException(s"""$msg (errors: ${errors.mkString(", ")})""")
 
-  /** Thrown when the request is invalid */
-  case class KairosDBResponseBadRequestException(msg: String = "KairosDB returned HTTP 400 (Bad Request)", errors: Seq[String])
-    extends KairosDBResponseException(s"""$msg (errors: ${errors.mkString(", ")})""")
-
-  /** Thrown when the request is unauthorized */
-  case class KairosDBResponseUnauthorizedException(msg: String = "KairosDB returned HTTP 401 (Unauthorized)", errors: Seq[String])
-    extends KairosDBResponseException(s"""$msg (errors: ${errors.mkString(", ")})""")
-
-  /** Thrown if an error occurs retrieving data */
-  case class KairosDBResponseInternalServerErrorException(msg: String = "KairosDB returned HTTP 500 (Internal Server Error)", errors: Seq[String])
-    extends KairosDBResponseException(s"""$msg (errors: ${errors.mkString(", ")})""")
-
-  /** Thrown if an unexpected error occurs retrieving data */
-  case class KairosDBResponseUnhandledException(statusCode: Int, errors: Seq[String])
-    extends KairosDBResponseException(s"""KairosDB returned unhandled HTTP $statusCode (???) (errors: ${errors.mkString(", ")})""")
+  case class KairosDBResponseException(httpErrorCode:Int, httpStatusText:String, errors: Seq[String])
+    extends KairosDBException(s"""KairosDB returned HTTP $httpErrorCode ($httpStatusText) (errors: ${errors.mkString(", ")})""")
 }
 
 class KairosDB(wsClient: StandaloneWSClient, config: KairosDBConfig, executionContext: ExecutionContext) extends StrictLogging {
@@ -248,13 +232,7 @@ class KairosDB(wsClient: StandaloneWSClient, config: KairosDBConfig, executionCo
   }
 
   private def responseErrorHandling[T](res: StandaloneWSResponse) = {
-    res.status match {
-      case 400   => throw KairosDBResponseBadRequestException(errors = getErrors(res))
-      case 401   => throw KairosDBResponseUnauthorizedException(errors = getErrors(res))
-      case 500   => throw KairosDBResponseInternalServerErrorException(errors = getErrors(res))
-      case other => throw KairosDBResponseUnhandledException(other, getErrors(res))
-    }
+    throw KairosDBResponseException(res.status, res.statusText, getErrors(res))
   }
-
 
 }

@@ -4,7 +4,7 @@ import java.nio.file.Paths
 
 import com.whisk.docker.VolumeMapping
 import io.waylay.kairosdb.driver.KairosDB
-import io.waylay.kairosdb.driver.KairosDB.KairosDBResponseUnauthorizedException
+import io.waylay.kairosdb.driver.KairosDB.KairosDBResponseException
 import io.waylay.kairosdb.driver.models._
 
 import scala.concurrent.ExecutionContext.global
@@ -33,7 +33,8 @@ class AuthSpec extends IntegrationSpec {
       kairosDB.healthStatus
     }.failed.futureValue
 
-    res shouldBe an[KairosDBResponseUnauthorizedException]
+    res shouldBe an[KairosDBResponseException]
+    res should be(KairosDBResponseException(401, "Unauthorized", Seq.empty))
   }
 
   it should "succeed with auth" in {

@@ -3,7 +3,7 @@ package unit
 import java.time.Instant
 
 import io.waylay.kairosdb.driver.KairosDB
-import io.waylay.kairosdb.driver.models.KairosCompatibleType.KNumber
+import io.waylay.kairosdb.driver.models.KairosCompatibleType.{KNumber, KString}
 import io.waylay.kairosdb.driver.models._
 import mockws.MockWS
 import org.specs2.mutable.Specification
@@ -32,6 +32,7 @@ class AddDataPointsSpec(implicit ee: ExecutionEnv) extends Specification with Fu
               |    "name": "archive_file_search",
               |    "timestamp": 1470062449000,
               |    "value": 321,
+              |    "type": "long",
               |    "tags": {
               |      "host": "server2"
               |    }
@@ -46,6 +47,67 @@ class AddDataPointsSpec(implicit ee: ExecutionEnv) extends Specification with Fu
 
       val kairosDb = new KairosDB(StandaloneMockWs(mockWs), KairosDBConfig(), ee.ec)
       val datapoint = DataPointWithSingleValue(MetricName("archive_file_search"), KNumber(321), Instant.ofEpochMilli(1470062449000L), Seq(Tag("host", "server2")))
+
+      val r = kairosDb.addDataPoints(Seq(datapoint)) must beEqualTo(()).await(1, 10.seconds)
+      mockWs.close()
+      r
+    }
+
+    "add single double datapoint" in {
+      val mockWs = MockWS {
+        case ("POST", "http://localhost:8080/api/v1/datapoints") => Action { req =>
+          val expected = Json.parse(
+            """
+              |[
+              |  {
+              |    "name": "archive_file_search",
+              |    "timestamp": 1470062449000,
+              |    "value": 321,
+              |    "type": "double",
+              |    "tags": {
+              |      "host": "server2"
+              |    }
+              |  }
+              |]
+            """.stripMargin)
+          req.body.asJson.fold[Result](BadRequest){ json =>
+            if(json == expected) NoContent else BadRequest
+          }
+        }
+      }
+
+      val kairosDb = new KairosDB(StandaloneMockWs(mockWs), KairosDBConfig(), ee.ec)
+      val datapoint = DataPointWithSingleValue(MetricName("archive_file_search"), KNumber(321.0), Instant.ofEpochMilli(1470062449000L), Seq(Tag("host", "server2")))
+
+      val r = kairosDb.addDataPoints(Seq(datapoint)) must beEqualTo(()).await(1, 10.seconds)
+      mockWs.close()
+      r
+    }
+    "add single string datapoint" in {
+      val mockWs = MockWS {
+        case ("POST", "http://localhost:8080/api/v1/datapoints") => Action { req =>
+          val expected = Json.parse(
+            """
+              |[
+              |  {
+              |    "name": "archive_file_search",
+              |    "timestamp": 1470062449000,
+              |    "value": "321.0",
+              |    "type": "string",
+              |    "tags": {
+              |      "host": "server2"
+              |    }
+              |  }
+              |]
+            """.stripMargin)
+          req.body.asJson.fold[Result](BadRequest){ json =>
+            if(json == expected) NoContent else BadRequest
+          }
+        }
+      }
+
+      val kairosDb = new KairosDB(StandaloneMockWs(mockWs), KairosDBConfig(), ee.ec)
+      val datapoint = DataPointWithSingleValue(MetricName("archive_file_search"), KString("321.0"), Instant.ofEpochMilli(1470062449000L), Seq(Tag("host", "server2")))
 
       val r = kairosDb.addDataPoints(Seq(datapoint)) must beEqualTo(()).await(1, 10.seconds)
       mockWs.close()
@@ -71,6 +133,7 @@ class AddDataPointsSpec(implicit ee: ExecutionEnv) extends Specification with Fu
               |    "name": "archive_file_search",
               |    "timestamp": 1470062449000,
               |    "value": 321,
+              |    "type": "long",
               |    "tags": {
               |      "host": "server2"
               |    }

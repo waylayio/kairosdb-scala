@@ -103,12 +103,28 @@ object HealthCheckResult {
 }
 
 /** KairosDB only supports numbers and strings. Custom types can be defined */
-sealed trait KairosCompatibleType
+sealed trait KairosCompatibleType {
+  def kairosType: String
+}
 
 object KairosCompatibleType {
-  case object KNull extends KairosCompatibleType
-  case class KNumber(value: BigDecimal) extends KairosCompatibleType
-  case class KString(value: String) extends KairosCompatibleType
+  case object KNull extends KairosCompatibleType {
+    override def kairosType: String = "string"
+  }
+
+  case class KNumber(value: BigDecimal) extends KairosCompatibleType {
+    def kairosType:String = {
+      //TODO check if this is 100% correct
+      if (value.scale > 0) {
+        "double"
+      } else {
+        "long"
+      }
+    }
+  }
+  case class KString(value: String) extends KairosCompatibleType {
+    val kairosType:String = "string"
+  }
 }
 
 object QueryResponse {

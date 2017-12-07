@@ -3,7 +3,7 @@ package unit
 import java.time.Instant
 
 import io.waylay.kairosdb.driver.KairosDB
-import io.waylay.kairosdb.driver.KairosDB.{KairosDBResponseBadRequestException, KairosDBResponseInternalServerErrorException, KairosDBResponseUnauthorizedException, KairosDBResponseUnhandledException}
+import io.waylay.kairosdb.driver.KairosDB._
 import io.waylay.kairosdb.driver.models.Aggregator.Sum
 import io.waylay.kairosdb.driver.models.KairosQuery.QueryTag
 import io.waylay.kairosdb.driver.models.TimeSpan.{AbsoluteStartTime, RelativeEndTime}
@@ -59,7 +59,7 @@ class ErrorsSpec(implicit ee: ExecutionEnv) extends Specification with MockHelpe
       )
 
       try {
-        kairosDb.queryMetrics(qm) must throwAn[KairosDBResponseBadRequestException].await(1, 10.seconds)
+        kairosDb.queryMetrics(qm) must throwAn[KairosDBResponseException].await(1, 10.seconds)
       } finally {
         mockWs.close()
       }
@@ -83,7 +83,7 @@ class ErrorsSpec(implicit ee: ExecutionEnv) extends Specification with MockHelpe
 
       val kairosDb = new KairosDB(StandaloneMockWs(mockWs), KairosDBConfig(), global)
       try {
-        kairosDb.healthStatus must throwAn[KairosDBResponseInternalServerErrorException].await(1, 10.seconds)
+        kairosDb.healthStatus must throwAn[KairosDBResponseException].await(1, 10.seconds)
       }finally {
         mockWs.close()
       }
@@ -98,7 +98,7 @@ class ErrorsSpec(implicit ee: ExecutionEnv) extends Specification with MockHelpe
 
       val kairosDb = new KairosDB(StandaloneMockWs(mockWs), KairosDBConfig(), global)
       try {
-        kairosDb.healthStatus must throwAn[KairosDBResponseUnauthorizedException].await(1, 10.seconds)
+        kairosDb.healthStatus must throwAn[KairosDBResponseException].await(1, 10.seconds)
       }finally{
         mockWs.close()
       }
@@ -123,7 +123,7 @@ class ErrorsSpec(implicit ee: ExecutionEnv) extends Specification with MockHelpe
       val kairosDb = new KairosDB(StandaloneMockWs(mockWs), KairosDBConfig(), global)
 
       try {
-        kairosDb.healthStatus must throwAn[KairosDBResponseUnhandledException].await(1, 10.seconds)
+        kairosDb.healthStatus must throwAn[KairosDBResponseException].await(1, 10.seconds)
       }finally {
         mockWs.close()
       }
