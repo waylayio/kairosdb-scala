@@ -122,6 +122,7 @@ class AddDataPointsSpec(implicit ee: ExecutionEnv) extends Specification with Fu
               |[
               |  {
               |      "name": "archive_file_tracked",
+              |      "type" : "double",
               |      "datapoints": [[1359788400000, 123], [1359788300000, 13.2], [1359788410000, 23.1]],
               |      "tags": {
               |          "host": "server1",
@@ -151,6 +152,7 @@ class AddDataPointsSpec(implicit ee: ExecutionEnv) extends Specification with Fu
       val datapoint1 = DataPointWithMultipleValues(
         MetricName("archive_file_tracked"),
         Seq(
+          // type will be the double since most values are doubles
           (Instant.ofEpochMilli(1359788400000L), KNumber(123)),
           (Instant.ofEpochMilli(1359788300000L), KNumber(13.2)),
           (Instant.ofEpochMilli(1359788410000L), KNumber(23.1))

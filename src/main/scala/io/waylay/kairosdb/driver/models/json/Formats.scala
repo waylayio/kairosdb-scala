@@ -53,6 +53,7 @@ object Formats {
           )
         case dp: DataPointWithMultipleValues =>
           Json.obj(
+            "type" -> dp.values.map(_._2).groupBy(_.kairosType).map( t=> (t._1, t._2.size)).maxBy(_._2)._1,
             "datapoints" -> dp.values
           )
       }
