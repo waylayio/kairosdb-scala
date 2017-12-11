@@ -7,7 +7,7 @@ before_install:
 
 language: scala
 scala:
- - 2.12.2
+ - 2.12.4
 
 jdk:
  - oraclejdk8
