@@ -2,16 +2,16 @@ import sbt.Keys.thisProjectRef
 
 organization in ThisBuild := "io.waylay.kairosdb"
 
-val playWsVersion = "1.1.0"
-val playJsonVersion = "2.6.4"
-val akkaVersion = "2.5.4"
-val specs2Version = "3.9.5"
+val playWsVersion = "1.1.3"
+val playJsonVersion = "2.6.8"
+val akkaVersion = "2.5.8"
+val specs2Version = "4.0.2"
 val dockerTestkitVersion = "0.9.5"
 val scalaTestVersion = "3.0.4"
-val playVersion = "2.6.3" // test only
+val playVersion = "2.6.9" // test only
 
-val scala2_11 = "2.11.11"
-val scala2_12 = "2.12.3"
+val scala2_11 = "2.11.12"
+val scala2_12 = "2.12.4"
 
 scalaVersion := scala2_12
 crossScalaVersions := Seq(scala2_11, scala2_12)
@@ -42,7 +42,7 @@ lazy val root = (project in file("."))
       "com.typesafe.play" %% "play-json" % playJsonVersion,
       "com.typesafe.play" %% "play-ws-standalone" % playWsVersion,
       "com.typesafe.play" %% "play-ws-standalone-json" % playWsVersion,
-      "com.typesafe.scala-logging" %% "scala-logging" % "3.5.0",
+      "com.typesafe.scala-logging" %% "scala-logging" % "3.7.2",
       "com.typesafe.akka" %% "akka-actor" % akkaVersion,
 
 
@@ -51,7 +51,7 @@ lazy val root = (project in file("."))
       // TEST
       "org.specs2" %% "specs2-core" % specs2Version % Test,
       "org.specs2" %% "specs2-junit" % specs2Version % Test,
-      "de.leanovate.play-mockws" %% "play-mockws" % "2.6.0"  % Test,
+      "de.leanovate.play-mockws" %% "play-mockws" % "2.6.2"  % Test,
       "com.typesafe.play" %% "play-ahc-ws" % playVersion  % TestAndIntegrationTest, // neede for play-mockws
       "com.typesafe.play" %% "play-test" % playVersion % TestAndIntegrationTest, // play-mockws depends on some types in this dependency
       "com.typesafe.play" %% "play-ahc-ws-standalone" % playWsVersion % TestAndIntegrationTest,
@@ -80,11 +80,11 @@ lazy val root = (project in file("."))
   .configs(IntegrationTest).settings(Defaults.itSettings: _*)
 
 
-ghpages.settings
+enablePlugins(GhpagesPlugin)
 enablePlugins(SiteScaladocPlugin)
 
 val publishScalaDoc = (ref: ProjectRef) => ReleaseStep(
-  action = releaseStepTaskAggregated(GhPagesKeys.pushSite in ref) // publish scaladoc
+  action = releaseStepTaskAggregated(ghpagesPushSite in ref) // publish scaladoc
 )
 
 val runIntegrationTest = (ref: ProjectRef) => ReleaseStep(
