@@ -21,10 +21,6 @@ pomExtra := (
         <distribution>repo</distribution>
       </license>
     </licenses>
-    <scm>
-      <url>git@github.com:waylayio/kairosdb-scala.git</url>
-      <connection>scm:git:git@github.com:waylayio/kairosdb-scala.git</connection>
-    </scm>
     <developers>
       <developer>
         <id>francisdb</id>
