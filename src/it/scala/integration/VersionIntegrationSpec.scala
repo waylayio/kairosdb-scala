@@ -11,6 +11,6 @@ class VersionIntegrationSpec extends IntegrationSpec {
       new KairosDB(wsClient, KairosDBConfig(port = kairosPort), global).version
     }.futureValue
 
-    res shouldBe "KairosDB 1.1.1-1.20151207194217"
+    res should startWith("KairosDB")
   }
 }

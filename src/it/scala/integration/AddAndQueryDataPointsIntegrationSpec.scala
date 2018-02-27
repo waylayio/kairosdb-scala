@@ -20,12 +20,12 @@ class AddAndQueryDataPointsIntegrationSpec extends IntegrationSpec {
     val start = Instant.ofEpochSecond(1470830000L)
     val qm = QueryMetrics(Seq(Query("my.new.metric", QueryTag("aoeu" -> "snth"))), start)
 
-    val res = for{
-      port   <- kairosPort
+    val res = for {
+      port <- kairosPort
       kairosDB = new KairosDB(wsClient, KairosDBConfig(port = port), global)
-      _      <- kairosDB.addDataPoint(DataPoint(MetricName("my.new.metric"), KNumber(555), instant, Seq(Tag("aoeu", "snth"))))
+      _ <- kairosDB.addDataPoint(DataPoint(MetricName("my.new.metric"), KNumber(555), instant, Seq(Tag("aoeu", "snth"))))
       result <- kairosDB.queryMetrics(qm)
-    }yield{
+    } yield {
       result
     }
 
@@ -46,12 +46,12 @@ class AddAndQueryDataPointsIntegrationSpec extends IntegrationSpec {
       DataPoint(metric2, KNumber(333), instant.plusMillis(3), Seq(Tag("aoeu", "456"))),
     )
 
-    val res = for{
-      port   <- kairosPort
+    val res = for {
+      port <- kairosPort
       kairosDB = new KairosDB(wsClient, KairosDBConfig(port = port), global)
-      _      <- kairosDB.addDataPoints(dps, gzip = true)
+      _ <- kairosDB.addDataPoints(dps, gzip = true)
       result <- kairosDB.queryMetrics(qm)
-    }yield{
+    } yield {
       result
     }
 
@@ -92,23 +92,39 @@ class AddAndQueryDataPointsIntegrationSpec extends IntegrationSpec {
       ))
     ), TimeSpan(start, Some(end)))
 
-    val res = for{
-      port    <- kairosPort
+    val res = for {
+      port <- kairosPort
       kairosDB = new KairosDB(wsClient, KairosDBConfig(port = port), global)
-      _       <- kairosDB.addDataPoint(datapoint)
-      _       <- kairosDB.addDataPoint(datapoint.copy(timestamp = secondPoint))
+      _ <- kairosDB.addDataPoint(datapoint)
+      _ <- kairosDB.addDataPoint(datapoint.copy(timestamp = secondPoint))
+      version <- kairosDB.version
       results <- kairosDB.queryMetrics(qm)
-    }yield{
-      results
+    } yield {
+      (version, results)
     }
 
-    res.futureValue should be(QueryResponse.Response(Seq(ResponseQuery(2, Seq(
-      Result("my.new.metric", Seq(GroupBy.GroupByType("number")), Seq(TagResult("aoeu", Seq("snth"))), Seq(
-        (Instant.parse("1970-01-02T00:00:00Z"), KNumber(555)),
-        (Instant.parse("1970-01-03T00:00:00Z"), KNull),
-        (Instant.parse("1970-01-04T00:00:00Z"), KNumber(555)
-      ))
-    ))))))
+    res.futureValue match {
+      // bug in Kairos < 1.1.4
+      //see https://github.com/kairosdb/kairosdb/issues/339
+      case ("KairosDB 1.1.3-1.20170102211109", results) =>
+        results should be(QueryResponse.Response(Seq(ResponseQuery(2, Seq(
+          Result("my.new.metric", Seq(GroupBy.GroupByType("number")), Seq(TagResult("aoeu", Seq("snth"))), Seq(
+            (Instant.parse("1970-01-02T00:00:00Z"), KNumber(555)),
+            (Instant.parse("1970-01-03T00:00:00Z"), KNull),
+            (Instant.parse("1970-01-04T00:00:00Z"), KNumber(555)
+            ))
+          ))))))
+      case ("KairosDB 1.2.0-1.20180201074909", results) =>
+        results should be(QueryResponse.Response(Seq(ResponseQuery(2, Seq(
+          Result("my.new.metric", Seq(GroupBy.GroupByType("number")), Seq(TagResult("aoeu", Seq("snth"))), Seq(
+            (Instant.parse("1970-01-01T00:00:00Z"), KNull),
+            (Instant.parse("1970-01-02T00:00:00Z"), KNumber(555)),
+            (Instant.parse("1970-01-03T00:00:00Z"), KNull),
+            (Instant.parse("1970-01-04T00:00:00Z"), KNumber(555)
+            ))
+          ))))))
+      case other =>
+        fail("Unknown kairos version")
+    }
   }
-
 }

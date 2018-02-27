@@ -11,7 +11,8 @@ trait DockerKairosDBService extends DockerKit {
   lazy val env = Seq.empty[String]
   lazy val volumes = Seq.empty[VolumeMapping]
 
-  val kairosdbContainer = DockerContainer("thomastoye/kairosdb-scala-driver-it:latest")
+  //val kairosdbContainer = DockerContainer("brunoballekens/kairosdb-scala-driver-it:1.1.3-1")
+  val kairosdbContainer = DockerContainer("brunoballekens/kairosdb-scala-driver-it:1.2.0-1")
     .withEnv(env:_*)
     // broken with the spotify client
     .withVolumes(volumes)
@@ -29,11 +30,11 @@ trait DockerKairosDBService extends DockerKit {
 
 }
 
-private case class LoggingLogLineContains(str: String) extends DockerReadyChecker with StrictLogging{
+private case class LoggingLogLineContains(str: String) extends DockerReadyChecker with StrictLogging {
 
   override def apply(container: DockerContainerState)(implicit docker: DockerCommandExecutor, ec: ExecutionContext): Future[Boolean] = {
-    container.id.map{id =>
-      docker.withLogStreamLines(id, withErr = true){m =>
+    container.id.map { id =>
+      docker.withLogStreamLines(id, withErr = true) { m =>
         // drop newlines
         logger.info(m.dropRight(1))
         m.contains(str)
