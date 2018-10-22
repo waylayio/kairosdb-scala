@@ -8,7 +8,7 @@ import io.waylay.kairosdb.driver.models.Aggregator.{Average, Sum}
 import io.waylay.kairosdb.driver.models.GroupBy.{GroupByTags, GroupByType}
 import io.waylay.kairosdb.driver.models.KairosCompatibleType.KNumber
 import io.waylay.kairosdb.driver.models.KairosQuery.QueryTag
-import io.waylay.kairosdb.driver.models.QueryMetricTagsResponse.{TagsResponse, TagsResult}
+import io.waylay.kairosdb.driver.models.QueryMetricTagsResponse.{TagQueryResponse, TagsResponse, TagsResult}
 import io.waylay.kairosdb.driver.models.QueryResponse.{Response, ResponseQuery, Result, TagResult}
 import io.waylay.kairosdb.driver.models.TimeSpan.{AbsoluteStartTime, RelativeEndTime}
 import io.waylay.kairosdb.driver.models._
@@ -287,22 +287,25 @@ class QuerySpec(implicit ee: ExecutionEnv) extends Specification with MockHelper
             val response = Json.parse(
               """
                 |{
-                |    "results": [
-                |        {
-                |            "name": "abc_123",
-                |            "tags": {
-                |                "host": ["server1","server2"],
-                |                "type": ["bar"]
-                |            }
-                |        },
-                |        {
-                |            "name": "xyz_123",
-                |            "tags": {
-                |                "host": ["server1","server2"],
-                |                "type": ["bar"]
-                |            }
-                |        }
-                |    ]
+                |    "queries": [
+                |    {
+                |      "results": [
+                |          {
+                |              "name": "abc_123",
+                |              "tags": {
+                |                  "host": ["server1","server2"],
+                |                  "type": ["bar"]
+                |              }
+                |          },
+                |          {
+                |              "name": "xyz_123",
+                |              "tags": {
+                |                  "host": ["server1","server2"],
+                |                  "type": ["bar"]
+                |              }
+                |          }
+                |      ]
+                |    }]
                 |}
               """.stripMargin)
 
@@ -320,7 +323,7 @@ class QuerySpec(implicit ee: ExecutionEnv) extends Specification with MockHelper
           TimeSpan(AbsoluteStartTime(Instant.ofEpochMilli(1357023600000L)), Some(RelativeEndTime(5.days)))
         )
 
-        val expected = TagsResponse(Seq(
+        val expected = TagQueryResponse(Seq(TagsResponse(Seq(
           TagsResult(
             MetricName("abc_123"),
             Seq(TagResult("host", Seq("server1", "server2")), TagResult("type", Seq("bar")))
@@ -329,7 +332,7 @@ class QuerySpec(implicit ee: ExecutionEnv) extends Specification with MockHelper
             MetricName("xyz_123"),
             Seq(TagResult("host", Seq("server1", "server2")), TagResult("type", Seq("bar")))
           )
-        ))
+        ))))
 
         val r = kairosDb.queryMetricTags(qm) must be_==(expected).await(1, 10.seconds)
         mockWs.close()

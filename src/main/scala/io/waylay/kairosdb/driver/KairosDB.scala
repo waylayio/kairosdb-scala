@@ -8,7 +8,7 @@ import io.waylay.kairosdb.driver.models.HealthCheckResult._
 import com.netaporter.uri.dsl._
 import com.typesafe.scalalogging.StrictLogging
 import io.waylay.kairosdb.driver.KairosDB._
-import io.waylay.kairosdb.driver.models.QueryMetricTagsResponse.TagsResponse
+import io.waylay.kairosdb.driver.models.QueryMetricTagsResponse.{TagQueryResponse, TagsResponse}
 import io.waylay.kairosdb.driver.models.json.Formats._
 import io.waylay.kairosdb.driver.models.QueryResponse.Response
 import play.api.libs.json._
@@ -155,7 +155,7 @@ class KairosDB(wsClient: StandaloneWSClient, config: KairosDBConfig, executionCo
     *
     * Note: Currently this is not implemented in the HBase datastore.
     */
-  def queryMetricTags(queryMetrics: QueryMetrics): Future[TagsResponse] = {
+  def queryMetricTags(queryMetrics: QueryMetrics): Future[TagQueryResponse] = {
     val query = Json.toJson(queryMetrics)
     logger.debug(Json.prettyPrint(query))
     wsClient
@@ -163,7 +163,7 @@ class KairosDB(wsClient: StandaloneWSClient, config: KairosDBConfig, executionCo
       .applyKairosDBAuth
       .post(query)
       .map {
-        wsRepsonseToResult(_.validate[TagsResponse])
+        wsRepsonseToResult(_.validate[TagQueryResponse])
       }
   }
 

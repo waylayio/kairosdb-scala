@@ -7,7 +7,7 @@ import io.waylay.kairosdb.driver.models.Aggregator._
 import io.waylay.kairosdb.driver.models.GroupBy._
 import io.waylay.kairosdb.driver.models.KairosCompatibleType.{KNull, KNumber, KString}
 import io.waylay.kairosdb.driver.models.KairosQuery.{Order, QueryTag}
-import io.waylay.kairosdb.driver.models.QueryMetricTagsResponse.{TagsResponse, TagsResult}
+import io.waylay.kairosdb.driver.models.QueryMetricTagsResponse.{TagQueryResponse, TagsResponse, TagsResult}
 import io.waylay.kairosdb.driver.models.QueryResponse.{Response, ResponseQuery, Result, TagResult}
 import io.waylay.kairosdb.driver.models.RangeAggregator.Align.{AlignSampling, AlignStartTime}
 import io.waylay.kairosdb.driver.models.TimeSpan._
@@ -443,6 +443,7 @@ object Formats {
     ) (TagsResult.apply _)
 
   implicit val responseTagsReads = Json.reads[TagsResponse]
+  implicit val tagResponseReads = Json.reads[TagQueryResponse]
 
 
   private def instant2kairosLong(instant: Instant): Long = instant.toEpochMilli

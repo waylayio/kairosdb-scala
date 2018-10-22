@@ -135,6 +135,7 @@ object QueryResponse {
 }
 
 object QueryMetricTagsResponse {
+  case class TagQueryResponse(queries: Seq[TagsResponse])
   case class TagsResponse(results: Seq[TagsResult])
   case class TagsResult(name: MetricName, tags: Seq[TagResult])
 }
