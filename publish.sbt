@@ -12,6 +12,8 @@ publishTo := {
     Some("releases"  at nexus + "service/local/staging/deploy/maven2")
 }
 
+updateOptions := updateOptions.value.withGigahorse(false)
+
 pomExtra := (
   <url>https://github.com/waylayio/kairosdb-scala</url>
     <licenses>
@@ -31,5 +33,10 @@ pomExtra := (
         <id>thomastoye</id>
         <name>Thomas Toye</name>
         <url>https://github.com/thomastoye</url>
+      </developer>
+      <developer>
+        <id>brunoballekens</id>
+        <name>Bruno Ballekens</name>
+        <url>https://github.com/brunoballekens</url>
       </developer>
     </developers>)
