@@ -693,9 +693,9 @@ issue the delete with that query.</p><p>Note: Delete works for the Cassandra and
               
         </dd></dl></div>
     </li><li name="io.waylay.kairosdb.driver.KairosDB#queryMetricTags" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="queryMetricTags(queryMetrics:io.waylay.kairosdb.driver.models.QueryMetrics):scala.concurrent.Future[io.waylay.kairosdb.driver.models.QueryMetricTagsResponse.TagsResponse]"></a><a id="queryMetricTags(QueryMetrics):Future[TagsResponse]"></a>
+      <a id="queryMetricTags(queryMetrics:io.waylay.kairosdb.driver.models.QueryMetrics):scala.concurrent.Future[io.waylay.kairosdb.driver.models.QueryMetricTagsResponse.TagQueryResponse]"></a><a id="queryMetricTags(QueryMetrics):Future[TagQueryResponse]"></a>
       <span class="permalink">
-      <a href="../../../../io/waylay/kairosdb/driver/KairosDB.html#queryMetricTags(queryMetrics:io.waylay.kairosdb.driver.models.QueryMetrics):scala.concurrent.Future[io.waylay.kairosdb.driver.models.QueryMetricTagsResponse.TagsResponse]" title="Permalink">
+      <a href="../../../../io/waylay/kairosdb/driver/KairosDB.html#queryMetricTags(queryMetrics:io.waylay.kairosdb.driver.models.QueryMetrics):scala.concurrent.Future[io.waylay.kairosdb.driver.models.QueryMetricTagsResponse.TagQueryResponse]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -704,7 +704,7 @@ issue the delete with that query.</p><p>Note: Delete works for the Cassandra and
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">queryMetricTags</span><span class="params">(<span name="queryMetrics">queryMetrics: <a href="models/QueryMetrics.html" class="extype" name="io.waylay.kairosdb.driver.models.QueryMetrics">QueryMetrics</a></span>)</span><span class="result">: <span class="extype" name="scala.concurrent.Future">Future</span>[<a href="models/QueryMetricTagsResponse$$TagsResponse.html" class="extype" name="io.waylay.kairosdb.driver.models.QueryMetricTagsResponse.TagsResponse">TagsResponse</a>]</span>
+        <span class="name">queryMetricTags</span><span class="params">(<span name="queryMetrics">queryMetrics: <a href="models/QueryMetrics.html" class="extype" name="io.waylay.kairosdb.driver.models.QueryMetrics">QueryMetrics</a></span>)</span><span class="result">: <span class="extype" name="scala.concurrent.Future">Future</span>[<a href="models/QueryMetricTagsResponse$$TagQueryResponse.html" class="extype" name="io.waylay.kairosdb.driver.models.QueryMetricTagsResponse.TagQueryResponse">TagQueryResponse</a>]</span>
       </span>
       
       <p class="shortcomment cmt">You can think of this as the exact same as the query but it leaves off the data and just returns the tag information.</p><div class="fullcomment"><div class="comment cmt"><p>You can think of this as the exact same as the query but it leaves off the data and just returns the tag information.</p><p>Note: Currently this is not implemented in the HBase datastore.
