@@ -305,6 +305,12 @@ object Formats {
 
   implicit val queryMetricsWrites: Writes[QueryMetrics] = new Writes[QueryMetrics] {
     override def writes(queryMetrics: QueryMetrics): JsValue = {
+      val plugins: Seq[(String, JsValue)] = if (queryMetrics.plugins.nonEmpty) {
+        Seq("plugins" -> Json.toJson(queryMetrics.plugins))
+      } else {
+        Seq.empty
+      }
+
       val fields: Seq[(String, JsValue)] = Seq(
         queryMetrics.timeSpan.startTime.fieldName -> Json.toJson(queryMetrics.timeSpan.startTime),
         "metrics" -> JsArray(queryMetrics.metrics.map(x => Json.toJson(x)))
@@ -312,7 +318,7 @@ object Formats {
         queryMetrics.timeSpan.endTime.map(x => x.fieldName -> Json.toJson(x)),
         queryMetrics.timeZone.map("time_zone" -> JsString(_)),
         queryMetrics.cacheTime.map("cache_time" -> JsNumber(_))
-      ).flatten
+      ).flatten ++ plugins
 
       JsObject(fields)
     }
@@ -323,6 +329,20 @@ object Formats {
   }
 
   implicit val queryTagFormat = Json.format[QueryTag]
+
+  implicit val queryPluginWrites: Writes[QueryPlugin] = (plugin: QueryPlugin) => {
+    JsObject(Seq("name" -> JsString(plugin.name)) ++ plugin.properties.map(
+      prop => {
+        val propValue: JsValue = prop._2 match {
+          case s: String => Json.toJson(s)
+          case l: Long => Json.toJson(l)
+          case i: Integer => Json.toJson(i.longValue())
+          case d: Double => Json.toJson(d)
+          case stringSeq: Seq[String] => Json.toJson(stringSeq)
+        }
+        prop._1 -> propValue
+      }))
+  }
 
   implicit val queryWrites: Writes[Query] = new Writes[Query] {
     override def writes(query: Query): JsValue = {
@@ -380,7 +400,13 @@ object Formats {
         "name" -> query.metricName.name
       )
 
-      name ++ limit ++ tags ++ aggregators ++ groupBys ++ excludeTags ++ order
+      val plugins = if (query.plugins.isEmpty) {
+        Json.obj()
+      } else {
+        Json.obj("plugins" -> query.plugins)
+      }
+
+      name ++ limit ++ tags ++ aggregators ++ groupBys ++ excludeTags ++ order ++ plugins
     }
   }
 
@@ -444,7 +470,6 @@ object Formats {
 
   implicit val responseTagsReads = Json.reads[TagsResponse]
   implicit val tagResponseReads = Json.reads[TagQueryResponse]
-
 
   private def instant2kairosLong(instant: Instant): Long = instant.toEpochMilli
 
