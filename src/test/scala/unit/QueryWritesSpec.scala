@@ -341,5 +341,44 @@ class QueryWritesSpec extends Specification {
           |}
         """.stripMargin)
     }
+
+    "Correctly serialize a minimal QueryPlugin" in {
+      val queryPlugin = QueryPlugin("testPlugin")
+      Json.toJson(queryPlugin) must be equalTo Json.obj("name" -> "testPlugin")
+    }
+
+    "Correctly serialize a QueryPlugin with properties" in {
+      val queryPlugin = QueryPlugin("testPlugin",
+        Map(
+          "stringProp" -> "stringVal",
+          "intProp" -> 123,
+          "doubleProp" -> 1.23d,
+          "stringListProp" -> List("one", "two", "three")))
+      Json.toJson(queryPlugin) must be equalTo Json.obj(
+        "name" -> "testPlugin",
+        "stringProp" -> "stringVal",
+        "intProp" -> 123,
+        "doubleProp" -> 1.23,
+        "stringListProp" -> Json.arr("one", "two", "three"))
+    }
+
+    "Correctly serialize a query with plugins configured at the Query level" in {
+      val query = Query(MetricName("mymetric"), plugins = Seq(QueryPlugin("testPlugin", Map("propA" -> "valA"))))
+      Json.toJson(query) must be equalTo Json.obj("name" -> "mymetric", "plugins" -> Json.arr(Json.obj("name" -> "testPlugin", "propA" -> "valA")))
+    }
+
+    "Correctly serialize a query with plugins configured at the QueryMetric level" in {
+      val qm = QueryMetrics(Seq(Query(MetricName("mymetric"))),
+        TimeSpan(AbsoluteStartTime(Instant.ofEpochSecond(1470052425L))),
+        plugins = Seq(QueryPlugin("testPlugin", Map("propA" -> "valA"))))
+
+      Json.toJson(qm) should be equalTo Json.obj(
+        "start_absolute" -> 1470052425000L,
+        "metrics" -> Seq(Json.obj("name" -> "mymetric")),
+        "plugins" -> Json.arr(Json.obj("name" -> "testPlugin", "propA" -> "valA"))
+      )
+
+    }
+
   }
 }

@@ -173,6 +173,7 @@ object KairosQuery {
   * @param order Orders the returned data points. This sorting is done before any aggregators are executed.
   * @param excludeTags By default, the result of the query includes tags and tag values associated with the data points.
   *                    If `excludeTags` is set to true, the tags will be excluded from the response.
+  * @param plugins optional plugin references to customize the behavior of the query on this metric
   */
 case class Query(
   metricName: MetricName,
@@ -181,16 +182,30 @@ case class Query(
   aggregators: Seq[Aggregator] = Seq.empty,
   limit: Option[Int] = None,
   order: Order = Order.defaultOrder,
-  excludeTags: Boolean = false)
+  excludeTags: Boolean = false,
+  plugins: Seq[QueryPlugin] = Seq.empty)
 
 /** @param timeZone The time zone for the time range of the query. If not specified, UTC is used. tz format, e.g. "Europe/Brussels"
   * @param cacheTime The amount of time in seconds to re use the cache from a previous query. When a query is made,
   *                  Kairos looks for the cache file for the query. If a cache file is found and the timestamp of the
   *                  cache file is within cache_time seconds from the current query, the cache is used.
   *                  Sending a query with a cacheTime set to 0 will always refresh the cache with new data from Cassandra.
+  * @param plugins optional plugin references to custom the behavior of this query
   */
 case class QueryMetrics(
   metrics: Seq[Query],
   timeSpan: TimeSpan,
   timeZone: Option[String] = None,
-  cacheTime: Option[Int] = None)
+  cacheTime: Option[Int] = None,
+  plugins: Seq[QueryPlugin] = Seq.empty)
+
+
+/**
+  * Reference to a plugin which can customize the behavior of a query.
+  *
+  * @param name published name of the plugin
+  * @param properties properties for the plugin within the query invocation
+  */
+case class QueryPlugin(
+  name: String,
+  properties: Map[String,Any] = Map.empty)
