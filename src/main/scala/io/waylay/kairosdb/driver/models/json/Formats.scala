@@ -330,18 +330,20 @@ object Formats {
 
   implicit val queryTagFormat = Json.format[QueryTag]
 
-  implicit val queryPluginWrites: Writes[QueryPlugin] = (plugin: QueryPlugin) => {
-    JsObject(Seq("name" -> JsString(plugin.name)) ++ plugin.properties.map(
-      prop => {
-        val propValue: JsValue = prop._2 match {
-          case s: String => Json.toJson(s)
-          case l: Long => Json.toJson(l)
-          case i: Integer => Json.toJson(i.longValue())
-          case d: Double => Json.toJson(d)
-          case stringSeq: Seq[String] => Json.toJson(stringSeq)
-        }
-        prop._1 -> propValue
-      }))
+  implicit val queryPluginWrites: Writes[QueryPlugin] = new Writes[QueryPlugin] {
+    override def writes(plugin: QueryPlugin): JsValue = {
+      JsObject(Seq("name" -> JsString(plugin.name)) ++ plugin.properties.map(
+        prop => {
+          val propValue: JsValue = prop._2 match {
+            case s: String => Json.toJson(s)
+            case l: Long => Json.toJson(l)
+            case i: Integer => Json.toJson(i.longValue())
+            case d: Double => Json.toJson(d)
+            case stringSeq: Seq[String] => Json.toJson(stringSeq)
+          }
+          prop._1 -> propValue
+        }))
+    }
   }
 
   implicit val queryWrites: Writes[Query] = new Writes[Query] {
