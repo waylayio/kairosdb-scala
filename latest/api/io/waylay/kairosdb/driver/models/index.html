@@ -223,6 +223,10 @@
                         <a href="QueryMetrics.html" title="">QueryMetrics</a>
                       </li><li class="current-entities indented5">
                         <span class="separator"></span>
+                        <a class="class" href="QueryPlugin.html" title="Reference to a plugin which can customize the behavior of a query."></a>
+                        <a href="QueryPlugin.html" title="Reference to a plugin which can customize the behavior of a query.">QueryPlugin</a>
+                      </li><li class="current-entities indented5">
+                        <span class="separator"></span>
                         <a class="object" href="QueryResponse$.html" title=""></a>
                         <a href="QueryResponse$.html" title="">QueryResponse</a>
                       </li><li class="current-entities indented5">
@@ -479,7 +483,7 @@ slash “/”, dash “-”, and underscore “_” (not enforced)
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a title="" href="Query.html"><span class="name">Query</span></a><span class="params">(<span name="metricName">metricName: <a href="MetricName.html" class="extype" name="io.waylay.kairosdb.driver.models.MetricName">MetricName</a></span>, <span name="tags">tags: <span class="extype" name="scala.Seq">Seq</span>[<a href="KairosQuery$$QueryTag.html" class="extype" name="io.waylay.kairosdb.driver.models.KairosQuery.QueryTag">QueryTag</a>] = <span class="symbol">Seq.empty</span></span>, <span name="groupBys">groupBys: <span class="extype" name="scala.Seq">Seq</span>[<a href="GroupBy.html" class="extype" name="io.waylay.kairosdb.driver.models.GroupBy">GroupBy</a>] = <span class="symbol">Seq.empty</span></span>, <span name="aggregators">aggregators: <span class="extype" name="scala.Seq">Seq</span>[<a href="Aggregator.html" class="extype" name="io.waylay.kairosdb.driver.models.Aggregator">Aggregator</a>] = <span class="symbol">Seq.empty</span></span>, <span name="limit">limit: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Int">Int</span>] = <span class="symbol">None</span></span>, <span name="order">order: <a href="KairosQuery$$Order.html" class="extype" name="io.waylay.kairosdb.driver.models.KairosQuery.Order">Order</a> = <span class="symbol"><span class="name"><a href="../../../../index.html">Order.defaultOrder</a></span></span></span>, <span name="excludeTags">excludeTags: <span class="extype" name="scala.Boolean">Boolean</span> = <span class="symbol">false</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a title="" href="Query.html"><span class="name">Query</span></a><span class="params">(<span name="metricName">metricName: <a href="MetricName.html" class="extype" name="io.waylay.kairosdb.driver.models.MetricName">MetricName</a></span>, <span name="tags">tags: <span class="extype" name="scala.Seq">Seq</span>[<a href="KairosQuery$$QueryTag.html" class="extype" name="io.waylay.kairosdb.driver.models.KairosQuery.QueryTag">QueryTag</a>] = <span class="symbol">Seq.empty</span></span>, <span name="groupBys">groupBys: <span class="extype" name="scala.Seq">Seq</span>[<a href="GroupBy.html" class="extype" name="io.waylay.kairosdb.driver.models.GroupBy">GroupBy</a>] = <span class="symbol">Seq.empty</span></span>, <span name="aggregators">aggregators: <span class="extype" name="scala.Seq">Seq</span>[<a href="Aggregator.html" class="extype" name="io.waylay.kairosdb.driver.models.Aggregator">Aggregator</a>] = <span class="symbol">Seq.empty</span></span>, <span name="limit">limit: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Int">Int</span>] = <span class="symbol">None</span></span>, <span name="order">order: <a href="KairosQuery$$Order.html" class="extype" name="io.waylay.kairosdb.driver.models.KairosQuery.Order">Order</a> = <span class="symbol"><span class="name"><a href="../../../../index.html">Order.defaultOrder</a></span></span></span>, <span name="excludeTags">excludeTags: <span class="extype" name="scala.Boolean">Boolean</span> = <span class="symbol">false</span></span>, <span name="plugins">plugins: <span class="extype" name="scala.Seq">Seq</span>[<a href="QueryPlugin.html" class="extype" name="io.waylay.kairosdb.driver.models.QueryPlugin">QueryPlugin</a>] = <span class="symbol">Seq.empty</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       
       <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">tags</dt><dd class="cmt"><p>Tags narrow down the search. Only metrics that include the tag and matches one of the values are
@@ -487,7 +491,7 @@ slash “/”, dash “-”, and underscore “_” (not enforced)
                 combination of the three.</p></dd><dt class="param">aggregators</dt><dd class="cmt"><p>An ordered array of aggregators. They are processed in the order specified. The output of an
                    aggregator is passed to the input of the next until all have been processed.</p></dd><dt class="param">limit</dt><dd class="cmt"><p>Limits the number of data points returned from the data store.
              The limit is applied before any aggregator is executed.</p></dd><dt class="param">order</dt><dd class="cmt"><p>Orders the returned data points. This sorting is done before any aggregators are executed.</p></dd><dt class="param">excludeTags</dt><dd class="cmt"><p>By default, the result of the query includes tags and tag values associated with the data points.
-                   If <code>excludeTags</code> is set to true, the tags will be excluded from the response.</p></dd></dl></div>
+                   If <code>excludeTags</code> is set to true, the tags will be excluded from the response.</p></dd><dt class="param">plugins</dt><dd class="cmt"><p>optional plugin references to customize the behavior of the query on this metric</p></dd></dl></div>
     </li><li name="io.waylay.kairosdb.driver.models.QueryMetrics" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="QueryMetricsextendsProductwithSerializable"></a><a id="QueryMetrics:QueryMetrics"></a>
       <span class="permalink">
@@ -500,13 +504,30 @@ slash “/”, dash “-”, and underscore “_” (not enforced)
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a title="" href="QueryMetrics.html"><span class="name">QueryMetrics</span></a><span class="params">(<span name="metrics">metrics: <span class="extype" name="scala.Seq">Seq</span>[<a href="Query.html" class="extype" name="io.waylay.kairosdb.driver.models.Query">Query</a>]</span>, <span name="timeSpan">timeSpan: <a href="TimeSpan.html" class="extype" name="io.waylay.kairosdb.driver.models.TimeSpan">TimeSpan</a></span>, <span name="timeZone">timeZone: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Predef.String">String</span>] = <span class="symbol">None</span></span>, <span name="cacheTime">cacheTime: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Int">Int</span>] = <span class="symbol">None</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a title="" href="QueryMetrics.html"><span class="name">QueryMetrics</span></a><span class="params">(<span name="metrics">metrics: <span class="extype" name="scala.Seq">Seq</span>[<a href="Query.html" class="extype" name="io.waylay.kairosdb.driver.models.Query">Query</a>]</span>, <span name="timeSpan">timeSpan: <a href="TimeSpan.html" class="extype" name="io.waylay.kairosdb.driver.models.TimeSpan">TimeSpan</a></span>, <span name="timeZone">timeZone: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Predef.String">String</span>] = <span class="symbol">None</span></span>, <span name="cacheTime">cacheTime: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Int">Int</span>] = <span class="symbol">None</span></span>, <span name="plugins">plugins: <span class="extype" name="scala.Seq">Seq</span>[<a href="QueryPlugin.html" class="extype" name="io.waylay.kairosdb.driver.models.QueryPlugin">QueryPlugin</a>] = <span class="symbol">Seq.empty</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       
       <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">timeZone</dt><dd class="cmt"><p>The time zone for the time range of the query. If not specified, UTC is used. tz format, e.g. &quot;Europe/Brussels&quot;</p></dd><dt class="param">cacheTime</dt><dd class="cmt"><p>The amount of time in seconds to re use the cache from a previous query. When a query is made,
                  Kairos looks for the cache file for the query. If a cache file is found and the timestamp of the
                  cache file is within cache_time seconds from the current query, the cache is used.
-                 Sending a query with a cacheTime set to 0 will always refresh the cache with new data from Cassandra.</p></dd></dl></div>
+                 Sending a query with a cacheTime set to 0 will always refresh the cache with new data from Cassandra.</p></dd><dt class="param">plugins</dt><dd class="cmt"><p>optional plugin references to custom the behavior of this query</p></dd></dl></div>
+    </li><li name="io.waylay.kairosdb.driver.models.QueryPlugin" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="QueryPluginextendsProductwithSerializable"></a><a id="QueryPlugin:QueryPlugin"></a>
+      <span class="permalink">
+      <a href="../../../../../io/waylay/kairosdb/driver/models/index.html#QueryPluginextendsProductwithSerializable" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a title="Reference to a plugin which can customize the behavior of a query." href="QueryPlugin.html"><span class="name">QueryPlugin</span></a><span class="params">(<span name="name">name: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="properties">properties: <span class="extype" name="scala.Predef.Map">Map</span>[<span class="extype" name="scala.Predef.String">String</span>, <span class="extype" name="scala.Any">Any</span>] = <span class="symbol">Map.empty</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      <p class="shortcomment cmt">Reference to a plugin which can customize the behavior of a query.</p><div class="fullcomment"><div class="comment cmt"><p>Reference to a plugin which can customize the behavior of a query.
+</p></div><dl class="paramcmts block"><dt class="param">name</dt><dd class="cmt"><p>published name of the plugin</p></dd><dt class="param">properties</dt><dd class="cmt"><p>properties for the plugin within the query invocation</p></dd></dl></div>
     </li><li name="io.waylay.kairosdb.driver.models.RangeAggregator" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
       <a id="RangeAggregatorextendsAggregator"></a><a id="RangeAggregator:RangeAggregator"></a>
       <span class="permalink">

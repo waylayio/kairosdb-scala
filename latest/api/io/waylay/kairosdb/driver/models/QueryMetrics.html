@@ -223,6 +223,10 @@
                         <a href="" title="">QueryMetrics</a>
                       </li><li class="current-entities indented5">
                         <span class="separator"></span>
+                        <a class="class" href="QueryPlugin.html" title="Reference to a plugin which can customize the behavior of a query."></a>
+                        <a href="QueryPlugin.html" title="Reference to a plugin which can customize the behavior of a query.">QueryPlugin</a>
+                      </li><li class="current-entities indented5">
+                        <span class="separator"></span>
                         <a class="object" href="QueryResponse$.html" title=""></a>
                         <a href="QueryResponse$.html" title="">QueryResponse</a>
                       </li><li class="current-entities indented5">
@@ -260,7 +264,7 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">QueryMetrics</span><span class="params">(<span name="metrics">metrics: <span class="extype" name="scala.Seq">Seq</span>[<a href="Query.html" class="extype" name="io.waylay.kairosdb.driver.models.Query">Query</a>]</span>, <span name="timeSpan">timeSpan: <a href="TimeSpan.html" class="extype" name="io.waylay.kairosdb.driver.models.TimeSpan">TimeSpan</a></span>, <span name="timeZone">timeZone: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Predef.String">String</span>] = <span class="symbol">None</span></span>, <span name="cacheTime">cacheTime: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Int">Int</span>] = <span class="symbol">None</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">QueryMetrics</span><span class="params">(<span name="metrics">metrics: <span class="extype" name="scala.Seq">Seq</span>[<a href="Query.html" class="extype" name="io.waylay.kairosdb.driver.models.Query">Query</a>]</span>, <span name="timeSpan">timeSpan: <a href="TimeSpan.html" class="extype" name="io.waylay.kairosdb.driver.models.TimeSpan">TimeSpan</a></span>, <span name="timeZone">timeZone: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Predef.String">String</span>] = <span class="symbol">None</span></span>, <span name="cacheTime">cacheTime: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Int">Int</span>] = <span class="symbol">None</span></span>, <span name="plugins">plugins: <span class="extype" name="scala.Seq">Seq</span>[<a href="QueryPlugin.html" class="extype" name="io.waylay.kairosdb.driver.models.QueryPlugin">QueryPlugin</a>] = <span class="symbol">Seq.empty</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
 
@@ -268,7 +272,7 @@
           <div id="comment" class="fullcommenttop"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">timeZone</dt><dd class="cmt"><p>The time zone for the time range of the query. If not specified, UTC is used. tz format, e.g. &quot;Europe/Brussels&quot;</p></dd><dt class="param">cacheTime</dt><dd class="cmt"><p>The amount of time in seconds to re use the cache from a previous query. When a query is made,
                  Kairos looks for the cache file for the query. If a cache file is found and the timestamp of the
                  cache file is within cache_time seconds from the current query, the cache is used.
-                 Sending a query with a cacheTime set to 0 will always refresh the cache with new data from Cassandra.</p></dd></dl><div class="toggleContainer block">
+                 Sending a query with a cacheTime set to 0 will always refresh the cache with new data from Cassandra.</p></dd><dt class="param">plugins</dt><dd class="cmt"><p>optional plugin references to custom the behavior of this query</p></dd></dl><div class="toggleContainer block">
           <span class="toggle">
             Linear Supertypes
           </span>
@@ -319,9 +323,9 @@
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
               <ol><li name="io.waylay.kairosdb.driver.models.QueryMetrics#&lt;init&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="&lt;init&gt;(metrics:Seq[io.waylay.kairosdb.driver.models.Query],timeSpan:io.waylay.kairosdb.driver.models.TimeSpan,timeZone:Option[String],cacheTime:Option[Int]):io.waylay.kairosdb.driver.models.QueryMetrics"></a><a id="&lt;init&gt;:QueryMetrics"></a>
+      <a id="&lt;init&gt;(metrics:Seq[io.waylay.kairosdb.driver.models.Query],timeSpan:io.waylay.kairosdb.driver.models.TimeSpan,timeZone:Option[String],cacheTime:Option[Int],plugins:Seq[io.waylay.kairosdb.driver.models.QueryPlugin]):io.waylay.kairosdb.driver.models.QueryMetrics"></a><a id="&lt;init&gt;:QueryMetrics"></a>
       <span class="permalink">
-      <a href="../../../../../io/waylay/kairosdb/driver/models/QueryMetrics.html#&lt;init&gt;(metrics:Seq[io.waylay.kairosdb.driver.models.Query],timeSpan:io.waylay.kairosdb.driver.models.TimeSpan,timeZone:Option[String],cacheTime:Option[Int]):io.waylay.kairosdb.driver.models.QueryMetrics" title="Permalink">
+      <a href="../../../../../io/waylay/kairosdb/driver/models/QueryMetrics.html#&lt;init&gt;(metrics:Seq[io.waylay.kairosdb.driver.models.Query],timeSpan:io.waylay.kairosdb.driver.models.TimeSpan,timeZone:Option[String],cacheTime:Option[Int],plugins:Seq[io.waylay.kairosdb.driver.models.QueryPlugin]):io.waylay.kairosdb.driver.models.QueryMetrics" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -330,13 +334,13 @@
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">QueryMetrics</span><span class="params">(<span name="metrics">metrics: <span class="extype" name="scala.Seq">Seq</span>[<a href="Query.html" class="extype" name="io.waylay.kairosdb.driver.models.Query">Query</a>]</span>, <span name="timeSpan">timeSpan: <a href="TimeSpan.html" class="extype" name="io.waylay.kairosdb.driver.models.TimeSpan">TimeSpan</a></span>, <span name="timeZone">timeZone: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Predef.String">String</span>] = <span class="symbol">None</span></span>, <span name="cacheTime">cacheTime: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Int">Int</span>] = <span class="symbol">None</span></span>)</span>
+        <span class="name">QueryMetrics</span><span class="params">(<span name="metrics">metrics: <span class="extype" name="scala.Seq">Seq</span>[<a href="Query.html" class="extype" name="io.waylay.kairosdb.driver.models.Query">Query</a>]</span>, <span name="timeSpan">timeSpan: <a href="TimeSpan.html" class="extype" name="io.waylay.kairosdb.driver.models.TimeSpan">TimeSpan</a></span>, <span name="timeZone">timeZone: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Predef.String">String</span>] = <span class="symbol">None</span></span>, <span name="cacheTime">cacheTime: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Int">Int</span>] = <span class="symbol">None</span></span>, <span name="plugins">plugins: <span class="extype" name="scala.Seq">Seq</span>[<a href="QueryPlugin.html" class="extype" name="io.waylay.kairosdb.driver.models.QueryPlugin">QueryPlugin</a>] = <span class="symbol">Seq.empty</span></span>)</span>
       </span>
       
       <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">timeZone</dt><dd class="cmt"><p>The time zone for the time range of the query. If not specified, UTC is used. tz format, e.g. &quot;Europe/Brussels&quot;</p></dd><dt class="param">cacheTime</dt><dd class="cmt"><p>The amount of time in seconds to re use the cache from a previous query. When a query is made,
                  Kairos looks for the cache file for the query. If a cache file is found and the timestamp of the
                  cache file is within cache_time seconds from the current query, the cache is used.
-                 Sending a query with a cacheTime set to 0 will always refresh the cache with new data from Cassandra.</p></dd></dl></div>
+                 Sending a query with a cacheTime set to 0 will always refresh the cache with new data from Cassandra.</p></dd><dt class="param">plugins</dt><dd class="cmt"><p>optional plugin references to custom the behavior of this query</p></dd></dl></div>
     </li></ol>
             </div>
 
@@ -594,6 +598,22 @@
                 <span class="name">@native</span><span class="args">()</span>
               
         </dd></dl></div>
+    </li><li name="io.waylay.kairosdb.driver.models.QueryMetrics#plugins" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="plugins:Seq[io.waylay.kairosdb.driver.models.QueryPlugin]"></a><a id="plugins:Seq[QueryPlugin]"></a>
+      <span class="permalink">
+      <a href="../../../../../io/waylay/kairosdb/driver/models/QueryMetrics.html#plugins:Seq[io.waylay.kairosdb.driver.models.QueryPlugin]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">plugins</span><span class="result">: <span class="extype" name="scala.Seq">Seq</span>[<a href="QueryPlugin.html" class="extype" name="io.waylay.kairosdb.driver.models.QueryPlugin">QueryPlugin</a>]</span>
+      </span>
+      
+      
     </li><li name="scala.AnyRef#synchronized" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a><a id="synchronized[T0](⇒T0):T0"></a>
       <span class="permalink">

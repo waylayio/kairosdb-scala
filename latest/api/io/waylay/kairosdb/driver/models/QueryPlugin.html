@@ -175,8 +175,8 @@
                         <a href="DataPoint.html" title="">DataPoint</a>
                       </li><li class="current-entities indented5">
                         <span class="separator"></span>
-                        <a class="class" href="" title="A data point has with metric name, a single value, a timestamp, and a list of one or more tags"></a>
-                        <a href="" title="A data point has with metric name, a single value, a timestamp, and a list of one or more tags">DataPointWithMultipleValues</a>
+                        <a class="class" href="DataPointWithMultipleValues.html" title="A data point has with metric name, a single value, a timestamp, and a list of one or more tags"></a>
+                        <a href="DataPointWithMultipleValues.html" title="A data point has with metric name, a single value, a timestamp, and a list of one or more tags">DataPointWithMultipleValues</a>
                       </li><li class="current-entities indented5">
                         <span class="separator"></span>
                         <a class="class" href="DataPointWithSingleValue.html" title="A data point has with metric name, a single value, a timestamp, and a list of one or more tags"></a>
@@ -223,8 +223,8 @@
                         <a href="QueryMetrics.html" title="">QueryMetrics</a>
                       </li><li class="current-entities indented5">
                         <span class="separator"></span>
-                        <a class="class" href="QueryPlugin.html" title="Reference to a plugin which can customize the behavior of a query."></a>
-                        <a href="QueryPlugin.html" title="Reference to a plugin which can customize the behavior of a query.">QueryPlugin</a>
+                        <a class="class" href="" title="Reference to a plugin which can customize the behavior of a query."></a>
+                        <a href="" title="Reference to a plugin which can customize the behavior of a query.">QueryPlugin</a>
                       </li><li class="current-entities indented5">
                         <span class="separator"></span>
                         <a class="object" href="QueryResponse$.html" title=""></a>
@@ -250,8 +250,8 @@
       <div id="definition">
         <div class="big-circle class">c</div>
         <p id="owner"><a href="../../../../index.html" class="extype" name="io">io</a>.<a href="../../../index.html" class="extype" name="io.waylay">waylay</a>.<a href="../../index.html" class="extype" name="io.waylay.kairosdb">kairosdb</a>.<a href="../index.html" class="extype" name="io.waylay.kairosdb.driver">driver</a>.<a href="index.html" class="extype" name="io.waylay.kairosdb.driver.models">models</a></p>
-        <h1>DataPointWithMultipleValues<span class="permalink">
-      <a href="../../../../../io/waylay/kairosdb/driver/models/DataPointWithMultipleValues.html" title="Permalink">
+        <h1>QueryPlugin<span class="permalink">
+      <a href="../../../../../io/waylay/kairosdb/driver/models/QueryPlugin.html" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span></h1>
@@ -264,17 +264,17 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">DataPointWithMultipleValues</span><span class="params">(<span name="metricName">metricName: <a href="MetricName.html" class="extype" name="io.waylay.kairosdb.driver.models.MetricName">MetricName</a></span>, <span name="values">values: <span class="extype" name="scala.Seq">Seq</span>[(<span class="extype" name="java.time.Instant">Instant</span>, <a href="KairosCompatibleType.html" class="extype" name="io.waylay.kairosdb.driver.models.KairosCompatibleType">KairosCompatibleType</a>)]</span>, <span name="tags">tags: <span class="extype" name="scala.Seq">Seq</span>[<a href="Tag.html" class="extype" name="io.waylay.kairosdb.driver.models.Tag">Tag</a>] = <span class="symbol">Seq.empty</span></span>, <span name="ttl">ttl: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.concurrent.duration.FiniteDuration">FiniteDuration</span>] = <span class="symbol">None</span></span>)</span><span class="result"> extends <a href="DataPoint.html" class="extype" name="io.waylay.kairosdb.driver.models.DataPoint">DataPoint</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">QueryPlugin</span><span class="params">(<span name="name">name: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="properties">properties: <span class="extype" name="scala.Predef.Map">Map</span>[<span class="extype" name="scala.Predef.String">String</span>, <span class="extype" name="scala.Any">Any</span>] = <span class="symbol">Map.empty</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
 
       
-          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>A data point has with metric name, a single value, a timestamp, and a list of one or more tags
-</p></div><dl class="paramcmts block"><dt class="param">ttl</dt><dd class="cmt"><p>Sets the Cassandra ttl for the data points. None or Some(0.seconds) will not set a TTL</p></dd></dl><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Reference to a plugin which can customize the behavior of a query.
+</p></div><dl class="paramcmts block"><dt class="param">name</dt><dd class="cmt"><p>published name of the plugin</p></dd><dt class="param">properties</dt><dd class="cmt"><p>properties for the plugin within the query invocation</p></dd></dl><div class="toggleContainer block">
           <span class="toggle">
             Linear Supertypes
           </span>
-          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="DataPoint.html" class="extype" name="io.waylay.kairosdb.driver.models.DataPoint">DataPoint</a>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
         
 
@@ -300,7 +300,7 @@
                   <span class="filtertype">Inherited<br />
                   </span>
                   <ol id="linearization">
-                    <li class="in" name="io.waylay.kairosdb.driver.models.DataPointWithMultipleValues"><span>DataPointWithMultipleValues</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.Product"><span>Product</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="io.waylay.kairosdb.driver.models.DataPoint"><span>DataPoint</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                    <li class="in" name="io.waylay.kairosdb.driver.models.QueryPlugin"><span>QueryPlugin</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.Product"><span>Product</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                   </ol>
                 </div><div class="ancestors">
               <span class="filtertype"></span>
@@ -320,10 +320,10 @@
         <div id="allMembers">
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
-              <ol><li name="io.waylay.kairosdb.driver.models.DataPointWithMultipleValues#&lt;init&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="&lt;init&gt;(metricName:io.waylay.kairosdb.driver.models.MetricName,values:Seq[(java.time.Instant,io.waylay.kairosdb.driver.models.KairosCompatibleType)],tags:Seq[io.waylay.kairosdb.driver.models.Tag],ttl:Option[scala.concurrent.duration.FiniteDuration]):io.waylay.kairosdb.driver.models.DataPointWithMultipleValues"></a><a id="&lt;init&gt;:DataPointWithMultipleValues"></a>
+              <ol><li name="io.waylay.kairosdb.driver.models.QueryPlugin#&lt;init&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="&lt;init&gt;(name:String,properties:Map[String,Any]):io.waylay.kairosdb.driver.models.QueryPlugin"></a><a id="&lt;init&gt;:QueryPlugin"></a>
       <span class="permalink">
-      <a href="../../../../../io/waylay/kairosdb/driver/models/DataPointWithMultipleValues.html#&lt;init&gt;(metricName:io.waylay.kairosdb.driver.models.MetricName,values:Seq[(java.time.Instant,io.waylay.kairosdb.driver.models.KairosCompatibleType)],tags:Seq[io.waylay.kairosdb.driver.models.Tag],ttl:Option[scala.concurrent.duration.FiniteDuration]):io.waylay.kairosdb.driver.models.DataPointWithMultipleValues" title="Permalink">
+      <a href="../../../../../io/waylay/kairosdb/driver/models/QueryPlugin.html#&lt;init&gt;(name:String,properties:Map[String,Any]):io.waylay.kairosdb.driver.models.QueryPlugin" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -332,10 +332,10 @@
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">DataPointWithMultipleValues</span><span class="params">(<span name="metricName">metricName: <a href="MetricName.html" class="extype" name="io.waylay.kairosdb.driver.models.MetricName">MetricName</a></span>, <span name="values">values: <span class="extype" name="scala.Seq">Seq</span>[(<span class="extype" name="java.time.Instant">Instant</span>, <a href="KairosCompatibleType.html" class="extype" name="io.waylay.kairosdb.driver.models.KairosCompatibleType">KairosCompatibleType</a>)]</span>, <span name="tags">tags: <span class="extype" name="scala.Seq">Seq</span>[<a href="Tag.html" class="extype" name="io.waylay.kairosdb.driver.models.Tag">Tag</a>] = <span class="symbol">Seq.empty</span></span>, <span name="ttl">ttl: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.concurrent.duration.FiniteDuration">FiniteDuration</span>] = <span class="symbol">None</span></span>)</span>
+        <span class="name">QueryPlugin</span><span class="params">(<span name="name">name: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="properties">properties: <span class="extype" name="scala.Predef.Map">Map</span>[<span class="extype" name="scala.Predef.String">String</span>, <span class="extype" name="scala.Any">Any</span>] = <span class="symbol">Map.empty</span></span>)</span>
       </span>
       
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">ttl</dt><dd class="cmt"><p>Sets the Cassandra ttl for the data points. None or Some(0.seconds) will not set a TTL</p></dd></dl></div>
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">name</dt><dd class="cmt"><p>published name of the plugin</p></dd><dt class="param">properties</dt><dd class="cmt"><p>properties for the plugin within the query invocation</p></dd></dl></div>
     </li></ol>
             </div>
 
@@ -349,7 +349,7 @@
                 <li name="scala.AnyRef#!=" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="!=(x$1:Any):Boolean"></a><a id="!=(Any):Boolean"></a>
       <span class="permalink">
-      <a href="../../../../../io/waylay/kairosdb/driver/models/DataPointWithMultipleValues.html#!=(x$1:Any):Boolean" title="Permalink">
+      <a href="../../../../../io/waylay/kairosdb/driver/models/QueryPlugin.html#!=(x$1:Any):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -365,7 +365,7 @@
     </li><li name="scala.AnyRef###" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="##():Int"></a>
       <span class="permalink">
-      <a href="../../../../../io/waylay/kairosdb/driver/models/DataPointWithMultipleValues.html###():Int" title="Permalink">
+      <a href="../../../../../io/waylay/kairosdb/driver/models/QueryPlugin.html###():Int" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -381,7 +381,7 @@
     </li><li name="scala.AnyRef#==" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="==(x$1:Any):Boolean"></a><a id="==(Any):Boolean"></a>
       <span class="permalink">
-      <a href="../../../../../io/waylay/kairosdb/driver/models/DataPointWithMultipleValues.html#==(x$1:Any):Boolean" title="Permalink">
+      <a href="../../../../../io/waylay/kairosdb/driver/models/QueryPlugin.html#==(x$1:Any):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -397,7 +397,7 @@
     </li><li name="scala.Any#asInstanceOf" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
       <span class="permalink">
-      <a href="../../../../../io/waylay/kairosdb/driver/models/DataPointWithMultipleValues.html#asInstanceOf[T0]:T0" title="Permalink">
+      <a href="../../../../../io/waylay/kairosdb/driver/models/QueryPlugin.html#asInstanceOf[T0]:T0" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -413,7 +413,7 @@
     </li><li name="scala.AnyRef#clone" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="clone():Object"></a><a id="clone():AnyRef"></a>
       <span class="permalink">
-      <a href="../../../../../io/waylay/kairosdb/driver/models/DataPointWithMultipleValues.html#clone():Object" title="Permalink">
+      <a href="../../../../../io/waylay/kairosdb/driver/models/QueryPlugin.html#clone():Object" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -437,7 +437,7 @@
     </li><li name="scala.AnyRef#eq" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a><a id="eq(AnyRef):Boolean"></a>
       <span class="permalink">
-      <a href="../../../../../io/waylay/kairosdb/driver/models/DataPointWithMultipleValues.html#eq(x$1:AnyRef):Boolean" title="Permalink">
+      <a href="../../../../../io/waylay/kairosdb/driver/models/QueryPlugin.html#eq(x$1:AnyRef):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -453,7 +453,7 @@
     </li><li name="scala.AnyRef#finalize" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="finalize():Unit"></a>
       <span class="permalink">
-      <a href="../../../../../io/waylay/kairosdb/driver/models/DataPointWithMultipleValues.html#finalize():Unit" title="Permalink">
+      <a href="../../../../../io/waylay/kairosdb/driver/models/QueryPlugin.html#finalize():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -475,7 +475,7 @@
     </li><li name="scala.AnyRef#getClass" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="getClass():Class[_]"></a>
       <span class="permalink">
-      <a href="../../../../../io/waylay/kairosdb/driver/models/DataPointWithMultipleValues.html#getClass():Class[_]" title="Permalink">
+      <a href="../../../../../io/waylay/kairosdb/driver/models/QueryPlugin.html#getClass():Class[_]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -494,7 +494,7 @@
     </li><li name="scala.Any#isInstanceOf" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="isInstanceOf[T0]:Boolean"></a>
       <span class="permalink">
-      <a href="../../../../../io/waylay/kairosdb/driver/models/DataPointWithMultipleValues.html#isInstanceOf[T0]:Boolean" title="Permalink">
+      <a href="../../../../../io/waylay/kairosdb/driver/models/QueryPlugin.html#isInstanceOf[T0]:Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -507,10 +507,10 @@
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
-    </li><li name="io.waylay.kairosdb.driver.models.DataPointWithMultipleValues#metricName" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="metricName:io.waylay.kairosdb.driver.models.MetricName"></a><a id="metricName:MetricName"></a>
+    </li><li name="io.waylay.kairosdb.driver.models.QueryPlugin#name" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="name:String"></a>
       <span class="permalink">
-      <a href="../../../../../io/waylay/kairosdb/driver/models/DataPointWithMultipleValues.html#metricName:io.waylay.kairosdb.driver.models.MetricName" title="Permalink">
+      <a href="../../../../../io/waylay/kairosdb/driver/models/QueryPlugin.html#name:String" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -519,14 +519,14 @@
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">metricName</span><span class="result">: <a href="MetricName.html" class="extype" name="io.waylay.kairosdb.driver.models.MetricName">MetricName</a></span>
+        <span class="name">name</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
       </span>
       
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="io.waylay.kairosdb.driver.models.DataPointWithMultipleValues">DataPointWithMultipleValues</a> → <a href="DataPoint.html" class="extype" name="io.waylay.kairosdb.driver.models.DataPoint">DataPoint</a></dd></dl></div>
+      
     </li><li name="scala.AnyRef#ne" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a><a id="ne(AnyRef):Boolean"></a>
       <span class="permalink">
-      <a href="../../../../../io/waylay/kairosdb/driver/models/DataPointWithMultipleValues.html#ne(x$1:AnyRef):Boolean" title="Permalink">
+      <a href="../../../../../io/waylay/kairosdb/driver/models/QueryPlugin.html#ne(x$1:AnyRef):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -542,7 +542,7 @@
     </li><li name="scala.AnyRef#notify" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notify():Unit"></a>
       <span class="permalink">
-      <a href="../../../../../io/waylay/kairosdb/driver/models/DataPointWithMultipleValues.html#notify():Unit" title="Permalink">
+      <a href="../../../../../io/waylay/kairosdb/driver/models/QueryPlugin.html#notify():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -561,7 +561,7 @@
     </li><li name="scala.AnyRef#notifyAll" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notifyAll():Unit"></a>
       <span class="permalink">
-      <a href="../../../../../io/waylay/kairosdb/driver/models/DataPointWithMultipleValues.html#notifyAll():Unit" title="Permalink">
+      <a href="../../../../../io/waylay/kairosdb/driver/models/QueryPlugin.html#notifyAll():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -577,10 +577,26 @@
                 <span class="name">@native</span><span class="args">()</span>
               
         </dd></dl></div>
+    </li><li name="io.waylay.kairosdb.driver.models.QueryPlugin#properties" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="properties:Map[String,Any]"></a>
+      <span class="permalink">
+      <a href="../../../../../io/waylay/kairosdb/driver/models/QueryPlugin.html#properties:Map[String,Any]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">properties</span><span class="result">: <span class="extype" name="scala.Predef.Map">Map</span>[<span class="extype" name="scala.Predef.String">String</span>, <span class="extype" name="scala.Any">Any</span>]</span>
+      </span>
+      
+      
     </li><li name="scala.AnyRef#synchronized" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a><a id="synchronized[T0](⇒T0):T0"></a>
       <span class="permalink">
-      <a href="../../../../../io/waylay/kairosdb/driver/models/DataPointWithMultipleValues.html#synchronized[T0](x$1:=&gt;T0):T0" title="Permalink">
+      <a href="../../../../../io/waylay/kairosdb/driver/models/QueryPlugin.html#synchronized[T0](x$1:=&gt;T0):T0" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -593,58 +609,10 @@
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="io.waylay.kairosdb.driver.models.DataPointWithMultipleValues#tags" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="tags:Seq[io.waylay.kairosdb.driver.models.Tag]"></a><a id="tags:Seq[Tag]"></a>
-      <span class="permalink">
-      <a href="../../../../../io/waylay/kairosdb/driver/models/DataPointWithMultipleValues.html#tags:Seq[io.waylay.kairosdb.driver.models.Tag]" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">tags</span><span class="result">: <span class="extype" name="scala.Seq">Seq</span>[<a href="Tag.html" class="extype" name="io.waylay.kairosdb.driver.models.Tag">Tag</a>]</span>
-      </span>
-      
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="io.waylay.kairosdb.driver.models.DataPointWithMultipleValues">DataPointWithMultipleValues</a> → <a href="DataPoint.html" class="extype" name="io.waylay.kairosdb.driver.models.DataPoint">DataPoint</a></dd></dl></div>
-    </li><li name="io.waylay.kairosdb.driver.models.DataPointWithMultipleValues#ttl" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="ttl:Option[scala.concurrent.duration.FiniteDuration]"></a><a id="ttl:Option[FiniteDuration]"></a>
-      <span class="permalink">
-      <a href="../../../../../io/waylay/kairosdb/driver/models/DataPointWithMultipleValues.html#ttl:Option[scala.concurrent.duration.FiniteDuration]" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">ttl</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.concurrent.duration.FiniteDuration">FiniteDuration</span>]</span>
-      </span>
-      
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="io.waylay.kairosdb.driver.models.DataPointWithMultipleValues">DataPointWithMultipleValues</a> → <a href="DataPoint.html" class="extype" name="io.waylay.kairosdb.driver.models.DataPoint">DataPoint</a></dd></dl></div>
-    </li><li name="io.waylay.kairosdb.driver.models.DataPointWithMultipleValues#values" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="values:Seq[(java.time.Instant,io.waylay.kairosdb.driver.models.KairosCompatibleType)]"></a><a id="values:Seq[(Instant,KairosCompatibleType)]"></a>
-      <span class="permalink">
-      <a href="../../../../../io/waylay/kairosdb/driver/models/DataPointWithMultipleValues.html#values:Seq[(java.time.Instant,io.waylay.kairosdb.driver.models.KairosCompatibleType)]" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">values</span><span class="result">: <span class="extype" name="scala.Seq">Seq</span>[(<span class="extype" name="java.time.Instant">Instant</span>, <a href="KairosCompatibleType.html" class="extype" name="io.waylay.kairosdb.driver.models.KairosCompatibleType">KairosCompatibleType</a>)]</span>
-      </span>
-      
-      
     </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait():Unit"></a>
       <span class="permalink">
-      <a href="../../../../../io/waylay/kairosdb/driver/models/DataPointWithMultipleValues.html#wait():Unit" title="Permalink">
+      <a href="../../../../../io/waylay/kairosdb/driver/models/QueryPlugin.html#wait():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -666,7 +634,7 @@
     </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait(x$1:Long,x$2:Int):Unit"></a><a id="wait(Long,Int):Unit"></a>
       <span class="permalink">
-      <a href="../../../../../io/waylay/kairosdb/driver/models/DataPointWithMultipleValues.html#wait(x$1:Long,x$2:Int):Unit" title="Permalink">
+      <a href="../../../../../io/waylay/kairosdb/driver/models/QueryPlugin.html#wait(x$1:Long,x$2:Int):Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -688,7 +656,7 @@
     </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait(x$1:Long):Unit"></a><a id="wait(Long):Unit"></a>
       <span class="permalink">
-      <a href="../../../../../io/waylay/kairosdb/driver/models/DataPointWithMultipleValues.html#wait(x$1:Long):Unit" title="Permalink">
+      <a href="../../../../../io/waylay/kairosdb/driver/models/QueryPlugin.html#wait(x$1:Long):Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -727,8 +695,6 @@
               <h3>Inherited from <span class="extype" name="scala.Product">Product</span></h3>
             </div><div class="parent" name="scala.Equals">
               <h3>Inherited from <span class="extype" name="scala.Equals">Equals</span></h3>
-            </div><div class="parent" name="io.waylay.kairosdb.driver.models.DataPoint">
-              <h3>Inherited from <a href="DataPoint.html" class="extype" name="io.waylay.kairosdb.driver.models.DataPoint">DataPoint</a></h3>
             </div><div class="parent" name="scala.AnyRef">
               <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
             </div><div class="parent" name="scala.Any">
