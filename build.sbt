@@ -2,16 +2,16 @@ import sbt.Keys.thisProjectRef
 
 organization in ThisBuild := "io.waylay.kairosdb"
 
-val playWsVersion = "1.1.3"
-val playJsonVersion = "2.6.8"
-val akkaVersion = "2.5.8"
+val playWsVersion = "2.0.3"
+val playJsonVersion = "2.7.2"
+val akkaVersion = "2.5.22"
 val specs2Version = "4.0.2"
-val dockerTestkitVersion = "0.9.5"
+val dockerTestkitVersion = "0.9.8"
 val scalaTestVersion = "3.0.4"
-val playVersion = "2.6.9" // test only
+val playVersion = "2.7.1" // test only
 
 val scala2_11 = "2.11.12"
-val scala2_12 = "2.12.4"
+val scala2_12 = "2.12.8"
 
 scalaVersion := scala2_12
 crossScalaVersions := Seq(scala2_11, scala2_12)
@@ -42,7 +42,7 @@ lazy val root = (project in file("."))
       "com.typesafe.play" %% "play-json" % playJsonVersion,
       "com.typesafe.play" %% "play-ws-standalone" % playWsVersion,
       "com.typesafe.play" %% "play-ws-standalone-json" % playWsVersion,
-      "com.typesafe.scala-logging" %% "scala-logging" % "3.7.2",
+      "com.typesafe.scala-logging" %% "scala-logging" % "3.9.0",
       "com.typesafe.akka" %% "akka-actor" % akkaVersion,
 
 

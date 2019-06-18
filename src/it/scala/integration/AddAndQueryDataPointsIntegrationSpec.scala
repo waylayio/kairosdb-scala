@@ -43,7 +43,7 @@ class AddAndQueryDataPointsIntegrationSpec extends IntegrationSpec {
     val dps = Seq(
       DataPoint(metric2, KNumber(111), instant.plusMillis(1), Seq(Tag("aoeu", "123"))),
       DataPoint(metric2, KNumber(222), instant.plusMillis(2), Seq(Tag("snth", "321"))),
-      DataPoint(metric2, KNumber(333), instant.plusMillis(3), Seq(Tag("aoeu", "456"))),
+      DataPoint(metric2, KNumber(333), instant.plusMillis(3), Seq(Tag("aoeu", "456")))
     )
 
     val res = for {
