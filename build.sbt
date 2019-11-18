@@ -13,8 +13,8 @@ val playVersion = "2.7.3" // test only
 val scala2_12 = "2.12.10"
 val scala2_13 = "2.13.0"
 
-scalaVersion := scala2_13
-crossScalaVersions := Seq(scala2_12, scala2_13)
+ThisBuild / scalaVersion := scala2_13
+ThisBuild / crossScalaVersions := Seq(scala2_12, scala2_13)
 
 releaseCrossBuild := true
 
@@ -110,7 +110,6 @@ git.remoteRepo := "git@github.com:waylayio/kairosdb-scala.git"
 lazy val examples = project
   .dependsOn(root)
   .settings(
-    scalaVersion := scala2_13,
     libraryDependencies ++= Seq(
       "com.typesafe.play" %% "play-ahc-ws-standalone" % playWsVersion
     )
