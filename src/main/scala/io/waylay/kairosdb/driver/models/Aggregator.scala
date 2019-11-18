@@ -5,6 +5,7 @@ import io.waylay.kairosdb.driver.models.RangeAggregator.Align
 import io.waylay.kairosdb.driver.models.TimeSpan.AbsoluteStartTime
 
 import scala.concurrent.duration.{FiniteDuration, TimeUnit}
+import scala.collection.immutable.Seq
 
 sealed trait Aggregator {
   val name: String

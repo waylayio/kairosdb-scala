@@ -2,12 +2,13 @@ package io.waylay.kairosdb.driver.models
 
 import java.time.Instant
 
-import com.netaporter.uri.Uri
+import io.lemonlabs.uri.{Uri, Url}
 import io.waylay.kairosdb.driver.models.KairosQuery.{Order, QueryTag}
 import io.waylay.kairosdb.driver.models.QueryResponse.TagResult
 
 import scala.concurrent.duration.FiniteDuration
-//import scala.collection.immutable.Seq
+import scala.collection.immutable.Seq
+import scala.collection.compat._
 
 /**
   * Metric names are case sensitive and can only contain the following characters: alphanumeric characters, period ”.”,
@@ -53,7 +54,7 @@ case class DataPointWithMultipleValues(metricName: MetricName, values: Seq[(Inst
 case class Tag(name: String, value: String)
 
 /** Kairos base URL */
-case class KairosDBConfig(uri: Uri)
+case class KairosDBConfig(url: Url)
 
 object KairosDBConfig {
   def apply(
@@ -63,7 +64,7 @@ object KairosDBConfig {
     username: Option[String] = None,
     password: Option[String] = None
   ): KairosDBConfig = {
-    val baseUri = Uri()
+    val baseUri = Url()
       .withScheme(scheme)
       .withHost(host)
       .withPort(port)
@@ -80,7 +81,7 @@ object KairosDBConfig {
     KairosDBConfig(serverUri)
   }
 
-  def apply(javaUri: java.net.URI): KairosDBConfig = KairosDBConfig(Uri(javaUri))
+  def apply(javaUri: java.net.URI): KairosDBConfig = KairosDBConfig(Uri(javaUri).toUrl)
 }
 
 /**
@@ -150,7 +151,7 @@ object KairosQuery {
   object QueryTag {
     //def apply(name: String, allowedValue: String): QueryTag = QueryTag(name, Seq(allowedValue))
     def apply(tuple: (String, String)): QueryTag = QueryTag(tuple._1, Seq(tuple._2))
-    def apply(tuple: (String, String)*): Seq[QueryTag] = tuple.map(tup => QueryTag(tup)).to[Seq]
+    def apply(tuple: (String, String)*): Seq[QueryTag] = tuple.map(tup => QueryTag(tup)).to(Seq)
   }
 
   sealed trait Order { val value: String }

@@ -13,6 +13,7 @@ import org.specs2.mutable.Specification
 import play.api.libs.json.Json
 
 import scala.concurrent.duration._
+import scala.collection.immutable.Seq
 
 class AggregatorWritesSpec extends Specification {
   "Average aggregator" should {

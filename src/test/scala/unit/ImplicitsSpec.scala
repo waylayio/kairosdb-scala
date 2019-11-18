@@ -10,6 +10,7 @@ import org.specs2.mutable.Specification
 import org.specs2.matcher.ResultMatchers
 
 import scala.concurrent.duration._
+import scala.collection.immutable.Seq
 
 class ImplicitsSpec extends Specification with ResultMatchers {
   "The implicits" should {

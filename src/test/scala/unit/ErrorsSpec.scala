@@ -16,6 +16,7 @@ import play.api.mvc.Results._
 
 import scala.concurrent.ExecutionContext.Implicits._
 import scala.concurrent.duration._
+import scala.collection.immutable.Seq
 
 class ErrorsSpec(implicit ee: ExecutionEnv) extends Specification with MockHelper{
 

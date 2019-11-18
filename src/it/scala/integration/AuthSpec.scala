@@ -2,12 +2,13 @@ package integration
 
 import java.nio.file.Paths
 
-import com.whisk.docker.VolumeMapping
+import com.spotify.docker.client.messages.HostConfig
 import io.waylay.kairosdb.driver.KairosDB
 import io.waylay.kairosdb.driver.KairosDB.KairosDBResponseException
 import io.waylay.kairosdb.driver.models._
 
-import scala.concurrent.ExecutionContext.global
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.collection.immutable.Seq
 
 class AuthSpec extends IntegrationSpec {
 
@@ -24,30 +25,28 @@ class AuthSpec extends IntegrationSpec {
 
   // enabling auth by providing a properties file
   override lazy val volumes = Seq(
-    VolumeMapping(Paths.get("src/it/resources/conf").toAbsolutePath.toString, "/opt/kairosdb/conf")
+    HostConfig.Bind
+      .from(Paths.get("src/it/resources/conf").toAbsolutePath.toString)
+      .to("/opt/kairosdb/conf")
+      .build()
   )
 
   "The health status" should " fail without auth" in {
-    val res = kairosPort.flatMap { kairosPort =>
-      val kairosDB = new KairosDB(wsClient, KairosDBConfig(port = kairosPort), global)
-      kairosDB.healthStatus
-    }.failed.futureValue
+    val kairosDB = new KairosDB(wsClient, KairosDBConfig(port = kairosPort), global)
+    val res = kairosDB.healthStatus.failed.futureValue
 
     res shouldBe an[KairosDBResponseException]
     res should be(KairosDBResponseException(401, "Unauthorized", Seq.empty))
   }
 
   it should "succeed with auth" in {
-
-    val res = kairosPort.flatMap { kairosPort =>
-      val kairosConfig = KairosDBConfig(
-        port = kairosPort,
-        username = Some("test"),
-        password = Some("test")
-      )
-      val kairosDB = new KairosDB(wsClient, kairosConfig, global)
-      kairosDB.healthStatus
-    }.futureValue
+    val kairosConfig = KairosDBConfig(
+      port = kairosPort,
+      username = Some("test"),
+      password = Some("test")
+    )
+    val kairosDB = new KairosDB(wsClient, kairosConfig, global)
+    val res = kairosDB.healthStatus.futureValue
 
     res should be(HealthStatusResults(Seq("JVM-Thread-Deadlock: OK", "Datastore-Query: OK")))
   }

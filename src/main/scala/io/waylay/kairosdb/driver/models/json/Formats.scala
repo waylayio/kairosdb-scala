@@ -14,6 +14,7 @@ import io.waylay.kairosdb.driver.models.TimeSpan._
 import io.waylay.kairosdb.driver.models.{Aggregator, KairosCompatibleType, RangeAggregator, _}
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
+import scala.collection.immutable.Seq
 
 import scala.concurrent.duration._
 

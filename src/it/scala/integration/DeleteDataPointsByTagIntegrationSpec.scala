@@ -9,7 +9,8 @@ import io.waylay.kairosdb.driver.models.KairosQuery.QueryTag
 import io.waylay.kairosdb.driver.models.QueryResponse.{ResponseQuery, Result, TagResult}
 import io.waylay.kairosdb.driver.models._
 
-import scala.concurrent.ExecutionContext._
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.collection.immutable.Seq
 
 
 class DeleteDataPointsByTagIntegrationSpec extends IntegrationSpec {
@@ -28,14 +29,12 @@ class DeleteDataPointsByTagIntegrationSpec extends IntegrationSpec {
       DataPoint(MetricName("my.other.metric"), KNumber(555), instant.plusMillis(6), Seq(Tag("aoeu", "snth")))
     )
 
-    val res = kairosPort.flatMap { kairosPort =>
-      val kairosDB = new KairosDB(wsClient, KairosDBConfig(port = kairosPort), global)
+    val kairosDB = new KairosDB(wsClient, KairosDBConfig(port = kairosPort), global)
 
-      kairosDB.addDataPoints(dps) flatMap { _ =>
-        kairosDB.deleteDataPoints(delete)
-      } flatMap { _ =>
-        kairosDB.queryMetrics(qm)
-      }
+    val res = kairosDB.addDataPoints(dps).flatMap { _ =>
+      kairosDB.deleteDataPoints(delete)
+    }.flatMap { _ =>
+      kairosDB.queryMetrics(qm)
     }.futureValue
 
     res should be(QueryResponse.Response(Seq(ResponseQuery(3, Seq(

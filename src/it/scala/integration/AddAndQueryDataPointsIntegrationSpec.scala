@@ -10,8 +10,9 @@ import io.waylay.kairosdb.driver.models.QueryResponse.{ResponseQuery, Result, Ta
 import io.waylay.kairosdb.driver.models.RangeAggregator.Align
 import io.waylay.kairosdb.driver.models.{DataPoint, _}
 
-import scala.concurrent.ExecutionContext.global
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
+import scala.collection.immutable.Seq
 
 class AddAndQueryDataPointsIntegrationSpec extends IntegrationSpec {
 
@@ -19,10 +20,8 @@ class AddAndQueryDataPointsIntegrationSpec extends IntegrationSpec {
     val instant = Instant.ofEpochSecond(1470837457L)
     val start = Instant.ofEpochSecond(1470830000L)
     val qm = QueryMetrics(Seq(Query("my.new.metric", QueryTag("aoeu" -> "snth"))), start)
-
+    val kairosDB = new KairosDB(wsClient, KairosDBConfig(port = kairosPort), global)
     val res = for {
-      port <- kairosPort
-      kairosDB = new KairosDB(wsClient, KairosDBConfig(port = port), global)
       _ <- kairosDB.addDataPoint(DataPoint(MetricName("my.new.metric"), KNumber(555), instant, Seq(Tag("aoeu", "snth"))))
       result <- kairosDB.queryMetrics(qm)
     } yield {
@@ -46,9 +45,8 @@ class AddAndQueryDataPointsIntegrationSpec extends IntegrationSpec {
       DataPoint(metric2, KNumber(333), instant.plusMillis(3), Seq(Tag("aoeu", "456")))
     )
 
+    val kairosDB = new KairosDB(wsClient, KairosDBConfig(port = kairosPort), global)
     val res = for {
-      port <- kairosPort
-      kairosDB = new KairosDB(wsClient, KairosDBConfig(port = port), global)
       _ <- kairosDB.addDataPoints(dps, gzip = true)
       result <- kairosDB.queryMetrics(qm)
     } yield {
@@ -92,9 +90,9 @@ class AddAndQueryDataPointsIntegrationSpec extends IntegrationSpec {
       ))
     ), TimeSpan(start, Some(end)))
 
+    val kairosDB = new KairosDB(wsClient, KairosDBConfig(port = kairosPort), global)
+
     val res = for {
-      port <- kairosPort
-      kairosDB = new KairosDB(wsClient, KairosDBConfig(port = port), global)
       _ <- kairosDB.addDataPoint(datapoint)
       _ <- kairosDB.addDataPoint(datapoint.copy(timestamp = secondPoint))
       version <- kairosDB.version

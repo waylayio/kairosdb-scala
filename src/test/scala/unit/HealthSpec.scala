@@ -11,6 +11,7 @@ import org.specs2.concurrent.ExecutionEnv
 import org.specs2.matcher.{FutureMatchers, ResultMatchers}
 
 import scala.concurrent.duration._
+import scala.collection.immutable.Seq
 
 
 class HealthSpec(implicit ee: ExecutionEnv) extends Specification with FutureMatchers with ResultMatchers with MockHelper {

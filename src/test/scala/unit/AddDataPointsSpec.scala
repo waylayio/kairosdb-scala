@@ -14,6 +14,7 @@ import org.specs2.matcher.{FutureMatchers, ResultMatchers}
 import play.api.mvc.Result
 
 import scala.concurrent.duration._
+import scala.collection.immutable.Seq
 
 class AddDataPointsSpec(implicit ee: ExecutionEnv) extends Specification with FutureMatchers with ResultMatchers with MockHelper {
 

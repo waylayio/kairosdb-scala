@@ -9,6 +9,7 @@ import io.waylay.kairosdb.driver.models.QueryResponse.{Response, ResponseQuery, 
 import io.waylay.kairosdb.driver.models.json.Formats.responseReads
 import org.specs2.mutable.Specification
 import play.api.libs.json._
+import scala.collection.immutable.Seq
 
 class ResponseReadsSpec extends Specification {
   "Query response reader" should {

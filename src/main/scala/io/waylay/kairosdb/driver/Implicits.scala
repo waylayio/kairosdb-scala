@@ -8,6 +8,8 @@ import io.waylay.kairosdb.driver.models._
 import io.waylay.kairosdb.driver.models.TimeSpan.{AbsoluteEndTime, AbsoluteStartTime, RelativeEndTime, RelativeStartTime}
 
 import scala.concurrent.duration.FiniteDuration
+import scala.collection.immutable.Seq
+
 
 object Implicits {
   implicit def string2metricName(str: String): MetricName = MetricName(str)

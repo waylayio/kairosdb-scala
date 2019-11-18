@@ -14,6 +14,7 @@ import org.specs2.mutable.Specification
 import play.api.libs.json.Json
 
 import scala.concurrent.duration._
+import scala.collection.immutable.Seq
 
 class QueryWritesSpec extends Specification {
   "Kairos query builder" should {
