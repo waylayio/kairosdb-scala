@@ -7,13 +7,15 @@ before_install:
 
 language: scala
 scala:
+ - 2.12.10
  - 2.13.1
 
 jdk:
- - oraclejdk8
+ - openjdk11
 
 script:
 - sbt ++$TRAVIS_SCALA_VERSION clean coverage "examples/compile" test it:test
+
 env:
   global:
   - secure: hwSSTe/9XO53TEybPaBPp3ZRrZeKAk9JKqddTonwq/Bm2QTQQNqSkr+wLqjzNm7Fq2HzUSlEFjiAwau6LOjKQ0UJqRNdzCJaJzeJg0uUWhITSoKh3H4dyFqvkULAUO5YHkSDSaas3Of+Rcr1ZefHx5WOhq/Ye+IF9pEpz87gTa8xrl7epkQ4+Fy9FOXMkgIvaWcr0O/TAiZiwmHGTnHLrQOk/ZlcjVJbcqtz4AGbP6OS2XVZRqrCGsgUfR8EQCM65njhroUumbiCdmgDas3gPwTGWw0eu92LVeKFuluqGuGgYgfQWlpSFaaSkod5OEF0BalJbWygiBQDuX83nrTTPsTSFgy10HLle6jDSIwGJCnjp7hYjXU8sQKhRCykCcXaMVmQfI8nEY6kNed1gnJKzhb+Rjmnwijn7pHtQ/Rgo9PLbudiRV32EBcRX+xlJI6MZM7at476mavWnLa0nJe/o8aORZ6N4G0aeq8RsqhhhIyJPPjAk9npNy3rxUthUYuXNe/SRH1YeeyXYYBNC1VtU2K3+5jkUhomZ2OMTUp0fgjtCvDy0gSDYC1vGasKVR/HOQXJCfAALMjnOqaBYYDZPBD+udXS7A6v2FirpoQcGUU1YE/goWcbJz5gvDV4xQUbK19fRfqT6XGsCuSwiYHOiIHv9yQ+A8kgX86LNG8pU6o=

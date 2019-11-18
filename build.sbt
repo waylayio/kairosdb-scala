@@ -35,8 +35,6 @@ lazy val root = (project in file("."))
     name := "kairosdb-scala",
     fork in Test := true,
     parallelExecution in IntegrationTest := false,
-    // Be wary of adding extra dependencies (especially the Waylay common dependencies)
-    // They may pull in a newer Netty version, breaking play-ws
     libraryDependencies ++= Seq(
       "org.scala-lang.modules" %% "scala-collection-compat" % "2.1.2",
       "com.typesafe.play" %% "play-json" % playJsonVersion,
