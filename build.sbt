@@ -11,7 +11,7 @@ val scalaTestVersion = "3.0.8"
 val playVersion = "2.7.3" // test only
 
 val scala2_12 = "2.12.10"
-val scala2_13 = "2.13.0"
+val scala2_13 = "2.13.1"
 
 ThisBuild / scalaVersion := scala2_13
 ThisBuild / crossScalaVersions := Seq(scala2_12, scala2_13)
