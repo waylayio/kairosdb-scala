@@ -176,4 +176,8 @@ object Aggregator {
   case class SaveAs(metricName: MetricName, tags: Seq[Tag], ttl: FiniteDuration) extends Aggregator { // TODO ttl should be Option?
     override val name = "save_as"
   }
+
+  case class Filter(operator:String, threshold:KairosCompatibleType) extends Aggregator {
+    override val name: String = "filter"
+  }
 }

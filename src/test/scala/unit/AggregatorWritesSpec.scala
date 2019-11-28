@@ -7,6 +7,7 @@ import io.waylay.kairosdb.driver.models.json.Formats._
 import io.waylay.kairosdb.driver.models.Aggregator.Trim.{TrimBoth, TrimFirst, TrimLast}
 import io.waylay.kairosdb.driver.models.{MetricName, Tag}
 import io.waylay.kairosdb.driver.models.Aggregator._
+import io.waylay.kairosdb.driver.models.KairosCompatibleType.{KNumber, KString}
 import io.waylay.kairosdb.driver.models.RangeAggregator.Align._
 import io.waylay.kairosdb.driver.models.TimeSpan.AbsoluteStartTime
 import org.specs2.mutable.Specification
@@ -450,6 +451,23 @@ class AggregatorWritesSpec extends Specification {
         "metric_name" -> "new-metric-name",
         "tags" -> Json.obj("newname" -> "newvalue", "second" -> "stuff"),
         "ttl" -> 1
+      )
+    }
+  }
+
+  "Filter aggregator" should {
+    "correctly serialize with number threshold" in {
+      Json.toJson(Filter("lt", KNumber(3.7997))) should be equalTo Json.obj(
+        "name" -> "filter",
+        "filter_op" -> "lt",
+        "threshold" -> 3.7997
+      )
+    }
+    "correctly serialize with string threshold" in {
+      Json.toJson(Filter("eq", KString("3.7997"))) should be equalTo Json.obj(
+        "name" -> "filter",
+        "filter_op" -> "eq",
+        "threshold" -> "3.7997"
       )
     }
   }

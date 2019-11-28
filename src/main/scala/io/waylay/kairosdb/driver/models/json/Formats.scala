@@ -212,6 +212,13 @@ object Formats {
 
         case rangeAgg: RangeAggregator =>
           rangeAggregatorWrites.writes(rangeAgg)
+
+        case filter:Filter=>
+          Json.obj(
+            "name" -> filter.name,
+            "filter_op" -> filter.operator,
+            "threshold" -> filter.threshold
+          )
       }
     }
 
