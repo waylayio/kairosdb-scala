@@ -22,5 +22,5 @@ env:
   - secure: AIavbCKXnhwX+sEsCUMYo9Oom+eMC/FzjhbiT/O5ufgGhnZKQBYNTX4z6bJ3zGhwC8UkYbGehcJJD0+pAI9JcqaWURbFKNpYfl8YsRkhNp32PRNMKYGCHOVrqMuXNb9XxueQpZv0Shb4bHDZypK7vZm3Zp9ptemt0pc1fsjDE877hYwveWOzHJ6yKgUnvSIFG03kfXi8AmgljHjTo/qJ5CCzKEO1MAgZDztPEvDDrI4j7spHgtHfvZLCNNWoe41FJkOFJqecEv9jLwC2Vng66NRjkpf8g7bhpFbiSTT/9sRUaYdA4AKyaoN4jlj3X77Ee5T55i9aM7gHNbKJVEH2r85Jwz0pkz2/HDuNDd3Bl+pagQG9pL/VPCVtCAWdX9MFkDmMONR4TbDx2T9JdsfN8GChfll9q4Ziwou0B/1t/h646lUSCL3fMdMozhwHXlfo+8KiRmf9RjSfGBgCsIOAE0cm/RJTc9WdUS5fawAsx9V0c1xUz+9k5sNqBuT+IVe8PJjhvGrHdFzLvAbyWpMTUOo21NsuEI+LfTv2NZBo/Ym7EOCwV9GwXsPchcazphG+OwQs+VdbccaIUeTHUZrTheJSwkNvDwy4Z9PnqPX/9sZTfTw0QBVu8C6AwRTT8CQQKvcn6aYYPU2Ke91vWVlsR9Lklc8xv4B9vkOi5DX3u/M=
 
 after_success:
-  - '[[ $TRAVIS_BRANCH == "master" ]] && { sbt +publish; };'
+  - '[[ $TRAVIS_BRANCH == "master" ]] && { sbt ++$TRAVIS_SCALA_VERSION  publish; };'
   - sbt coverageReport coveralls
