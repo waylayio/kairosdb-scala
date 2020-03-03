@@ -2,9 +2,8 @@ package io.waylay.kairosdb.driver.models
 
 import java.time.Instant
 
+import io.waylay.kairosdb.driver.Implicits
 import io.waylay.kairosdb.driver.models.TimeSpan.{EndTime, StartTime}
-
-import scala.concurrent.duration._
 
 /**
   * @param endTime If end time is None, the current date and time is assumed
@@ -30,11 +29,11 @@ object TimeSpan {
     override val fieldName = "start_absolute"
     override def toMillis = startTime.toEpochMilli
   }
-  case class RelativeStartTime(howLongAgo: FiniteDuration) extends StartTime {
+  case class RelativeStartTime(howLongAgo: TimeRange) extends StartTime {
     override val fieldName = "start_relative"
     override def toMillis: Long = toMillis(Instant.now)
 
-    def toMillis(reference: Instant) = reference.minusMillis(howLongAgo.toMillis).toEpochMilli
+    def toMillis(reference: Instant) = reference.minus(Implicits.timeRangeToTemporalAmount(howLongAgo)).toEpochMilli
   }
 
 
@@ -42,10 +41,10 @@ object TimeSpan {
     override val fieldName = "end_absolute"
     override def toMillis = endTime.toEpochMilli
   }
-  case class RelativeEndTime(howLongAgo: FiniteDuration) extends EndTime {
+  case class RelativeEndTime(howLongAgo: TimeRange) extends EndTime {
     override val fieldName = "end_relative"
     override def toMillis = toMillis(Instant.now)
 
-    def toMillis(reference: Instant) = reference.minusMillis(howLongAgo.toMillis).toEpochMilli
+    def toMillis(reference: Instant) = reference.minus(Implicits.timeRangeToTemporalAmount(howLongAgo)).toEpochMilli
   }
 }

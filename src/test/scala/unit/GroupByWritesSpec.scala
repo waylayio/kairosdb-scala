@@ -2,6 +2,7 @@ package unit
 
 import io.waylay.kairosdb.driver.models.json.Formats.groupByWrites
 import io.waylay.kairosdb.driver.models.GroupBy._
+import io.waylay.kairosdb.driver.Implicits.finiteDuration2timeRange
 import org.specs2.mutable.Specification
 import play.api.libs.json.Json
 

@@ -6,6 +6,7 @@ import java.util.concurrent.TimeUnit
 import io.waylay.kairosdb.driver.models.json.Formats._
 import io.waylay.kairosdb.driver.models.Aggregator.Trim.{TrimBoth, TrimFirst, TrimLast}
 import io.waylay.kairosdb.driver.models.{MetricName, Tag}
+import io.waylay.kairosdb.driver.Implicits.finiteDuration2timeRange
 import io.waylay.kairosdb.driver.models.Aggregator._
 import io.waylay.kairosdb.driver.models.KairosCompatibleType.{KNumber, KString}
 import io.waylay.kairosdb.driver.models.RangeAggregator.Align._

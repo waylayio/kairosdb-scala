@@ -4,8 +4,8 @@ import io.waylay.kairosdb.driver.models.Aggregator.Trim.TrimWhat
 import io.waylay.kairosdb.driver.models.RangeAggregator.Align
 import io.waylay.kairosdb.driver.models.TimeSpan.AbsoluteStartTime
 
-import scala.concurrent.duration.{FiniteDuration, TimeUnit}
 import scala.collection.immutable.Seq
+import scala.concurrent.duration.TimeUnit
 
 sealed trait Aggregator {
   val name: String
@@ -32,7 +32,7 @@ object RangeAggregator {
 /** Many of the aggregators inherit from the range aggregator */
 trait RangeAggregator extends Aggregator {
   /** Sampling is the length of the interval on which to aggregate data */
-  val sampling: FiniteDuration
+  val sampling: TimeRange
   val align: Option[Align]
   /** Start time to calculate the ranges from. Typically this is the start of the query. */
   val startTime: Option[AbsoluteStartTime]
@@ -44,53 +44,53 @@ object Aggregator {
 
   // TODO why did we not use java.time.Duration instead of scala.concurrent.duration.Duration? We could introduce an implicit conversion
 
-  case class Average(sampling: FiniteDuration, startTime: Option[AbsoluteStartTime] = None, align: Option[Align] = None, timeZone: Option[String] = None)
+  case class Average(sampling: TimeRange, startTime: Option[AbsoluteStartTime] = None, align: Option[Align] = None, timeZone: Option[String] = None)
     extends RangeAggregator {
     override val name = "avg"
   }
 
   /** Computes standard deviation */
-  case class StandardDeviation(sampling: FiniteDuration, startTime: Option[AbsoluteStartTime] = None, align: Option[Align] = None, timeZone: Option[String] = None)
+  case class StandardDeviation(sampling: TimeRange, startTime: Option[AbsoluteStartTime] = None, align: Option[Align] = None, timeZone: Option[String] = None)
     extends RangeAggregator {
     override val name = "dev"
   }
 
   /** Counts the number of data points */
-  case class Count(sampling: FiniteDuration, startTime: Option[AbsoluteStartTime] = None, align: Option[Align] = None, timeZone: Option[String] = None)
+  case class Count(sampling: TimeRange, startTime: Option[AbsoluteStartTime] = None, align: Option[Align] = None, timeZone: Option[String] = None)
     extends RangeAggregator {
     override val name = "count"
   }
 
   /** Returns the first data point for the interval */
-  case class First(sampling: FiniteDuration, startTime: Option[AbsoluteStartTime] = None, align: Option[Align] = None, timeZone: Option[String] = None)
+  case class First(sampling: TimeRange, startTime: Option[AbsoluteStartTime] = None, align: Option[Align] = None, timeZone: Option[String] = None)
     extends RangeAggregator {
     override val name = "first"
   }
 
   /** Marks gaps in data according to sampling rate with a null data point */
-  case class Gaps(sampling: FiniteDuration, startTime: Option[AbsoluteStartTime] = None, align: Option[Align] = None, timeZone: Option[String] = None)
+  case class Gaps(sampling: TimeRange, startTime: Option[AbsoluteStartTime] = None, align: Option[Align] = None, timeZone: Option[String] = None)
     extends RangeAggregator {
     override val name = "gaps"
   }
 
   /** Returns the last data point for the interval */
-  case class Last(sampling: FiniteDuration, startTime: Option[AbsoluteStartTime] = None, align: Option[Align] = None, timeZone: Option[String] = None)
+  case class Last(sampling: TimeRange, startTime: Option[AbsoluteStartTime] = None, align: Option[Align] = None, timeZone: Option[String] = None)
     extends RangeAggregator {
     override val name = "last"
   }
 
   /* Returns two points for the range which represent the best fit line through the set of points */
-  case class LeastSquares(sampling: FiniteDuration, startTime: Option[AbsoluteStartTime] = None, align: Option[Align] = None, timeZone: Option[String] = None)
+  case class LeastSquares(sampling: TimeRange, startTime: Option[AbsoluteStartTime] = None, align: Option[Align] = None, timeZone: Option[String] = None)
     extends RangeAggregator {
     override val name = "least_squares"
   }
 
-  case class Max(sampling: FiniteDuration, startTime: Option[AbsoluteStartTime] = None, align: Option[Align] = None, timeZone: Option[String] = None)
+  case class Max(sampling: TimeRange, startTime: Option[AbsoluteStartTime] = None, align: Option[Align] = None, timeZone: Option[String] = None)
     extends RangeAggregator {
     override val name = "max"
   }
 
-  case class Min(sampling: FiniteDuration, startTime: Option[AbsoluteStartTime] = None, align: Option[Align] = None, timeZone: Option[String] = None)
+  case class Min(sampling: TimeRange, startTime: Option[AbsoluteStartTime] = None, align: Option[Align] = None, timeZone: Option[String] = None)
     extends RangeAggregator {
     override val name = "min"
   }
@@ -100,13 +100,13 @@ object Aggregator {
     *
     * @param percentile Defined as 0 < percentile <= 1 where .5 is 50% and 1 is 100%
     */
-  case class Percentile(percentile: Double, sampling: FiniteDuration, startTime: Option[AbsoluteStartTime] = None, align: Option[Align] = None, timeZone: Option[String] = None)
+  case class Percentile(percentile: Double, sampling: TimeRange, startTime: Option[AbsoluteStartTime] = None, align: Option[Align] = None, timeZone: Option[String] = None)
     extends RangeAggregator {
     override val name = "percentile"
   }
 
   /** Sums all value */
-  case class Sum(sampling: FiniteDuration, startTime: Option[AbsoluteStartTime] = None, align: Option[Align] = None, timeZone: Option[String] = None)
+  case class Sum(sampling: TimeRange, startTime: Option[AbsoluteStartTime] = None, align: Option[Align] = None, timeZone: Option[String] = None)
     extends RangeAggregator {
     override val name = "sum"
   }
@@ -122,7 +122,7 @@ object Aggregator {
   }
 
   /** Returns the rate of change between a pair of data points. Requires a “unit” property which is the sampling duration (ie rate in seconds, milliseconds, minutes, etc...). */
-  case class Rate(unit: TimeUnit, sampling: FiniteDuration, timezone: Option[String]) extends Aggregator {
+  case class Rate(unit: TimeUnit, sampling: TimeRange, timezone: Option[String]) extends Aggregator {
     override val name = "rate"
   }
 
@@ -173,7 +173,7 @@ object Aggregator {
     * @param tags       Additional tags to set on the metrics {"tag1":"value1","tag2":"value2"}
     * @param ttl        Sets the ttl on the newly saved metrics
     */
-  case class SaveAs(metricName: MetricName, tags: Seq[Tag], ttl: FiniteDuration) extends Aggregator { // TODO ttl should be Option?
+  case class SaveAs(metricName: MetricName, tags: Seq[Tag], ttl: TimeRange) extends Aggregator { // TODO ttl should be Option?
     override val name = "save_as"
   }
 

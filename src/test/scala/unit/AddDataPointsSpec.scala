@@ -5,6 +5,7 @@ import java.time.Instant
 import io.waylay.kairosdb.driver.KairosDB
 import io.waylay.kairosdb.driver.models.KairosCompatibleType.{KNumber, KString}
 import io.waylay.kairosdb.driver.models._
+import io.waylay.kairosdb.driver.Implicits.finiteDuration2timeRange
 import mockws.MockWS
 import org.specs2.mutable.Specification
 import play.api.libs.json.Json

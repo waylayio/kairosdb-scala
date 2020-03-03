@@ -5,8 +5,8 @@ import java.time.Instant
 import io.lemonlabs.uri.{Uri, Url}
 import io.waylay.kairosdb.driver.models.KairosQuery.{Order, QueryTag}
 import io.waylay.kairosdb.driver.models.QueryResponse.TagResult
+import io.waylay.kairosdb.driver.models.TimeRange.KairosTimeUnit
 
-import scala.concurrent.duration.FiniteDuration
 import scala.collection.immutable.Seq
 import scala.collection.compat._
 
@@ -16,15 +16,28 @@ import scala.collection.compat._
   */
 case class MetricName(name: String) extends AnyVal
 
+object TimeRange {
+  sealed trait KairosTimeUnit
+  case object MILLISECONDS extends KairosTimeUnit
+  case object SECONDS extends KairosTimeUnit
+  case object MINUTES extends KairosTimeUnit
+  case object HOURS extends KairosTimeUnit
+  case object DAYS extends KairosTimeUnit
+  case object WEEKS extends KairosTimeUnit
+  case object MONTHS extends KairosTimeUnit
+  case object YEARS extends KairosTimeUnit
+}
+case class TimeRange(amount: Long, unit: KairosTimeUnit)
+
 sealed trait DataPoint {
   val metricName: MetricName
   val tags: Seq[Tag]
-  val ttl: Option[FiniteDuration]
+  val ttl: Option[TimeRange]
 }
 
 object DataPoint {
   def apply(metricName: MetricName, value: KairosCompatibleType, timestamp: Instant = Instant.now, tags: Seq[Tag],
-    ttl: Option[FiniteDuration] = None) = DataPointWithSingleValue(metricName, value, timestamp, tags, ttl)
+    ttl: Option[TimeRange] = None) = DataPointWithSingleValue(metricName, value, timestamp, tags, ttl)
 }
 
 /**
@@ -34,7 +47,7 @@ object DataPoint {
   *
   */
 case class DataPointWithSingleValue(metricName: MetricName, value: KairosCompatibleType, timestamp: Instant,
-  tags: Seq[Tag], ttl: Option[FiniteDuration] = None) extends DataPoint
+  tags: Seq[Tag], ttl: Option[TimeRange] = None) extends DataPoint
 
 /**
   * A data point has with metric name, a single value, a timestamp, and a list of one or more tags
@@ -42,7 +55,7 @@ case class DataPointWithSingleValue(metricName: MetricName, value: KairosCompati
   * @param ttl Sets the Cassandra ttl for the data points. None or Some(0.seconds) will not set a TTL
   */
 case class DataPointWithMultipleValues(metricName: MetricName, values: Seq[(Instant, KairosCompatibleType)],
-  tags: Seq[Tag] = Seq.empty, ttl: Option[FiniteDuration] = None) extends DataPoint
+  tags: Seq[Tag] = Seq.empty, ttl: Option[TimeRange] = None) extends DataPoint
 
 
 /**

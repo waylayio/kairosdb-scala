@@ -10,6 +10,7 @@ import io.waylay.kairosdb.driver.models.KairosQuery.{Order, QueryTag}
 import io.waylay.kairosdb.driver.models.TimeSpan._
 import io.waylay.kairosdb.driver.models.json.Formats._
 import io.waylay.kairosdb.driver.models._
+import io.waylay.kairosdb.driver.Implicits.finiteDuration2timeRange
 import org.specs2.mutable.Specification
 import play.api.libs.json.Json
 

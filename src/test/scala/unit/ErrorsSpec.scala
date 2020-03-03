@@ -2,6 +2,7 @@ package unit
 
 import java.time.Instant
 
+import io.waylay.kairosdb.driver.Implicits.finiteDuration2timeRange
 import io.waylay.kairosdb.driver.KairosDB
 import io.waylay.kairosdb.driver.KairosDB._
 import io.waylay.kairosdb.driver.models.Aggregator.Sum
@@ -14,9 +15,9 @@ import org.specs2.mutable.Specification
 import play.api.libs.json.Json
 import play.api.mvc.Results._
 
+import scala.collection.immutable.Seq
 import scala.concurrent.ExecutionContext.Implicits._
 import scala.concurrent.duration._
-import scala.collection.immutable.Seq
 
 class ErrorsSpec(implicit ee: ExecutionEnv) extends Specification with MockHelper{
 

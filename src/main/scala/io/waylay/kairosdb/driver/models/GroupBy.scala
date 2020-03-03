@@ -1,7 +1,5 @@
 package io.waylay.kairosdb.driver.models
 
-import scala.concurrent.duration.FiniteDuration
-
 sealed trait GroupBy {
   val name: String
 }
@@ -26,7 +24,7 @@ object GroupBy {
     * @param groupCount The number of groups. This would typically be 7 to group by day of week. But you could set this
     *                   to 14 to group by fortnight.
     */
-  case class GroupByTime(rangeSize: FiniteDuration, groupCount: Int) extends GroupBy {
+  case class GroupByTime(rangeSize: TimeRange, groupCount: Int) extends GroupBy {
     override val name = "time"
   }
 

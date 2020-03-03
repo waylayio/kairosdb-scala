@@ -1,14 +1,16 @@
 package io.waylay.kairosdb.driver
 
-import java.time.Instant
+import java.time.temporal.TemporalAmount
+import java.time.{Duration, Instant, Period}
+import java.util.concurrent.TimeUnit
 
 import io.waylay.kairosdb.driver.models.KairosCompatibleType.{KNumber, KString}
 import io.waylay.kairosdb.driver.models.KairosQuery.QueryTag
-import io.waylay.kairosdb.driver.models._
 import io.waylay.kairosdb.driver.models.TimeSpan.{AbsoluteEndTime, AbsoluteStartTime, RelativeEndTime, RelativeStartTime}
+import io.waylay.kairosdb.driver.models._
 
-import scala.concurrent.duration.FiniteDuration
 import scala.collection.immutable.Seq
+import scala.concurrent.duration.FiniteDuration
 
 
 object Implicits {
@@ -65,5 +67,26 @@ object Implicits {
     }
 
     def ago = RelativeTime(fin)
+  }
+
+  implicit def finiteDuration2timeRange(fin: FiniteDuration): TimeRange = fin.unit match {
+    case TimeUnit.DAYS => TimeRange(fin.length, TimeRange.DAYS)
+    case TimeUnit.HOURS => TimeRange(fin.length,TimeRange.HOURS)
+    case TimeUnit.MINUTES => TimeRange(fin.length,TimeRange.MINUTES)
+    case TimeUnit.SECONDS => TimeRange(fin.length,TimeRange.SECONDS)
+    case TimeUnit.MILLISECONDS => TimeRange(fin.length,TimeRange.MILLISECONDS)
+    case _ =>
+      TimeRange(fin.toMillis, TimeRange.MILLISECONDS)
+  }
+
+  implicit def timeRangeToTemporalAmount(timeRange: TimeRange) : TemporalAmount = timeRange.unit match {
+    case TimeRange.YEARS => Period.ofYears(timeRange.amount.toInt)
+    case TimeRange.MONTHS =>Period.ofMonths(timeRange.amount.toInt)
+    case TimeRange.WEEKS  => Period.ofWeeks(timeRange.amount.toInt)
+    case TimeRange.DAYS => Duration.ofDays(timeRange.amount)
+    case TimeRange.HOURS =>   Duration.ofHours(timeRange.amount)
+    case TimeRange.MINUTES => Duration.ofMinutes(timeRange.amount)
+    case TimeRange.SECONDS => Duration.ofSeconds(timeRange.amount)
+    case TimeRange.MILLISECONDS => Duration.ofMillis(timeRange.amount)
   }
 }

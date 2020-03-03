@@ -4,6 +4,7 @@ import java.time.Instant
 
 import io.waylay.kairosdb.driver.models.TimeSpan
 import io.waylay.kairosdb.driver.models.TimeSpan.{AbsoluteEndTime, AbsoluteStartTime, RelativeEndTime, RelativeStartTime}
+import io.waylay.kairosdb.driver.Implicits.finiteDuration2timeRange
 import org.specs2.matcher.{FutureMatchers, ResultMatchers}
 import org.specs2.mutable.Specification
 
