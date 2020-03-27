@@ -1,6 +1,6 @@
 # kairosdb-scala
 [![Build Status](https://travis-ci.org/waylayio/kairosdb-scala.svg?branch=master)](https://travis-ci.org/waylayio/kairosdb-scala)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.waylay.kairosdb/kairosdb-scala_2.11/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.waylay.kairosdb/kairosdb-scala_2.11)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.waylay.kairosdb/kairosdb-scala_2.13/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.waylay.kairosdb/kairosdb-scala_2.13)
 [![Coverage Status](https://coveralls.io/repos/github/waylayio/kairosdb-scala/badge.svg?branch=master)](https://coveralls.io/github/waylayio/kairosdb-scala?branch=master)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/2a280540bcbe46c89cfa66b47ade07e6)](https://www.codacy.com/app/francisdb/kairosdb-scala?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=waylayio/kairosdb-scala&amp;utm_campaign=Badge_Grade)
 
