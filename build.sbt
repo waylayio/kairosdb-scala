@@ -1,6 +1,6 @@
 import sbt.Keys.thisProjectRef
 
-organization in ThisBuild := "io.waylay.kairosdb"
+ThisBuild / organization := "io.waylay.kairosdb"
 
 val playWsVersion = "2.0.7"
 val playJsonVersion = "2.7.4"
@@ -10,8 +10,8 @@ val dockerTestkitVersion = "0.10.0-beta8"
 val scalaTestVersion = "3.0.8"
 val playVersion = "2.7.3" // test only
 
-val scala2_12 = "2.12.10"
-val scala2_13 = "2.13.1"
+val scala2_12 = "2.12.15"
+val scala2_13 = "2.13.7"
 
 ThisBuild / scalaVersion := scala2_13
 ThisBuild / crossScalaVersions := Seq(scala2_12, scala2_13)
@@ -33,8 +33,8 @@ val exclusions = Seq(
 lazy val root = (project in file("."))
   .settings(
     name := "kairosdb-scala",
-    fork in Test := true,
-    parallelExecution in IntegrationTest := false,
+    Test / fork := true,
+    IntegrationTest / parallelExecution := false,
     libraryDependencies ++= Seq(
       "org.scala-lang.modules" %% "scala-collection-compat" % "2.1.2",
       "com.typesafe.play" %% "play-json" % playJsonVersion,
@@ -77,7 +77,7 @@ enablePlugins(SiteScaladocPlugin)
 
 val publishScalaDoc = (ref: ProjectRef) =>
   ReleaseStep(
-    action = releaseStepTaskAggregated(ghpagesPushSite in ref) // publish scaladoc
+    action = releaseStepTaskAggregated(ref / ghpagesPushSite) // publish scaladoc
 )
 
 val runIntegrationTest = (ref: ProjectRef) =>
