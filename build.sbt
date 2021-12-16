@@ -40,7 +40,7 @@ lazy val root = (project in file("."))
       "com.typesafe.play" %% "play-json" % playJsonVersion,
       "com.typesafe.play" %% "play-ws-standalone" % playWsVersion,
       "com.typesafe.play" %% "play-ws-standalone-json" % playWsVersion,
-      "com.typesafe.scala-logging" %% "scala-logging" % "3.9.2",
+      "com.typesafe.scala-logging" %% "scala-logging" % "3.9.4",
       "com.typesafe.akka" %% "akka-actor" % akkaVersion,
       "io.lemonlabs" %% "scala-uri" % "1.5.1",
       // TEST
