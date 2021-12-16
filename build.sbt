@@ -2,13 +2,13 @@ import sbt.Keys.thisProjectRef
 
 ThisBuild / organization := "io.waylay.kairosdb"
 
-val playWsVersion = "2.0.7"
+val playWsVersion = "2.0.8"
 val playJsonVersion = "2.9.2"
-val akkaVersion = "2.5.23"
+val akkaVersion = "2.5.32"
 val specs2Version = "4.8.1"
-val dockerTestkitVersion = "0.10.0-beta8"
+val dockerTestkitVersion = "0.10.0"
 val scalaTestVersion = "3.0.8"
-val playVersion = "2.7.3" // test only
+val playVersion = "2.7.9" // test only
 
 val scala2_12 = "2.12.15"
 val scala2_13 = "2.13.7"
@@ -40,7 +40,7 @@ lazy val root = (project in file("."))
       "com.typesafe.play" %% "play-json" % playJsonVersion,
       "com.typesafe.play" %% "play-ws-standalone" % playWsVersion,
       "com.typesafe.play" %% "play-ws-standalone-json" % playWsVersion,
-      "com.typesafe.scala-logging" %% "scala-logging" % "3.9.2",
+      "com.typesafe.scala-logging" %% "scala-logging" % "3.9.4",
       "com.typesafe.akka" %% "akka-actor" % akkaVersion,
       "io.lemonlabs" %% "scala-uri" % "1.5.1",
       // TEST
