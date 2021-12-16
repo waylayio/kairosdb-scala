@@ -2,7 +2,7 @@ import sbt.Keys.thisProjectRef
 
 ThisBuild / organization := "io.waylay.kairosdb"
 
-val playWsVersion = "2.0.8"
+val playWsVersion = "2.1.6"
 val playJsonVersion = "2.7.4"
 val akkaVersion = "2.5.32"
 val specs2Version = "4.8.1"
