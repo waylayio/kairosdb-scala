@@ -4,7 +4,7 @@ ThisBuild / organization := "io.waylay.kairosdb"
 
 val playWsVersion = "2.0.8"
 val playJsonVersion = "2.7.4"
-val akkaVersion = "2.5.23"
+val akkaVersion = "2.5.32"
 val specs2Version = "4.8.1"
 val dockerTestkitVersion = "0.10.0"
 val scalaTestVersion = "3.0.8"
