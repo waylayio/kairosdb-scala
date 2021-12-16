@@ -1,4 +1,4 @@
-addSbtPlugin("com.typesafe.sbt" % "sbt-site" % "1.3.1")
+addSbtPlugin("com.typesafe.sbt" % "sbt-site" % "1.3.3")
 
 addSbtPlugin("com.github.sbt" % "sbt-release" % "1.1.0")
 
