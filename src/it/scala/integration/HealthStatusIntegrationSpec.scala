@@ -9,16 +9,20 @@ import scala.collection.immutable.Seq
 import scala.concurrent.ExecutionContext.Implicits.global
 
 class HealthStatusIntegrationSpec extends IntegrationSpec {
-  "The health endpoint" should "for /check return all healthy" in {
-    val kairosDB = new KairosDB(wsClient, KairosDBConfig(port = kairosPort), global)
-    val res = kairosDB.healthCheck.futureValue
-    res should be(AllHealthy)
-  }
 
-  it should "for /status respond that there are no thread deadlocks and datastore query works" in {
-    val kairosDB = new KairosDB(wsClient, KairosDBConfig(port = kairosPort), global)
-    val res = kairosDB.healthStatus.futureValue
+  "The health endpoint" should {
 
-    res should be(HealthStatusResults(Seq("JVM-Thread-Deadlock: OK", "Datastore-Query: OK")))
+    "for /check return all healthy" in {
+      val kairosDB = new KairosDB(wsClient, KairosDBConfig(port = kairosPort), global)
+      val res = kairosDB.healthCheck.futureValue
+      res must be(AllHealthy)
+    }
+
+    "for /status respond that there are no thread deadlocks and datastore query works" in {
+      val kairosDB = new KairosDB(wsClient, KairosDBConfig(port = kairosPort), global)
+      val res = kairosDB.healthStatus.futureValue
+
+      res must be(HealthStatusResults(Seq("JVM-Thread-Deadlock: OK", "Datastore-Query: OK")))
+    }
   }
 }

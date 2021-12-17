@@ -31,23 +31,25 @@ class AuthSpec extends IntegrationSpec {
       .build()
   )
 
-  "The health status" should " fail without auth" in {
-    val kairosDB = new KairosDB(wsClient, KairosDBConfig(port = kairosPort), global)
-    val res = kairosDB.healthStatus.failed.futureValue
+  "The health status" should {
+    "fail without auth" in {
+      val kairosDB = new KairosDB(wsClient, KairosDBConfig(port = kairosPort), global)
+      val res = kairosDB.healthStatus.failed.futureValue
 
-    res shouldBe an[KairosDBResponseException]
-    res should be(KairosDBResponseException(401, "Unauthorized", Seq.empty))
-  }
+      res mustBe an[KairosDBResponseException]
+      res must be(KairosDBResponseException(401, "Unauthorized", Seq.empty))
+    }
 
-  it should "succeed with auth" in {
-    val kairosConfig = KairosDBConfig(
-      port = kairosPort,
-      username = Some("test"),
-      password = Some("test")
-    )
-    val kairosDB = new KairosDB(wsClient, kairosConfig, global)
-    val res = kairosDB.healthStatus.futureValue
+    "succeed with auth" in {
+      val kairosConfig = KairosDBConfig(
+        port = kairosPort,
+        username = Some("test"),
+        password = Some("test")
+      )
+      val kairosDB = new KairosDB(wsClient, kairosConfig, global)
+      val res = kairosDB.healthStatus.futureValue
 
-    res should be(HealthStatusResults(Seq("JVM-Thread-Deadlock: OK", "Datastore-Query: OK")))
+      res must be(HealthStatusResults(Seq("JVM-Thread-Deadlock: OK", "Datastore-Query: OK")))
+    }
   }
 }

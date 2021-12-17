@@ -4,13 +4,15 @@ import com.spotify.docker.client.messages.HostConfig
 import com.typesafe.scalalogging.StrictLogging
 import com.whisk.docker.testkit.{ContainerGroup, ContainerSpec, DockerReadyChecker}
 import com.whisk.docker.testkit.scalatest.DockerTestKitForAll
-import org.scalatest.{BeforeAndAfterAll, FlatSpec, Matchers}
+import org.scalatest.BeforeAndAfterAll
 import org.scalatest.concurrent.ScalaFutures
+import org.scalatest.matchers.must.Matchers
 import org.scalatest.time.{Second, Seconds, Span}
+import org.scalatest.wordspec.AnyWordSpec
 import play.api.libs.ws.ahc.StandaloneAhcWSClient
 import play.api.test.NoMaterializer
 
-trait IntegrationSpec extends FlatSpec with Matchers with ScalaFutures with StrictLogging with BeforeAndAfterAll with DockerTestKitForAll {
+trait IntegrationSpec extends AnyWordSpec with Matchers with ScalaFutures with StrictLogging with BeforeAndAfterAll with DockerTestKitForAll {
 
   lazy val DefaultKairosDbPort = 8080
 
