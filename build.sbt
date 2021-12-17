@@ -52,7 +52,9 @@ lazy val root = (project in file("."))
       "com.typesafe.play" %% "play-ahc-ws-standalone" % playWsVersion % TestAndIntegrationTest,
       // INTEGRATION TESTS
       // TODO investigate if we can do this with specs2
-      "org.scalatest" %% "scalatest" % scalaTestVersion % TestAndIntegrationTest,
+      "org.scalatest" %% "scalatest-wordspec" % scalaTestVersion % TestAndIntegrationTest,
+      "org.scalatest" %% "scalatest-mustmatchers" % scalaTestVersion % TestAndIntegrationTest,
+
       "com.whisk" %% "docker-testkit-scalatest" % dockerTestkitVersion % TestAndIntegrationTest excludeAll (exclusions: _*)
     ),
     scalacOptions ++= Seq(

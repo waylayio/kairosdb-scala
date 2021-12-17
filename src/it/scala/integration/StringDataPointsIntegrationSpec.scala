@@ -13,35 +13,39 @@ import scala.collection.immutable.Seq
 import scala.concurrent.ExecutionContext.Implicits.global
 
 class StringDataPointsIntegrationSpec extends IntegrationSpec {
-  "Adding data points and then querying them" should "work for a single string data point" in {
-    val instant = Instant.ofEpochSecond(1470837457L)
-    val start = Instant.ofEpochSecond(1470830000L)
-    val qm = QueryMetrics(Seq(Query("my.new.metric", QueryTag("aoeu" -> "snth"))), start)
 
-    val kairosDB = new KairosDB(wsClient, KairosDBConfig(port = kairosPort), global)
+  "Adding data points and then querying them" should {
 
-    val res = kairosDB.addDataPoint(DataPoint(MetricName("my.new.metric"), KString("my test string"), instant, Seq(Tag("aoeu", "snth")))).flatMap{ _ =>
-      kairosDB.queryMetrics(qm)
-    }.futureValue
+    "work for a single string data point" in {
+      val instant = Instant.ofEpochSecond(1470837457L)
+      val start = Instant.ofEpochSecond(1470830000L)
+      val qm = QueryMetrics(Seq(Query("my.new.metric", QueryTag("aoeu" -> "snth"))), start)
 
-    res should be(QueryResponse.Response(Seq(ResponseQuery(1, Seq(
-      Result("my.new.metric", Seq(GroupBy.GroupByType("text")), Seq(TagResult("aoeu", Seq("snth"))), Seq( (instant, KString("my test string")) ) )
-    )))))
-  }
+      val kairosDB = new KairosDB(wsClient, KairosDBConfig(port = kairosPort), global)
 
-  it should "also work for a string with only numbers" in {
-    val instant = Instant.ofEpochSecond(1470837457L)
-    val start = Instant.ofEpochSecond(1470830000L)
-    val qm = QueryMetrics(Seq(Query("my.new.metric", QueryTag("aoeu" -> "snth"))), start)
+      val res = kairosDB.addDataPoint(DataPoint(MetricName("my.new.metric"), KString("my test string"), instant, Seq(Tag("aoeu", "snth")))).flatMap { _ =>
+        kairosDB.queryMetrics(qm)
+      }.futureValue
 
-    val kairosDB = new KairosDB(wsClient, KairosDBConfig(port = kairosPort), global)
+      res must be(QueryResponse.Response(Seq(ResponseQuery(1, Seq(
+        Result("my.new.metric", Seq(GroupBy.GroupByType("text")), Seq(TagResult("aoeu", Seq("snth"))), Seq((instant, KString("my test string"))))
+      )))))
+    }
 
-    val res = kairosDB.addDataPoint(DataPoint(MetricName("my.new.metric"), KString("12345"), instant, Seq(Tag("aoeu", "snth")))).flatMap{ _ =>
-      kairosDB.queryMetrics(qm)
-    }.futureValue
+    "also work for a string with only numbers" in {
+      val instant = Instant.ofEpochSecond(1470837457L)
+      val start = Instant.ofEpochSecond(1470830000L)
+      val qm = QueryMetrics(Seq(Query("my.new.metric", QueryTag("aoeu" -> "snth"))), start)
 
-    res should be(QueryResponse.Response(Seq(ResponseQuery(1, Seq(
-      Result("my.new.metric", Seq(GroupBy.GroupByType("text")), Seq(TagResult("aoeu", Seq("snth"))), Seq( (instant, KString("12345")) ) )
-    )))))
+      val kairosDB = new KairosDB(wsClient, KairosDBConfig(port = kairosPort), global)
+
+      val res = kairosDB.addDataPoint(DataPoint(MetricName("my.new.metric"), KString("12345"), instant, Seq(Tag("aoeu", "snth")))).flatMap { _ =>
+        kairosDB.queryMetrics(qm)
+      }.futureValue
+
+      res must be(QueryResponse.Response(Seq(ResponseQuery(1, Seq(
+        Result("my.new.metric", Seq(GroupBy.GroupByType("text")), Seq(TagResult("aoeu", Seq("snth"))), Seq((instant, KString("12345"))))
+      )))))
+    }
   }
 }
