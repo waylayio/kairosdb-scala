@@ -44,7 +44,7 @@ class KairosDB(wsClient: StandaloneWSClient, config: KairosDBConfig, executionCo
     wsClient
       .url(url / "api" / "v1" / "metricnames")
       .applyKairosDBAuth
-      .get
+      .get()
       .map {
         wsRepsonseToResult(json => (json \ "results").validate[Seq[String]])
       }
@@ -55,7 +55,7 @@ class KairosDB(wsClient: StandaloneWSClient, config: KairosDBConfig, executionCo
     wsClient
       .url(url / "api" / "v1" / "tagnames")
       .applyKairosDBAuth
-      .get
+      .get()
       .map {
         wsRepsonseToResult(json => (json \ "results").validate[Seq[String]])
       }
@@ -65,7 +65,7 @@ class KairosDB(wsClient: StandaloneWSClient, config: KairosDBConfig, executionCo
     wsClient
       .url(url / "api" / "v1" / "tagvalues")
       .applyKairosDBAuth
-      .get
+      .get()
       .map(
         wsRepsonseToResult(json => (json \ "results").validate[Seq[String]])
       )
@@ -75,7 +75,7 @@ class KairosDB(wsClient: StandaloneWSClient, config: KairosDBConfig, executionCo
     wsClient
       .url(url / "api" / "v1" / "health" / "status")
       .applyKairosDBAuth
-      .get
+      .get()
       .map {
         wsRepsonseToResult(_.validate[Seq[String]])
       }
@@ -87,7 +87,7 @@ class KairosDB(wsClient: StandaloneWSClient, config: KairosDBConfig, executionCo
       .url(url / "api" / "v1" / "health" / "check")
       .withRequestTimeout(10.seconds)
       .applyKairosDBAuth
-      .get
+      .get()
       .map(_.status)
       .map {
         case 204 => AllHealthy
@@ -102,7 +102,7 @@ class KairosDB(wsClient: StandaloneWSClient, config: KairosDBConfig, executionCo
     wsClient
       .url(url / "api" / "v1" / "version")
       .applyKairosDBAuth
-      .get
+      .get()
       .map (
         wsRepsonseToResult(json => (json \ "version").validate[String])
       )
@@ -112,7 +112,7 @@ class KairosDB(wsClient: StandaloneWSClient, config: KairosDBConfig, executionCo
     wsClient
       .url(url / "api" / "v1" / "metric" / metricName.name)
       .applyKairosDBAuth
-      .delete
+      .delete()
       .map(emptyWsRepsonseToResult)
   }
 
