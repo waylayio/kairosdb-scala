@@ -5,7 +5,7 @@ import java.util.zip.GZIPOutputStream
 
 import io.waylay.kairosdb.driver.models._
 import io.waylay.kairosdb.driver.models.HealthCheckResult._
-import io.lemonlabs.uri.dsl._
+import io.lemonlabs.uri.typesafe.dsl._
 import com.typesafe.scalalogging.StrictLogging
 import io.waylay.kairosdb.driver.KairosDB._
 import io.waylay.kairosdb.driver.models.QueryMetricTagsResponse.TagQueryResponse
@@ -42,7 +42,7 @@ class KairosDB(wsClient: StandaloneWSClient, config: KairosDBConfig, executionCo
 
   def listMetricNames: Future[Seq[MetricName]] = {
     wsClient
-      .url(url / "api" / "v1" / "metricnames")
+      .url((url / "api" / "v1" / "metricnames").toString())
       .applyKairosDBAuth
       .get()
       .map {
@@ -53,7 +53,7 @@ class KairosDB(wsClient: StandaloneWSClient, config: KairosDBConfig, executionCo
 
   def listTagNames: Future[Seq[String]] = {
     wsClient
-      .url(url / "api" / "v1" / "tagnames")
+      .url((url / "api" / "v1" / "tagnames").toString())
       .applyKairosDBAuth
       .get()
       .map {
@@ -63,7 +63,7 @@ class KairosDB(wsClient: StandaloneWSClient, config: KairosDBConfig, executionCo
 
   def listTagValues: Future[Seq[String]] = {
     wsClient
-      .url(url / "api" / "v1" / "tagvalues")
+      .url((url / "api" / "v1" / "tagvalues").toString())
       .applyKairosDBAuth
       .get()
       .map(
@@ -73,7 +73,7 @@ class KairosDB(wsClient: StandaloneWSClient, config: KairosDBConfig, executionCo
 
   def healthStatus: Future[HealthStatusResults] = {
     wsClient
-      .url(url / "api" / "v1" / "health" / "status")
+      .url((url / "api" / "v1" / "health" / "status").toString())
       .applyKairosDBAuth
       .get()
       .map {
@@ -84,7 +84,7 @@ class KairosDB(wsClient: StandaloneWSClient, config: KairosDBConfig, executionCo
 
   def healthCheck: Future[HealthCheckResult] = {
     wsClient
-      .url(url / "api" / "v1" / "health" / "check")
+      .url((url / "api" / "v1" / "health" / "check").toString())
       .withRequestTimeout(10.seconds)
       .applyKairosDBAuth
       .get()
@@ -100,7 +100,7 @@ class KairosDB(wsClient: StandaloneWSClient, config: KairosDBConfig, executionCo
 
   def version: Future[String] = {
     wsClient
-      .url(url / "api" / "v1" / "version")
+      .url((url / "api" / "v1" / "version").toString())
       .applyKairosDBAuth
       .get()
       .map (
@@ -110,7 +110,7 @@ class KairosDB(wsClient: StandaloneWSClient, config: KairosDBConfig, executionCo
 
   def deleteMetric(metricName: MetricName): Future[Unit] = {
     wsClient
-      .url(url / "api" / "v1" / "metric" / metricName.name)
+      .url((url / "api" / "v1" / "metric" / metricName.name).toString())
       .applyKairosDBAuth
       .delete()
       .map(emptyWsRepsonseToResult)
@@ -132,7 +132,7 @@ class KairosDB(wsClient: StandaloneWSClient, config: KairosDBConfig, executionCo
     }
 
     wsClient
-      .url(url / "api" / "v1" / "datapoints")
+      .url((url / "api" / "v1" / "datapoints").toString())
       .applyKairosDBAuth
       .addHttpHeaders("Content-Type" -> contentType)
       .post(actualBody)
@@ -145,7 +145,7 @@ class KairosDB(wsClient: StandaloneWSClient, config: KairosDBConfig, executionCo
     val query = Json.toJson(queryMetrics)
     logger.debug(Json.prettyPrint(query))
     wsClient
-      .url(url / "api" / "v1" / "datapoints" / "query")
+      .url((url / "api" / "v1" / "datapoints" / "query").toString())
       .applyKairosDBAuth
       .post(query)
       .map {
@@ -161,7 +161,7 @@ class KairosDB(wsClient: StandaloneWSClient, config: KairosDBConfig, executionCo
     val query = Json.toJson(queryMetrics)
     logger.debug(Json.prettyPrint(query))
     wsClient
-      .url(url / "api" / "v1" / "datapoints" / "query" / "tags")
+      .url((url / "api" / "v1" / "datapoints" / "query" / "tags").toString())
       .applyKairosDBAuth
       .post(query)
       .map {
@@ -181,7 +181,7 @@ class KairosDB(wsClient: StandaloneWSClient, config: KairosDBConfig, executionCo
     val query = Json.toJson(queryMetrics)
     logger.debug(Json.prettyPrint(query))
     wsClient
-      .url(url / "api" / "v1" / "datapoints" / "delete")
+      .url((url / "api" / "v1" / "datapoints" / "delete").toString())
       .applyKairosDBAuth
       .post(query)
       .map(emptyWsRepsonseToResult)

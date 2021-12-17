@@ -1,8 +1,7 @@
 package io.waylay.kairosdb.driver.models
 
 import java.time.Instant
-
-import io.lemonlabs.uri.{Uri, Url}
+import io.lemonlabs.uri.{Uri, Url, UrlWithAuthority}
 import io.waylay.kairosdb.driver.models.KairosQuery.{Order, QueryTag}
 import io.waylay.kairosdb.driver.models.QueryResponse.TagResult
 import io.waylay.kairosdb.driver.models.TimeRange.KairosTimeUnit
@@ -86,7 +85,7 @@ object KairosDBConfig {
       user <- username
       pass <- password
     } yield {
-      baseUri.withUser(user).withPassword(pass)
+      baseUri.toAbsoluteUrl.withUser(user).withPassword(pass)
     }
 
     val serverUri = uriWithCredentialsOpt getOrElse baseUri
