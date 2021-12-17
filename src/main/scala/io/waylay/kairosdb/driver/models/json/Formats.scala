@@ -68,8 +68,8 @@ object Formats {
     }
   }
 
-  implicit val groupByWrites: Writes[GroupBy] = new Writes[GroupBy] {
-    override def writes(groupBy: GroupBy): JsValue = {
+  implicit def groupByWrites[T <: GroupBy]: Writes[T] = new Writes[T] {
+    override def writes(groupBy: T): JsValue = {
       val base = Json.obj("name" -> groupBy.name)
 
       groupBy match {
@@ -177,9 +177,9 @@ object Formats {
       }
     }
 
-  implicit val aggregatorWrites: Writes[Aggregator] = new Writes[Aggregator] {
+  implicit def aggregatorWrites[T <: Aggregator]: Writes[T] = new Writes[T] {
 
-    override def writes(agg: Aggregator): JsValue = {
+    override def writes(agg: T): JsValue = {
       agg match {
 
         case diff: Diff =>
@@ -298,8 +298,8 @@ object Formats {
     }
   }
 
-  implicit val timePointWrites: Writes[TimePoint] = new Writes[TimePoint] {
-    override def writes(timePoint: TimePoint): JsValue = {
+  implicit def timePointWrites[T<: TimePoint]: Writes[T] = new Writes[T] {
+    override def writes(timePoint: T): JsValue = {
       timePoint match {
         case time: AbsoluteStartTime => JsNumber(time.startTime.toEpochMilli)
         case time: AbsoluteEndTime   => JsNumber(time.endTime.toEpochMilli)
