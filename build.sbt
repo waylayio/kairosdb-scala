@@ -4,7 +4,6 @@ ThisBuild / organization := "io.waylay.kairosdb"
 
 val playWsVersion = "2.0.8"
 val playJsonVersion = "2.9.2"
-val akkaVersion = "2.5.32"
 val specs2Version = "4.13.1"
 val dockerTestkitVersion = "0.11.0"
 val scalaTestVersion = "3.2.10"
@@ -41,7 +40,6 @@ lazy val root = (project in file("."))
       "com.typesafe.play" %% "play-ws-standalone" % playWsVersion,
       "com.typesafe.play" %% "play-ws-standalone-json" % playWsVersion,
       "com.typesafe.scala-logging" %% "scala-logging" % "3.9.4",
-      "com.typesafe.akka" %% "akka-actor" % akkaVersion,
       "io.lemonlabs" %% "scala-uri" % "3.6.0",
       // TEST
       "org.specs2" %% "specs2-core" % specs2Version % Test,
