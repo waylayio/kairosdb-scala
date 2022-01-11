@@ -1,5 +1,6 @@
 package integration
 
+import akka.stream.testkit.NoMaterializer
 import com.spotify.docker.client.messages.HostConfig
 import com.typesafe.scalalogging.StrictLogging
 import com.whisk.docker.testkit.{ContainerGroup, ContainerSpec, DockerReadyChecker}
@@ -10,7 +11,6 @@ import org.scalatest.matchers.must.Matchers
 import org.scalatest.time.{Second, Seconds, Span}
 import org.scalatest.wordspec.AnyWordSpec
 import play.api.libs.ws.ahc.StandaloneAhcWSClient
-import play.api.test.NoMaterializer
 
 trait IntegrationSpec extends AnyWordSpec with Matchers with ScalaFutures with StrictLogging with BeforeAndAfterAll with DockerTestKitForAll {
 

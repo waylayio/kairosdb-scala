@@ -2,12 +2,12 @@ import sbt.Keys.thisProjectRef
 
 ThisBuild / organization := "io.waylay.kairosdb"
 
-val playWsVersion = "2.0.8"
+val playWsVersion = "2.1.7"
 val playJsonVersion = "2.9.2"
 val specs2Version = "4.13.1"
 val dockerTestkitVersion = "0.11.0"
 val scalaTestVersion = "3.2.10"
-val playVersion = "2.7.9" // test only
+val playVersion = "2.8.12" // test only
 
 val scala2_12 = "2.12.15"
 val scala2_13 = "2.13.7"
@@ -35,6 +35,7 @@ lazy val root = (project in file("."))
     Test / fork := true,
     IntegrationTest / parallelExecution := false,
     libraryDependencies ++= Seq(
+      "com.typesafe.akka" %% "akka-actor" % "2.6.18",
       "org.scala-lang.modules" %% "scala-collection-compat" % "2.6.0",
       "com.typesafe.play" %% "play-json" % playJsonVersion,
       "com.typesafe.play" %% "play-ws-standalone" % playWsVersion,
@@ -44,7 +45,7 @@ lazy val root = (project in file("."))
       // TEST
       "org.specs2" %% "specs2-core" % specs2Version % Test,
       "org.specs2" %% "specs2-junit" % specs2Version % Test,
-      "de.leanovate.play-mockws" %% "play-mockws" % "2.7.1" % Test,
+      "de.leanovate.play-mockws" %% "play-mockws" % "2.8.1" % Test,
       "com.typesafe.play" %% "play-ahc-ws" % playVersion % TestAndIntegrationTest, // neede for play-mockws
       "com.typesafe.play" %% "play-test" % playVersion % TestAndIntegrationTest, // play-mockws depends on some types in this dependency
       "com.typesafe.play" %% "play-ahc-ws-standalone" % playWsVersion % TestAndIntegrationTest,
