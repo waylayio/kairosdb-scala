@@ -4,7 +4,7 @@ ThisBuild / organization := "io.waylay.kairosdb"
 
 val playWsVersion = "2.1.7"
 val playJsonVersion = "2.9.2"
-val specs2Version = "4.14.0"
+val specs2Version = "4.14.1"
 val dockerTestkitVersion = "0.11.0"
 val scalaTestVersion = "3.2.10"
 val playVersion = "2.8.13" // test only
@@ -36,7 +36,7 @@ lazy val root = (project in file("."))
     IntegrationTest / parallelExecution := false,
     libraryDependencies ++= Seq(
       "com.typesafe.akka" %% "akka-actor" % "2.6.18",
-      "org.scala-lang.modules" %% "scala-collection-compat" % "2.6.0",
+      "org.scala-lang.modules" %% "scala-collection-compat" % "2.7.0",
       "com.typesafe.play" %% "play-json" % playJsonVersion,
       "com.typesafe.play" %% "play-ws-standalone" % playWsVersion,
       "com.typesafe.play" %% "play-ws-standalone-json" % playWsVersion,
