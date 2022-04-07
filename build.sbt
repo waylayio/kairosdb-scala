@@ -41,7 +41,7 @@ lazy val root = (project in file("."))
       "com.typesafe.play" %% "play-ws-standalone" % playWsVersion,
       "com.typesafe.play" %% "play-ws-standalone-json" % playWsVersion,
       "com.typesafe.scala-logging" %% "scala-logging" % "3.9.4",
-      "io.lemonlabs" %% "scala-uri" % "4.0.1",
+      "io.lemonlabs" %% "scala-uri" % "4.0.2",
       // TEST
       "org.specs2" %% "specs2-core" % specs2Version % Test,
       "org.specs2" %% "specs2-junit" % specs2Version % Test,
