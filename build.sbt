@@ -2,14 +2,14 @@ import sbt.Keys.thisProjectRef
 
 ThisBuild / organization := "io.waylay.kairosdb"
 
-val playWsVersion = "2.1.7"
+val playWsVersion = "2.1.10"
 val playJsonVersion = "2.9.2"
-val specs2Version = "4.14.1"
+val specs2Version = "4.15.0"
 val dockerTestkitVersion = "0.11.0"
-val scalaTestVersion = "3.2.10"
-val playVersion = "2.8.13" // test only
+val scalaTestVersion = "3.2.12"
+val playVersion = "2.8.16" // test only
 
-val scala2_12 = "2.12.15"
+val scala2_12 = "2.12.16"
 val scala2_13 = "2.13.8"
 
 ThisBuild / scalaVersion := scala2_13
@@ -36,12 +36,12 @@ lazy val root = (project in file("."))
     IntegrationTest / parallelExecution := false,
     libraryDependencies ++= Seq(
       "com.typesafe.akka" %% "akka-actor" % "2.6.18",
-      "org.scala-lang.modules" %% "scala-collection-compat" % "2.7.0",
+      "org.scala-lang.modules" %% "scala-collection-compat" % "2.8.0",
       "com.typesafe.play" %% "play-json" % playJsonVersion,
       "com.typesafe.play" %% "play-ws-standalone" % playWsVersion,
       "com.typesafe.play" %% "play-ws-standalone-json" % playWsVersion,
-      "com.typesafe.scala-logging" %% "scala-logging" % "3.9.4",
-      "io.lemonlabs" %% "scala-uri" % "4.0.1",
+      "com.typesafe.scala-logging" %% "scala-logging" % "3.9.5",
+      "io.lemonlabs" %% "scala-uri" % "4.0.2",
       // TEST
       "org.specs2" %% "specs2-core" % specs2Version % Test,
       "org.specs2" %% "specs2-junit" % specs2Version % Test,
