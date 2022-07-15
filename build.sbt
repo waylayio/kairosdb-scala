@@ -35,7 +35,7 @@ lazy val root = (project in file("."))
     Test / fork := true,
     IntegrationTest / parallelExecution := false,
     libraryDependencies ++= Seq(
-      "com.typesafe.akka" %% "akka-actor" % "2.6.19",
+      "com.typesafe.akka" %% "akka-actor" % "2.6.18",
       "org.scala-lang.modules" %% "scala-collection-compat" % "2.7.0",
       "com.typesafe.play" %% "play-json" % playJsonVersion,
       "com.typesafe.play" %% "play-ws-standalone" % playWsVersion,
