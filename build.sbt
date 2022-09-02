@@ -3,13 +3,13 @@ import sbt.Keys.thisProjectRef
 ThisBuild / organization := "io.waylay.kairosdb"
 
 val playWsVersion = "2.1.10"
-val playJsonVersion = "2.9.2"
+val playJsonVersion = "2.9.3"
 val specs2Version = "4.16.1"
 val dockerTestkitVersion = "0.11.0"
-val scalaTestVersion = "3.2.12"
-val playVersion = "2.8.14" // test only
+val scalaTestVersion = "3.2.13"
+val playVersion = "2.8.16" // test only
 
-val scala2_12 = "2.12.15"
+val scala2_12 = "2.12.16"
 val scala2_13 = "2.13.8"
 
 ThisBuild / scalaVersion := scala2_13
@@ -35,8 +35,8 @@ lazy val root = (project in file("."))
     Test / fork := true,
     IntegrationTest / parallelExecution := false,
     libraryDependencies ++= Seq(
-      "com.typesafe.akka" %% "akka-actor" % "2.6.18",
-      "org.scala-lang.modules" %% "scala-collection-compat" % "2.7.0",
+      "com.typesafe.akka" %% "akka-actor" % "2.6.19",
+      "org.scala-lang.modules" %% "scala-collection-compat" % "2.8.1",
       "com.typesafe.play" %% "play-json" % playJsonVersion,
       "com.typesafe.play" %% "play-ws-standalone" % playWsVersion,
       "com.typesafe.play" %% "play-ws-standalone-json" % playWsVersion,
