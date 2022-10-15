@@ -4,13 +4,13 @@ ThisBuild / organization := "io.waylay.kairosdb"
 
 val playWsVersion = "2.1.10"
 val playJsonVersion = "2.9.3"
-val specs2Version = "4.16.1"
+val specs2Version = "4.17.0"
 val dockerTestkitVersion = "0.11.0"
-val scalaTestVersion = "3.2.13"
+val scalaTestVersion = "3.2.14"
 val playVersion = "2.8.17" // test only
 
-val scala2_12 = "2.12.16"
-val scala2_13 = "2.13.8"
+val scala2_12 = "2.12.17"
+val scala2_13 = "2.13.10"
 
 ThisBuild / scalaVersion := scala2_13
 ThisBuild / crossScalaVersions := Seq(scala2_12, scala2_13)
