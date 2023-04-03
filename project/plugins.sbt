@@ -6,6 +6,6 @@ addSbtPlugin("com.github.sbt" % "sbt-ghpages" % "0.7.0")
 
 addSbtPlugin("org.scoverage" % "sbt-scoverage" % "1.9.3")
 
-addSbtPlugin("org.scoverage" % "sbt-coveralls" % "1.3.6")
+addSbtPlugin("org.scoverage" % "sbt-coveralls" % "1.3.7")
 
 addSbtPlugin("com.github.sbt" % "sbt-pgp" % "2.2.1")
