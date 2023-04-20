@@ -11,30 +11,21 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.collection.immutable.Seq
 
 class AuthSpec extends IntegrationSpec {
-
-  // TODO enabling auth by providing env variables, when kairosdb 1.1.2 is released
-  //  // same as KairosDB Main.java
-  //  def toEnvVarName(propName: String) = {
-  //    propName.toUpperCase().replace('.', '_')
-  //  }
-  //
-  //  override lazy val dockerEnv = Seq(
-  //    toEnvVarName("kairosdb.jetty.basic_auth.user") + "=test",
-  //    toEnvVarName("kairosdb.jetty.basic_auth.password") + "=test"
-  //  )
-
   // enabling auth by providing a properties file
   override lazy val volumes = Seq(
     HostConfig.Bind
-      .from(Paths.get("src/it/resources/conf").toAbsolutePath.toString)
-      .to("/opt/kairosdb/conf")
+      .from(Paths.get("src/it/resources/conf/auth").toAbsolutePath.toString)
+      .to("/opt/kairosdb/conf/auth")
       .build()
   )
+
+  override lazy val env: Seq[String] = Seq(s"JAVA_OPTS=-Djava.security.auth.login.config=/opt/kairosdb/conf/auth/basicAuth.conf -Dkairosdb.jetty.auth_module_name=basicAuth")
+
 
   "The health status" should {
     "fail without auth" in {
       val kairosDB = new KairosDB(wsClient, KairosDBConfig(port = kairosPort), global)
-      val res = kairosDB.healthStatus.failed.futureValue
+      val res = kairosDB.version.failed.futureValue
 
       res mustBe an[KairosDBResponseException]
       res must be(KairosDBResponseException(401, "Unauthorized", Seq.empty))
@@ -47,9 +38,9 @@ class AuthSpec extends IntegrationSpec {
         password = Some("test")
       )
       val kairosDB = new KairosDB(wsClient, kairosConfig, global)
-      val res = kairosDB.healthStatus.futureValue
+      val res = kairosDB.version.futureValue
 
-      res must be(HealthStatusResults(Seq("JVM-Thread-Deadlock: OK", "Datastore-Query: OK")))
+      res must startWith("KairosDB")
     }
   }
 }

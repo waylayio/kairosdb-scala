@@ -59,6 +59,7 @@ class AggregatorWritesSpec extends Specification {
       Json.toJson(aggregator) should be equalTo Json.obj(
         "name" -> "avg",
         "align_start_time" -> true,
+        "align_sampling"->false,
         "sampling" -> Json.obj(
           "value" -> "1",
           "unit" -> "minutes"
@@ -275,6 +276,7 @@ class AggregatorWritesSpec extends Specification {
         ),
         "start_time" -> 1469778777L,
         "align_start_time" -> true,
+        "align_sampling"->false,
         "time_zone" -> "Africa/Banjul"
       )
     }
