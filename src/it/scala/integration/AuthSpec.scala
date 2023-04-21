@@ -19,7 +19,11 @@ class AuthSpec extends IntegrationSpec {
       .build()
   )
 
-  override lazy val env: Seq[String] = Seq(s"JAVA_OPTS=-Djava.security.auth.login.config=/opt/kairosdb/conf/auth/basicAuth.conf -Dkairosdb.jetty.auth_module_name=basicAuth")
+  override lazy val env: Seq[String] = Seq(
+    "JAVA_OPTS=-Djava.security.auth.login.config=/opt/kairosdb/conf/auth/basicAuth.conf -Dkairosdb.jetty.auth_module_name=basicAuth "+
+    "-Dkairosdb.jetty.basic_auth.user=test " +
+    "-Dkairosdb.jetty.basic_auth.password=test"
+  )
 
 
   "The health status" should {
