@@ -1,10 +1,10 @@
-FROM java:8-alpine
+FROM openjdk:8u342-slim-buster
 
-RUN apk upgrade libssl1.0 --update-cache && \
-    apk add wget ca-certificates bash
+RUN apt-get update
+RUN apt-get -y upgrade libssl1.0 && \
+    apt-get -y install wget ca-certificates bash
 RUN wget -O /tmp/kairosdb.tar.gz \
-#    https://github.com/kairosdb/kairosdb/releases/download/v1.1.3/kairosdb-1.1.3-1.tar.gz
-    https://github.com/kairosdb/kairosdb/releases/download/v1.2.0/kairosdb-1.2.0-1.tar.gz
+    https://github.com/kairosdb/kairosdb/releases/download/v1.3.0/kairosdb-1.3.0-1.tar.gz
 
 RUN mkdir -p /opt/ && \
     cd /opt/ && \

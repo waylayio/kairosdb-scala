@@ -266,7 +266,8 @@ object Formats {
           .getOrElse(Json.obj()) ++
         rangeAgg.align
           .map {
-            case AlignStartTime => Json.obj("align_start_time" -> true)
+            // see https://github.com/kairosdb/kairosdb/issues/675
+            case AlignStartTime => Json.obj("align_start_time" -> true, "align_sampling" -> false)
             case AlignSampling  => Json.obj("align_sampling" -> true)
           }
           .getOrElse(Json.obj()) ++
@@ -288,7 +289,8 @@ object Formats {
           .getOrElse(Json.obj()) ++
         percentileAgg.align
           .map {
-            case AlignStartTime => Json.obj("align_start_time" -> true)
+            // see https://github.com/kairosdb/kairosdb/issues/675
+            case AlignStartTime => Json.obj("align_start_time" -> true, "align_sampling" -> false)
             case AlignSampling  => Json.obj("align_sampling" -> true)
           }
           .getOrElse(Json.obj()) ++

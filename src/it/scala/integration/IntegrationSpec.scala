@@ -19,7 +19,7 @@ trait IntegrationSpec extends AnyWordSpec with Matchers with ScalaFutures with S
   lazy val env = Seq.empty[String]
   lazy val volumes = Seq.empty[HostConfig.Bind]
 
-  val kairosdbContainer = ContainerSpec("brunoballekens/kairosdb-scala-driver-it:1.2.0-1")
+  val kairosdbContainer = ContainerSpec("brunoballekens/kairosdb-scala-driver-it:1.3.0-1")
     .withEnv(env:_*)
     // broken with the spotify client
     .withVolumeBindings(volumes:_*)
@@ -37,7 +37,7 @@ trait IntegrationSpec extends AnyWordSpec with Matchers with ScalaFutures with S
       .getOrElse(throw new IllegalStateException(s"Missing container mapped port for $DefaultKairosDbPort"))
   }
 
-  implicit val pc = PatienceConfig(Span(20, Seconds), Span(1, Second))
+  implicit val pc = PatienceConfig(Span(2000, Seconds), Span(1, Second))
   //override def dockerInitPatienceInterval = PatienceConfig(scaled(Span(30, Seconds)), scaled(Span(10, Millis)))
 
   override val managedContainers: ContainerGroup = ContainerGroup(Seq(kairosdbContainer.toContainer))

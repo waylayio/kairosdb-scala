@@ -123,8 +123,18 @@ class AddAndQueryDataPointsIntegrationSpec extends IntegrationSpec {
               (Instant.parse("1970-01-04T00:00:00Z"), KNumber(555)
               ))
             ))))))
+        case ("KairosDB 1.3.0-1.20210808220820", results) =>
+          results must be(QueryResponse.Response(Seq(ResponseQuery(2, Seq(
+            Result("my.new.metric", Seq(GroupBy.GroupByType("number")), Seq(TagResult("aoeu", Seq("snth"))), Seq(
+              (Instant.parse("1970-01-01T00:00:00Z"), KNull),
+              (Instant.parse("1970-01-02T00:00:00Z"), KNumber(555)),
+              (Instant.parse("1970-01-03T00:00:00Z"), KNull),
+              (Instant.parse("1970-01-04T00:00:00Z"), KNumber(555)),
+              (Instant.parse("1970-01-05T00:00:00Z"), KNull)
+              )
+            ))))))
         case other =>
-          fail("Unknown kairos version")
+          fail(s"Unknown kairos version ${other._1}")
       }
     }
   }

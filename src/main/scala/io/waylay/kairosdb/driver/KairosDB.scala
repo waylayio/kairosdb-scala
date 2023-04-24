@@ -51,26 +51,6 @@ class KairosDB(wsClient: StandaloneWSClient, config: KairosDBConfig, executionCo
       .map(_.map(MetricName))
   }
 
-  def listTagNames: Future[Seq[String]] = {
-    wsClient
-      .url((url / "api" / "v1" / "tagnames").toString())
-      .applyKairosDBAuth
-      .get()
-      .map {
-        wsRepsonseToResult(json => (json \ "results").validate[Seq[String]])
-      }
-  }
-
-  def listTagValues: Future[Seq[String]] = {
-    wsClient
-      .url((url / "api" / "v1" / "tagvalues").toString())
-      .applyKairosDBAuth
-      .get()
-      .map(
-        wsRepsonseToResult(json => (json \ "results").validate[Seq[String]])
-      )
-  }
-
   def healthStatus: Future[HealthStatusResults] = {
     wsClient
       .url((url / "api" / "v1" / "health" / "status").toString())
