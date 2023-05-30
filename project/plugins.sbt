@@ -1,4 +1,4 @@
-addSbtPlugin("com.typesafe.sbt" % "sbt-site" % "1.4.1")
+addSbtPlugin("com.github.sbt" % "sbt-site" % "1.5.0")
 addSbtPlugin("com.github.sbt" % "sbt-release" % "1.1.0")
 addSbtPlugin("com.github.sbt" % "sbt-ghpages" % "0.8.0")
 addSbtPlugin("org.scoverage" % "sbt-scoverage" % "2.0.7")
