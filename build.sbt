@@ -10,7 +10,7 @@ val dockerTestkitVersion = "0.11.0"
 val scalaTestVersion = "3.2.16"
 val playVersion = "2.8.19" // test only
 
-val scala2_12 = "2.12.17"
+val scala2_12 = "2.12.18"
 val scala2_13 = "2.13.10"
 
 ThisBuild / scalaVersion := scala2_13
