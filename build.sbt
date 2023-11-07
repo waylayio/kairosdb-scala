@@ -3,7 +3,7 @@ import sbt.Keys.thisProjectRef
 ThisBuild / organization := "io.waylay.kairosdb"
 
 val playWsVersion = "2.1.11"
-val playJsonVersion = "2.10.2"
+val playJsonVersion = "2.10.3"
 val specs2Version = "4.20.2"
 
 val dockerTestkitVersion = "0.11.0"
