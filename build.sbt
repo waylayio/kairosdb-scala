@@ -38,7 +38,7 @@ lazy val root = (project in file("."))
     libraryDependencies ++= Seq(
       "com.typesafe.akka" %% "akka-actor" % "2.6.20",
       "org.scala-lang.modules" %% "scala-collection-compat" % "2.11.0",
-      "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.14.3",
+      "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.16.1",
       "com.typesafe.play" %% "play-json" % playJsonVersion,
       "com.typesafe.play" %% "play-ws-standalone" % playWsVersion,
       "com.typesafe.play" %% "play-ws-standalone-json" % playWsVersion,
