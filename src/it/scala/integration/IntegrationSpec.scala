@@ -1,10 +1,11 @@
 package integration
 
-import akka.stream.testkit.NoMaterializer
 import com.spotify.docker.client.messages.HostConfig
 import com.typesafe.scalalogging.StrictLogging
 import com.whisk.docker.testkit.{ContainerGroup, ContainerSpec, DockerReadyChecker}
 import com.whisk.docker.testkit.scalatest.DockerTestKitForAll
+import org.apache.pekko.stream.Materializer
+import org.apache.pekko.stream.testkit.NoMaterializer
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.matchers.must.Matchers
@@ -37,13 +38,13 @@ trait IntegrationSpec extends AnyWordSpec with Matchers with ScalaFutures with S
       .getOrElse(throw new IllegalStateException(s"Missing container mapped port for $DefaultKairosDbPort"))
   }
 
-  implicit val pc = PatienceConfig(Span(2000, Seconds), Span(1, Second))
+  implicit val pc: PatienceConfig = PatienceConfig(Span(2000, Seconds), Span(1, Second))
   //override def dockerInitPatienceInterval = PatienceConfig(scaled(Span(30, Seconds)), scaled(Span(10, Millis)))
 
   override val managedContainers: ContainerGroup = ContainerGroup(Seq(kairosdbContainer.toContainer))
 
-  implicit val materializer = NoMaterializer
-  val wsClient = StandaloneAhcWSClient()
+  implicit val materializer: Materializer = NoMaterializer
+  val wsClient: StandaloneAhcWSClient = StandaloneAhcWSClient()
 
   override def afterAll(): Unit = {
     wsClient.close()
