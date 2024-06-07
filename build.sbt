@@ -10,13 +10,9 @@ val dockerTestkitVersion = "0.12.0"
 val scalaTestVersion = "3.2.18"
 val playVersion = "3.0.3" // test only
 
-val scala2_12 = "2.12.19"
 val scala2_13 = "2.13.14"
 
 ThisBuild / scalaVersion := scala2_13
-ThisBuild / crossScalaVersions := Seq(scala2_12, scala2_13)
-
-releaseCrossBuild := true
 
 // we need both Test and IntegrationTest scopes for a correct pom, see https://github.com/sbt/sbt/issues/1380
 val TestAndIntegrationTest = IntegrationTest.name + "," + Test.name
@@ -36,7 +32,6 @@ lazy val root = (project in file("."))
     Test / fork := true,
     IntegrationTest / parallelExecution := false,
     libraryDependencies ++= Seq(
-      "com.typesafe.akka" %% "akka-actor" % "2.6.20",
       "org.scala-lang.modules" %% "scala-collection-compat" % "2.12.0",
       "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.17.1",
       "org.playframework" %% "play-json" % playJsonVersion,
@@ -81,15 +76,15 @@ enablePlugins(SiteScaladocPlugin)
 val publishScalaDoc = (ref: ProjectRef) =>
   ReleaseStep(
     action = releaseStepTaskAggregated(ref / ghpagesPushSite) // publish scaladoc
-)
+  )
 
 val runIntegrationTest = (ref: ProjectRef) =>
   ReleaseStep(
     action = releaseStepTaskAggregated(ref / IntegrationTest / test)
-)
+  )
 
 releaseProcess := {
-  import sbtrelease.ReleaseStateTransformations._
+  import sbtrelease.ReleaseStateTransformations.*
 
   Seq[ReleaseStep](
     checkSnapshotDependencies,
