@@ -1,27 +1,24 @@
 package io.waylay.kairosdb.driver
 
+import com.typesafe.scalalogging.StrictLogging
+import io.lemonlabs.uri.typesafe.dsl._
+import io.waylay.kairosdb.driver.KairosDB._
+import io.waylay.kairosdb.driver.models.HealthCheckResult._
+import io.waylay.kairosdb.driver.models.QueryMetricTagsResponse.TagQueryResponse
+import io.waylay.kairosdb.driver.models.QueryResponse.Response
+import io.waylay.kairosdb.driver.models._
+import io.waylay.kairosdb.driver.models.json.Formats._
+import play.api.libs.json._
+import play.api.libs.ws.DefaultBodyWritables._
+import play.api.libs.ws.JsonBodyReadables._
+import play.api.libs.ws.JsonBodyWritables._
+import play.api.libs.ws.{StandaloneWSClient, StandaloneWSRequest, StandaloneWSResponse, WSAuthScheme}
+
 import java.io.ByteArrayOutputStream
 import java.util.zip.GZIPOutputStream
-
-import io.waylay.kairosdb.driver.models._
-import io.waylay.kairosdb.driver.models.HealthCheckResult._
-import io.lemonlabs.uri.typesafe.dsl._
-import com.typesafe.scalalogging.StrictLogging
-import io.waylay.kairosdb.driver.KairosDB._
-import io.waylay.kairosdb.driver.models.QueryMetricTagsResponse.TagQueryResponse
-import io.waylay.kairosdb.driver.models.json.Formats._
-import io.waylay.kairosdb.driver.models.QueryResponse.Response
-import play.api.libs.json._
-import play.api.libs.ws.{StandaloneWSClient, StandaloneWSRequest, StandaloneWSResponse, WSAuthScheme}
-import play.api.libs.ws.DefaultBodyWritables._
-import play.api.libs.ws.JsonBodyWritables._
-import play.api.libs.ws.JsonBodyReadables._
-
+import scala.concurrent.duration._
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Success, Try}
-import scala.concurrent.duration._
-import scala.collection.immutable.Seq
-import scala.collection.compat._
 
 object KairosDB {
 
@@ -37,7 +34,7 @@ object KairosDB {
 }
 
 class KairosDB(wsClient: StandaloneWSClient, config: KairosDBConfig, executionContext: ExecutionContext) extends StrictLogging {
-  implicit val ec = executionContext
+  implicit val ec: ExecutionContext = executionContext
   val url = config.url
 
   def listMetricNames: Future[Seq[MetricName]] = {

@@ -1,13 +1,11 @@
 package io.waylay.kairosdb.driver.models
 
-import java.time.Instant
-import io.lemonlabs.uri.{Uri, Url, UrlWithAuthority}
+import io.lemonlabs.uri.{Uri, Url}
 import io.waylay.kairosdb.driver.models.KairosQuery.{Order, QueryTag}
 import io.waylay.kairosdb.driver.models.QueryResponse.TagResult
 import io.waylay.kairosdb.driver.models.TimeRange.KairosTimeUnit
 
-import scala.collection.immutable.Seq
-import scala.collection.compat._
+import java.time.Instant
 
 /**
   * Metric names are case sensitive and can only contain the following characters: alphanumeric characters, period ”.”,
