@@ -42,7 +42,7 @@ lazy val root = (project in file("."))
       // TEST
       "org.specs2" %% "specs2-core" % specs2Version % Test,
       "org.specs2" %% "specs2-junit" % specs2Version % Test,
-      "de.leanovate.play-mockws" %% "play-mockws-3-0" % "3.0.4" % Test,
+      "de.leanovate.play-mockws" %% "play-mockws-3-0" % "3.0.5" % Test,
       "org.playframework" %% "play-ahc-ws" % playVersion % TestAndIntegrationTest, // neede for play-mockws
       "org.playframework" %% "play-test" % playVersion % TestAndIntegrationTest, // play-mockws depends on some types in this dependency
       "org.playframework" %% "play-ahc-ws-standalone" % playWsVersion % TestAndIntegrationTest,
