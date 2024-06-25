@@ -7,7 +7,7 @@ val playJsonVersion = "3.0.3"
 val specs2Version = "4.20.6"
 
 val dockerTestkitVersion = "0.12.0"
-val scalaTestVersion = "3.2.18"
+val scalaTestVersion = "3.2.19"
 val playVersion = "3.0.3" // test only
 
 val scala2_13 = "2.13.14"
