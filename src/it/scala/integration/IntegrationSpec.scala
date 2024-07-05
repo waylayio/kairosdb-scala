@@ -28,12 +28,7 @@ trait IntegrationSpec
     new File("src/it/resources/docker-compose.yaml"),
     tailChildContainers = true,
     exposedServices =
-      Seq(ExposedService("kairosdb", 8080, Wait.forHttp("/api/v1/version").withBasicCredentials("test", "test"))),
-    env = Map[String, String](
-      "JAVA_OPTS" -> ("-Djava.security.auth.login.config=/opt/kairosdb/conf/auth/basicAuth.conf -Dkairosdb.jetty.auth_module_name=basicAuth " +
-      "-Dkairosdb.jetty.basic_auth.user=test " +
-      "-Dkairosdb.jetty.basic_auth.password=test")
-    )
+      Seq(ExposedService("kairosdb", 8080, Wait.forHttp("/api/v1/version").withBasicCredentials("test", "test")))
   )
 
   lazy val kairosPort: Int =
