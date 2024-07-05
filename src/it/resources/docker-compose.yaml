@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+
+  kairosdb:
+    image: brunoballekens/kairosdb-scala-driver-it:1.3.0-1
+    volumes:
+        - ./conf/auth:/opt/kairosdb/conf/auth
+    expose:
+      - 8080
+    environment:
+      - JAVA_OPTS="-Djava.security.auth.login.config=/opt/kairosdb/conf/auth/basicAuth.conf -Dkairosdb.jetty.auth_module_name=basicAuth  -Dkairosdb.jetty.basic_auth.user=test -Dkairosdb.jetty.basic_auth.password=test"

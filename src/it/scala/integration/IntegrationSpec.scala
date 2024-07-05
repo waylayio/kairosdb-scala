@@ -1,9 +1,7 @@
 package integration
 
-import com.spotify.docker.client.messages.HostConfig
+import com.dimafeng.testcontainers.{DockerComposeContainer, ExposedService, ForAllTestContainer}
 import com.typesafe.scalalogging.StrictLogging
-import com.whisk.docker.testkit.{ContainerGroup, ContainerSpec, DockerReadyChecker}
-import com.whisk.docker.testkit.scalatest.DockerTestKitForAll
 import org.apache.pekko.stream.Materializer
 import org.apache.pekko.stream.testkit.NoMaterializer
 import org.scalatest.BeforeAndAfterAll
@@ -11,63 +9,44 @@ import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.matchers.must.Matchers
 import org.scalatest.time.{Second, Seconds, Span}
 import org.scalatest.wordspec.AnyWordSpec
+import org.testcontainers.containers.wait.strategy.Wait
 import play.api.libs.ws.ahc.StandaloneAhcWSClient
 
-trait IntegrationSpec extends AnyWordSpec with Matchers with ScalaFutures with StrictLogging with BeforeAndAfterAll with DockerTestKitForAll {
+import java.io.File
+
+trait IntegrationSpec
+    extends AnyWordSpec
+    with Matchers
+    with ScalaFutures
+    with StrictLogging
+    with BeforeAndAfterAll
+    with ForAllTestContainer {
 
   lazy val DefaultKairosDbPort = 8080
 
-  lazy val env = Seq.empty[String]
-  lazy val volumes = Seq.empty[HostConfig.Bind]
+  override val container = DockerComposeContainer(
+    new File("src/it/resources/docker-compose.yaml"),
+    tailChildContainers = true,
+    exposedServices =
+      Seq(ExposedService("kairosdb", 8080, Wait.forHttp("/api/v1/version").withBasicCredentials("test", "test"))),
+    env = Map[String, String](
+      "JAVA_OPTS" -> ("-Djava.security.auth.login.config=/opt/kairosdb/conf/auth/basicAuth.conf -Dkairosdb.jetty.auth_module_name=basicAuth " +
+      "-Dkairosdb.jetty.basic_auth.user=test " +
+      "-Dkairosdb.jetty.basic_auth.password=test")
+    )
+  )
 
-  val kairosdbContainer = ContainerSpec("brunoballekens/kairosdb-scala-driver-it:1.3.0-1")
-    .withEnv(env:_*)
-    // broken with the spotify client
-    .withVolumeBindings(volumes:_*)
-    .withExposedPorts(DefaultKairosDbPort)
-    //      .withReadyChecker(
-    //        DockerReadyChecker.HttpResponseCode(DefaultKairosDbPort, "/api/v1/version", code = 200)
-    //          .within(100.millis)
-    //          .looped(20, 250.millis))
-    .withReadyChecker(DockerReadyChecker.LogLineContains("KairosDB service started"))
-    //.withReadyChecker(LoggingLogLineContains("KairosDB service started"))
-
-  lazy val kairosPort: Int = {
-    managedContainers.containers.head
-      .mappedPortOpt(DefaultKairosDbPort)
-      .getOrElse(throw new IllegalStateException(s"Missing container mapped port for $DefaultKairosDbPort"))
-  }
+  lazy val kairosPort: Int =
+    container.getServicePort("kairosdb", 8080)
 
   implicit val pc: PatienceConfig = PatienceConfig(Span(2000, Seconds), Span(1, Second))
-  //override def dockerInitPatienceInterval = PatienceConfig(scaled(Span(30, Seconds)), scaled(Span(10, Millis)))
-
-  override val managedContainers: ContainerGroup = ContainerGroup(Seq(kairosdbContainer.toContainer))
+  // override def dockerInitPatienceInterval = PatienceConfig(scaled(Span(30, Seconds)), scaled(Span(10, Millis)))
 
   implicit val materializer: Materializer = NoMaterializer
-  val wsClient: StandaloneAhcWSClient = StandaloneAhcWSClient()
+  val wsClient: StandaloneAhcWSClient     = StandaloneAhcWSClient()
 
   override def afterAll(): Unit = {
     wsClient.close()
     super.afterAll()
   }
 }
-
-//private case class LoggingLogLineContains(str: String) extends DockerReadyChecker with StrictLogging {
-//
-//  override def apply(container: BaseContainer)(implicit docker: ContainerCommandExecutor, ec: ExecutionContext): Future[Unit] = {
-//    container.state() match {
-//      case ContainerState.Ready(_) =>
-//        Future.successful(())
-//      case state: ContainerState.HasId =>
-//        docker.withLogStreamLinesRequirement(state.id, withErr = true) { m =>
-//          // drop newlines
-//          logger.info(m.dropRight(1))
-//          m.contains(str)
-//        }.map(_ => ())
-//      case _ =>
-//        Future.failed(
-//          new FailFastCheckException("can't initialise LogStream to container without Id")
-//        )
-//    }
-//  }
-//}
