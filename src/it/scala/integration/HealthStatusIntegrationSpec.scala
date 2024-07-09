@@ -13,13 +13,21 @@ class HealthStatusIntegrationSpec extends IntegrationSpec {
   "The health endpoint" should {
 
     "for /check return all healthy" in {
-      val kairosDB = new KairosDB(wsClient, KairosDBConfig(port = kairosPort), global)
+      val kairosDB = new KairosDB(
+        wsClient,
+        KairosDBConfig(port = kairosPort, username = Some("test"), password = Some("test")),
+        global
+      )
       val res = kairosDB.healthCheck.futureValue
       res must be(AllHealthy)
     }
 
     "for /status respond that there are no thread deadlocks and datastore query works" in {
-      val kairosDB = new KairosDB(wsClient, KairosDBConfig(port = kairosPort), global)
+      val kairosDB = new KairosDB(
+        wsClient,
+        KairosDBConfig(port = kairosPort, username = Some("test"), password = Some("test")),
+        global
+      )
       val res = kairosDB.healthStatus.futureValue
 
       res must be(HealthStatusResults(Seq("JVM-Thread-Deadlock: OK", "Datastore-Query: OK")))

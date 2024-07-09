@@ -10,7 +10,11 @@ class VersionIntegrationSpec extends IntegrationSpec {
   "Getting the KairosDB version" should {
 
     "return version" in {
-      val kairosDb = new KairosDB(wsClient, KairosDBConfig(port = kairosPort), global)
+      val kairosDb = new KairosDB(
+        wsClient,
+        KairosDBConfig(port = kairosPort, username = Some("test"), password = Some("test")),
+        global
+      )
       val res = kairosDb.version.futureValue
 
       res must startWith("KairosDB")
