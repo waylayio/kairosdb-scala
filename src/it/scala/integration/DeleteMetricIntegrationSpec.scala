@@ -13,12 +13,20 @@ class DeleteMetricIntegrationSpec extends IntegrationSpec {
   "Deleting a metric name" should {
 
     "after deleting a metric, all metrics should not contain the metric" in {
-      val kairosDB = new KairosDB(wsClient, KairosDBConfig(port = kairosPort), global)
-      val res = kairosDB.addDataPoint(DataPoint(MetricName("my.new.metric"), KNumber(555), tags = Seq(Tag("aoeu", "snth")))).flatMap { _ =>
-        kairosDB.deleteMetric(MetricName("my.new.metric"))
-      }.flatMap { _ =>
-        kairosDB.listMetricNames
-      }.futureValue
+      val kairosDB = new KairosDB(
+        wsClient,
+        KairosDBConfig(port = kairosPort, username = Some("test"), password = Some("test")),
+        global
+      )
+      val res = kairosDB
+        .addDataPoint(DataPoint(MetricName("my.new.metric"), KNumber(555), tags = Seq(Tag("aoeu", "snth"))))
+        .flatMap { _ =>
+          kairosDB.deleteMetric(MetricName("my.new.metric"))
+        }
+        .flatMap { _ =>
+          kairosDB.listMetricNames
+        }
+        .futureValue
 
       res must not contain MetricName("my.new.metric")
     }

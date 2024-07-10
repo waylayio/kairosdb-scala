@@ -2,13 +2,13 @@ import sbt.Keys.thisProjectRef
 
 ThisBuild / organization := "io.waylay.kairosdb"
 
-val playWsVersion = "3.0.4"
-val playJsonVersion = "3.0.3"
-val specs2Version = "4.20.6"
+val playWsVersion   = "3.0.4"
+val playJsonVersion = "3.0.4"
+val specs2Version   = "4.20.8"
 
-val dockerTestkitVersion = "0.12.0"
-val scalaTestVersion = "3.2.18"
-val playVersion = "3.0.3" // test only
+val testContainersVersion = "0.41.4"
+val scalaTestVersion      = "3.2.19"
+val playVersion           = "3.0.4" // test only
 
 val scala2_13 = "2.13.14"
 
@@ -28,30 +28,29 @@ val exclusions = Seq(
 
 lazy val root = (project in file("."))
   .settings(
-    name := "kairosdb-scala",
-    Test / fork := true,
+    name                                := "kairosdb-scala",
+    Test / fork                         := true,
     IntegrationTest / parallelExecution := false,
     libraryDependencies ++= Seq(
-      "org.scala-lang.modules" %% "scala-collection-compat" % "2.12.0",
-      "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.17.1",
-      "org.playframework" %% "play-json" % playJsonVersion,
-      "org.playframework" %% "play-ws-standalone" % playWsVersion,
-      "org.playframework" %% "play-ws-standalone-json" % playWsVersion,
-      "com.typesafe.scala-logging" %% "scala-logging" % "3.9.5",
-      "io.lemonlabs" %% "scala-uri" % "4.0.3",
+      "org.scala-lang.modules"       %% "scala-collection-compat" % "2.12.0",
+      "com.fasterxml.jackson.module" %% "jackson-module-scala"    % "2.17.1",
+      "org.playframework"            %% "play-json"               % playJsonVersion,
+      "org.playframework"            %% "play-ws-standalone"      % playWsVersion,
+      "org.playframework"            %% "play-ws-standalone-json" % playWsVersion,
+      "com.typesafe.scala-logging"   %% "scala-logging"           % "3.9.5",
+      "io.lemonlabs"                 %% "scala-uri"               % "4.0.3",
       // TEST
-      "org.specs2" %% "specs2-core" % specs2Version % Test,
-      "org.specs2" %% "specs2-junit" % specs2Version % Test,
-      "de.leanovate.play-mockws" %% "play-mockws-3-0" % "3.0.4" % Test,
-      "org.playframework" %% "play-ahc-ws" % playVersion % TestAndIntegrationTest, // neede for play-mockws
+      "org.specs2"               %% "specs2-core"     % specs2Version % Test,
+      "org.specs2"               %% "specs2-junit"    % specs2Version % Test,
+      "de.leanovate.play-mockws" %% "play-mockws-3-0" % "3.0.5"       % Test,
+      "org.playframework"        %% "play-ahc-ws"     % playVersion   % TestAndIntegrationTest, // neede for play-mockws
       "org.playframework" %% "play-test" % playVersion % TestAndIntegrationTest, // play-mockws depends on some types in this dependency
       "org.playframework" %% "play-ahc-ws-standalone" % playWsVersion % TestAndIntegrationTest,
       // INTEGRATION TESTS
       // TODO investigate if we can do this with specs2
-      "org.scalatest" %% "scalatest-wordspec" % scalaTestVersion % TestAndIntegrationTest,
-      "org.scalatest" %% "scalatest-mustmatchers" % scalaTestVersion % TestAndIntegrationTest,
-
-      "com.whisk" %% "docker-testkit-scalatest" % dockerTestkitVersion % TestAndIntegrationTest excludeAll (exclusions: _*)
+      "org.scalatest" %% "scalatest-wordspec"             % scalaTestVersion      % TestAndIntegrationTest,
+      "org.scalatest" %% "scalatest-mustmatchers"         % scalaTestVersion      % TestAndIntegrationTest,
+      "com.dimafeng"  %% "testcontainers-scala-scalatest" % testContainersVersion % TestAndIntegrationTest
     ),
     scalacOptions ++= Seq(
       "-feature",
