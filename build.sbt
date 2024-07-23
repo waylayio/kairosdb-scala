@@ -2,9 +2,10 @@ import sbt.Keys.thisProjectRef
 
 ThisBuild / organization := "io.waylay.kairosdb"
 
-val playWsVersion   = "3.0.3"
+val playWsVersion   = "3.0.5"
 val playJsonVersion = "3.0.4"
 val specs2Version   = "4.20.8"
+val pekkoVersion    = "1.0.3"
 
 val testContainersVersion = "0.41.4"
 val scalaTestVersion      = "3.2.19"
@@ -45,7 +46,10 @@ lazy val root = (project in file("."))
       "de.leanovate.play-mockws" %% "play-mockws-3-0" % "3.0.5"       % Test,
       "org.playframework"        %% "play-ahc-ws"     % playVersion   % TestAndIntegrationTest, // neede for play-mockws
       "org.playframework" %% "play-test" % playVersion % TestAndIntegrationTest, // play-mockws depends on some types in this dependency
-      "org.playframework" %% "play-ahc-ws-standalone" % playWsVersion % TestAndIntegrationTest,
+      "org.playframework" %% "play-ahc-ws-standalone"      % playWsVersion % TestAndIntegrationTest,
+      "org.apache.pekko"  %% "pekko-actor-typed"           % pekkoVersion  % TestAndIntegrationTest,
+      "org.apache.pekko"  %% "pekko-serialization-jackson" % pekkoVersion  % TestAndIntegrationTest,
+      "org.apache.pekko"  %% "pekko-slf4j"                 % pekkoVersion  % TestAndIntegrationTest,
       // INTEGRATION TESTS
       // TODO investigate if we can do this with specs2
       "org.scalatest" %% "scalatest-wordspec"             % scalaTestVersion      % TestAndIntegrationTest,
