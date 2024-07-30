@@ -3,13 +3,13 @@ import sbt.Keys.thisProjectRef
 ThisBuild / organization := "io.waylay.kairosdb"
 
 val playWsVersion   = "3.0.5"
-val playJsonVersion = "3.0.4"
+val playJsonVersion = "3.0.5"
 val specs2Version   = "4.20.8"
 val pekkoVersion    = "1.0.3"
 
 val testContainersVersion = "0.41.4"
 val scalaTestVersion      = "3.2.19"
-val playVersion           = "3.0.4" // test only
+val playVersion           = "3.0.5" // test only
 
 val scala2_13 = "2.13.14"
 
