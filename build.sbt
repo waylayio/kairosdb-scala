@@ -11,7 +11,7 @@ val testContainersVersion = "0.41.4"
 val scalaTestVersion      = "3.2.19"
 val playVersion           = "3.0.5" // test only
 
-val scala2_13 = "2.13.14"
+val scala2_13 = "2.13.15"
 
 ThisBuild / scalaVersion := scala2_13
 
