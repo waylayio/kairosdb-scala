@@ -1,7 +1,16 @@
 import sbt.Keys.thisProjectRef
 
 ThisBuild / organization := "io.waylay.kairosdb"
-
+ThisBuild / homepage     := Some(url("https://waylay.io"))
+ThisBuild / developers := List(
+  Developer(
+    "ramazanyich",
+    "Ramil Israfilov",
+    "ramazanyich@gmail.com",
+    url("https://github.com/ramazanyich")
+  ),
+  Developer("brunoballekens", "Bruno Ballekens", "bruno@waylay.io", url("https://github.com/brunoballekens"))
+)
 val playWsVersion   = "3.0.5"
 val playJsonVersion = "3.0.4"
 val specs2Version   = "4.20.9"
