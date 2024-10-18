@@ -1,6 +1,6 @@
 import sbt.Keys.thisProjectRef
 
-ThisBuild / organization := "io.waylay.kairosdb"
+ThisBuild / organization := "io.waylay"
 ThisBuild / homepage     := Some(url("https://waylay.io"))
 ThisBuild / developers := List(
   Developer(
