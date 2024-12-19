@@ -3,7 +3,7 @@ addSbtPlugin("com.github.sbt" % "sbt-release"    % "1.4.0")
 addSbtPlugin("com.github.sbt" % "sbt-ghpages"    % "0.8.0")
 addSbtPlugin("org.scoverage"  % "sbt-scoverage"  % "2.2.2")
 addSbtPlugin("org.scoverage"  % "sbt-coveralls"  % "1.3.14")
-addSbtPlugin("com.github.sbt" % "sbt-ci-release" % "1.9.0")
+addSbtPlugin("com.github.sbt" % "sbt-ci-release" % "1.9.2")
 
 // scala-xml issues
 // TODO remove when everything has migrated to scala-xml 2.x
