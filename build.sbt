@@ -43,7 +43,7 @@ lazy val root = (project in file("."))
     Test / fork                         := true,
     IntegrationTest / parallelExecution := false,
     libraryDependencies ++= Seq(
-      "org.scala-lang.modules"       %% "scala-collection-compat" % "2.12.0",
+      "org.scala-lang.modules"       %% "scala-collection-compat" % "2.13.0",
       "com.fasterxml.jackson.module" %% "jackson-module-scala"    % "2.18.2",
       "org.playframework"            %% "play-json"               % playJsonVersion,
       "org.playframework"            %% "play-ws-standalone"      % playWsVersion,
