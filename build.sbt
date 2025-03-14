@@ -17,7 +17,7 @@ val playJsonVersion = "3.0.4"
 val specs2Version   = "4.20.9"
 val pekkoVersion    = "1.0.3"
 
-val testContainersVersion = "0.41.8"
+val testContainersVersion = "0.43.0"
 val scalaTestVersion      = "3.2.19"
 val playVersion           = "3.0.6" // test only
 
