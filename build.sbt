@@ -17,7 +17,7 @@ ThisBuild / licenses := List("MIT License" -> url("http://www.opensource.org/lic
 val playWsVersion   = "3.0.7"
 val playJsonVersion = "3.0.4"
 val specs2Version   = "4.21.0"
-val pekkoVersion    = "1.0.3"
+val pekkoVersion    = "1.1.3"
 
 val testContainersVersion = "0.43.0"
 val scalaTestVersion      = "3.2.19"
@@ -56,7 +56,7 @@ lazy val root = (project in file("."))
       "org.specs2"               %% "specs2-core"     % specs2Version % Test,
       "org.specs2"               %% "specs2-junit"    % specs2Version % Test,
       "de.leanovate.play-mockws" %% "play-mockws-3-0" % "3.0.8"       % Test,
-      "org.playframework"        %% "play-ahc-ws"     % playVersion   % TestAndIntegrationTest, // neede for play-mockws
+      "org.playframework"        %% "play-ahc-ws"     % playVersion   % TestAndIntegrationTest, // needed for play-mockws
       "org.playframework" %% "play-test" % playVersion % TestAndIntegrationTest, // play-mockws depends on some types in this dependency
       "org.playframework" %% "play-ahc-ws-standalone"      % playWsVersion % TestAndIntegrationTest,
       "org.apache.pekko"  %% "pekko-actor-typed"           % pekkoVersion  % TestAndIntegrationTest,
@@ -67,6 +67,14 @@ lazy val root = (project in file("."))
       "org.scalatest" %% "scalatest-wordspec"             % scalaTestVersion      % TestAndIntegrationTest,
       "org.scalatest" %% "scalatest-mustmatchers"         % scalaTestVersion      % TestAndIntegrationTest,
       "com.dimafeng"  %% "testcontainers-scala-scalatest" % testContainersVersion % TestAndIntegrationTest
+    ),
+    dependencyOverrides ++= Seq(
+      "org.apache.pekko" %% "pekko-actor"                 % pekkoVersion,
+      "org.apache.pekko" %% "pekko-actor-typed"           % pekkoVersion,
+      "org.apache.pekko" %% "pekko-serialization-jackson" % pekkoVersion,
+      "org.apache.pekko" %% "pekko-slf4j"                 % pekkoVersion,
+      "org.apache.pekko" %% "pekko-stream"                % pekkoVersion,
+      "org.apache.pekko" %% "pekko-protobuf-v3"           % pekkoVersion
     ),
     scalacOptions ++= Seq(
       "-feature",
