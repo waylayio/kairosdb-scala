@@ -2,7 +2,7 @@ import sbt.Keys.thisProjectRef
 import xerial.sbt.Sonatype._
 
 ThisBuild / publishTo := {
-  val nexusSnapshots = "https://central.sonatype.com/repository/maven-snapshots/"
+  val nexusSnapshots = "https://central.sonatype.org/repository/maven-snapshots/"
   if (isSnapshot.value)
     Some("Sonatype Snapshots" at nexusSnapshots)
   else
