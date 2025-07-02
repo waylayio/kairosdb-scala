@@ -1,10 +1,9 @@
 import sbt.Keys.thisProjectRef
 import xerial.sbt.Sonatype._
 
-ThisBuild / publishTo := sonatypePublishToBundle.value
 ThisBuild / sonatypeCredentialHost := "central.sonatype.org"
-ThisBuild / organization := "io.waylay"
-ThisBuild / homepage     := Some(url("https://waylay.io"))
+ThisBuild / organization           := "io.waylay"
+ThisBuild / homepage               := Some(url("https://waylay.io"))
 ThisBuild / developers := List(
   Developer(
     "ramazanyich",
@@ -57,7 +56,7 @@ lazy val root = (project in file("."))
       "org.specs2"               %% "specs2-core"     % specs2Version % Test,
       "org.specs2"               %% "specs2-junit"    % specs2Version % Test,
       "de.leanovate.play-mockws" %% "play-mockws-3-0" % "3.0.8"       % Test,
-      "org.playframework"        %% "play-ahc-ws"     % playVersion   % TestAndIntegrationTest, // needed for play-mockws
+      "org.playframework" %% "play-ahc-ws" % playVersion % TestAndIntegrationTest, // needed for play-mockws
       "org.playframework" %% "play-test" % playVersion % TestAndIntegrationTest, // play-mockws depends on some types in this dependency
       "org.playframework" %% "play-ahc-ws-standalone"      % playWsVersion % TestAndIntegrationTest,
       "org.apache.pekko"  %% "pekko-actor-typed"           % pekkoVersion  % TestAndIntegrationTest,
