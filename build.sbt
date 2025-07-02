@@ -3,9 +3,9 @@ import xerial.sbt.Sonatype._
 
 ThisBuild / publishTo := {
   val nexusSnapshots = "https://central.sonatype.com/repository/maven-snapshots/"
-  val nexusReleases  = sonatypePublishToBundle.value
-  if (isSnapshot.value) Some("Sonatype Snapshots" at nexusSnapshots)
-  else nexusReleases
+    .asURL
+  if (isSnapshot.value) Some("Sonatype Snapshots" at nexusSnapshots.toString)
+  else sonatypePublishToBundle.value
 }
 ThisBuild / sonatypeCredentialHost := "central.sonatype.org"
 ThisBuild / organization := "io.waylay"
