@@ -1,7 +1,10 @@
 import sbt.Keys.thisProjectRef
+import xerial.sbt.Sonatype._
 
-ThisBuild / organization := "io.waylay"
-ThisBuild / homepage     := Some(url("https://waylay.io"))
+ThisBuild / publishTo              := sonatypePublishToBundle.value
+ThisBuild / sonatypeCredentialHost := "central.sonatype.org"
+ThisBuild / organization           := "io.waylay"
+ThisBuild / homepage               := Some(url("https://waylay.io"))
 ThisBuild / developers := List(
   Developer(
     "ramazanyich",
