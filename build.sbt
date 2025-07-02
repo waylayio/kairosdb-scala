@@ -1,12 +1,5 @@
 import sbt.Keys.thisProjectRef
 
-ThisBuild / publishTo := {
-  val centralSnapshots = "https://central.sonatype.com/repository/maven-snapshots/"
-  if (isSnapshot.value)
-    Some("Sonatype Snapshots" at centralSnapshots)
-  else
-    localStaging.value
-}
 ThisBuild / organization := "io.waylay"
 ThisBuild / homepage     := Some(url("https://waylay.io"))
 ThisBuild / developers := List(
