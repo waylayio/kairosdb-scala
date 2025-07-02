@@ -1,7 +1,7 @@
 name: Release
 on:
   push:
-    branches: [master]
+    branches: [master,chore/publish-to-central-portal]
     tags: ["*"]
 jobs:
   publish:
