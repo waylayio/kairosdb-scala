@@ -2,6 +2,7 @@ import sbt.Keys.thisProjectRef
 import xerial.sbt.Sonatype._
 
 ThisBuild / publishTo := sonatypePublishToBundle.value
+ThisBuild / sonatypeCredentialHost := "central.sonatype.org"
 ThisBuild / organization := "io.waylay"
 ThisBuild / homepage     := Some(url("https://waylay.io"))
 ThisBuild / developers := List(
@@ -51,7 +52,7 @@ lazy val root = (project in file("."))
       "org.playframework"            %% "play-ws-standalone"      % playWsVersion,
       "org.playframework"            %% "play-ws-standalone-json" % playWsVersion,
       "com.typesafe.scala-logging"   %% "scala-logging"           % "3.9.5",
-      "com.indoorvivants"                 %% "scala-uri"               % "4.2.0",
+      "com.indoorvivants"            %% "scala-uri"               % "4.2.0",
       // TEST
       "org.specs2"               %% "specs2-core"     % specs2Version % Test,
       "org.specs2"               %% "specs2-junit"    % specs2Version % Test,
