@@ -1,5 +1,4 @@
 import sbt.Keys.thisProjectRef
-import xerial.sbt.Sonatype._
 
 ThisBuild / publishTo := {
   val centralSnapshots = "https://central.sonatype.com/repository/maven-snapshots/"
