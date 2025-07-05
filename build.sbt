@@ -19,7 +19,7 @@ val pekkoVersion    = "1.1.4"
 
 val testContainersVersion = "0.43.0"
 val scalaTestVersion      = "3.2.19"
-val playVersion           = "3.0.7" // test only
+val playVersion           = "3.0.8" // test only
 
 val scala2_13 = "2.13.16"
 
