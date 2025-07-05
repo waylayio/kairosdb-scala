@@ -96,7 +96,7 @@ enablePlugins(SiteScaladocPlugin)
 
 val publishScalaDoc = (ref: ProjectRef) =>
   ReleaseStep(
-    action = releaseStepTaskAggregated(ref / ghpagesPushSite) // publish scaladoc
+    action = releaseStepTaskAggregated(ref / ghpagesPushSite)
   )
 
 val runIntegrationTest = (ref: ProjectRef) =>
