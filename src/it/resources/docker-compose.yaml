@@ -1,35 +1,12 @@
 version: '3.8'
 
-networks:
-  cass_net:
-    driver: bridge
-
 services:
-  cassandra:
-    image: cassandra:3.11
-    expose:
-      - 9042
-    networks:
-      - cass_net
-    healthcheck:
-      test: [ "CMD-SHELL", "[ $$(nodetool statusgossip) = running ]" ]
-      interval: 15s
-      timeout: 10s
-      retries: 5
-    environment:
-      - CASSANDRA_START_RPC=true
 
   kairosdb:
-    image: waylay/kairosdb-scala-driver-it:1.3.0-4
-    depends_on:
-      cassandra:
-        condition: service_healthy
+    image: brunoballekens/kairosdb-scala-driver-it:1.3.0-1
+    volumes:
+        - ./conf/auth:/opt/kairosdb/conf/auth
     expose:
       - 8080
-    networks:
-      - cass_net
-    volumes:
-      - ./conf/auth/auth.props:/opt/kairosdb/conf/auth/secrets/auth.props
     environment:
-      - KAIROSDB_DATASTORE_CASSANDRA_CQL_HOST_LIST.0=cassandra
-      - KAIROSDB_QUEUE_PROCESSOR_MIN_BATCH_WAIT=10
+      - JAVA_OPTS=-Djava.security.auth.login.config=/opt/kairosdb/conf/auth/basicAuth.conf -Dkairosdb.jetty.auth_module_name=basicAuth  -Dkairosdb.jetty.basic_auth.user=test -Dkairosdb.jetty.basic_auth.password=test
