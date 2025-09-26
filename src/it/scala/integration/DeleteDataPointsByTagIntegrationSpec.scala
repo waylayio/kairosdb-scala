@@ -61,9 +61,9 @@ class DeleteDataPointsByTagIntegrationSpec extends IntegrationSpec {
                     TagResult("snth", Seq("321"))
                   ), // not sure if the order is deteministic. Convert to Set?
                   Seq(
-                    instant.plusMillis(2) -> KNumber(222),
-                    instant.plusMillis(4) -> KNumber(444),
-                    instant.plusMillis(5) -> KNumber(123)
+                    (instant.plusMillis(2), KNumber(222), None),
+                    (instant.plusMillis(4), KNumber(444), None),
+                    (instant.plusMillis(5), KNumber(123), None)
                   )
                 )
               )

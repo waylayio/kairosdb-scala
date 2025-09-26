@@ -43,7 +43,7 @@ class AddAndQueryDataPointsIntegrationSpec extends IntegrationSpec {
                   "my.new.metric",
                   Seq(GroupBy.GroupByType("number")),
                   Seq(TagResult("aoeu", Seq("snth"))),
-                  Seq((instant, KNumber(555)))
+                  Seq((instant, KNumber(555), None))
                 )
               )
             )
@@ -85,9 +85,9 @@ class AddAndQueryDataPointsIntegrationSpec extends IntegrationSpec {
                   Seq(GroupBy.GroupByType("number")),
                   List(TagResult("aoeu", List("123", "456")), TagResult("snth", List("321"))),
                   Seq(
-                    instant.plusMillis(1) -> KNumber(111),
-                    instant.plusMillis(2) -> KNumber(222),
-                    instant.plusMillis(3) -> KNumber(333)
+                    (instant.plusMillis(1), KNumber(111), None),
+                    (instant.plusMillis(2), KNumber(222), None),
+                    (instant.plusMillis(3), KNumber(333), None)
                   )
                 )
               )
@@ -149,9 +149,9 @@ class AddAndQueryDataPointsIntegrationSpec extends IntegrationSpec {
                       Seq(GroupBy.GroupByType("number")),
                       Seq(TagResult("aoeu", Seq("snth"))),
                       Seq(
-                        (Instant.parse("1970-01-02T00:00:00Z"), KNumber(555)),
-                        (Instant.parse("1970-01-03T00:00:00Z"), KNull),
-                        (Instant.parse("1970-01-04T00:00:00Z"), KNumber(555))
+                        (Instant.parse("1970-01-02T00:00:00Z"), KNumber(555), None),
+                        (Instant.parse("1970-01-03T00:00:00Z"), KNull, None),
+                        (Instant.parse("1970-01-04T00:00:00Z"), KNumber(555), None)
                       )
                     )
                   )
@@ -171,10 +171,10 @@ class AddAndQueryDataPointsIntegrationSpec extends IntegrationSpec {
                       Seq(GroupBy.GroupByType("number")),
                       Seq(TagResult("aoeu", Seq("snth"))),
                       Seq(
-                        (Instant.parse("1970-01-01T00:00:00Z"), KNull),
-                        (Instant.parse("1970-01-02T00:00:00Z"), KNumber(555)),
-                        (Instant.parse("1970-01-03T00:00:00Z"), KNull),
-                        (Instant.parse("1970-01-04T00:00:00Z"), KNumber(555))
+                        (Instant.parse("1970-01-01T00:00:00Z"), KNull, None),
+                        (Instant.parse("1970-01-02T00:00:00Z"), KNumber(555), None),
+                        (Instant.parse("1970-01-03T00:00:00Z"), KNull, None),
+                        (Instant.parse("1970-01-04T00:00:00Z"), KNumber(555), None)
                       )
                     )
                   )
@@ -194,11 +194,11 @@ class AddAndQueryDataPointsIntegrationSpec extends IntegrationSpec {
                       Seq(GroupBy.GroupByType("number")),
                       Seq(TagResult("aoeu", Seq("snth"))),
                       Seq(
-                        (Instant.parse("1970-01-01T00:00:00Z"), KNull),
-                        (Instant.parse("1970-01-02T00:00:00Z"), KNumber(555)),
-                        (Instant.parse("1970-01-03T00:00:00Z"), KNull),
-                        (Instant.parse("1970-01-04T00:00:00Z"), KNumber(555)),
-                        (Instant.parse("1970-01-05T00:00:00Z"), KNull)
+                        (Instant.parse("1970-01-01T00:00:00Z"), KNull, None),
+                        (Instant.parse("1970-01-02T00:00:00Z"), KNumber(555), None),
+                        (Instant.parse("1970-01-03T00:00:00Z"), KNull, None),
+                        (Instant.parse("1970-01-04T00:00:00Z"), KNumber(555), None),
+                        (Instant.parse("1970-01-05T00:00:00Z"), KNull, None)
                       )
                     )
                   )
