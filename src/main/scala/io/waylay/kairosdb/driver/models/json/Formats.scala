@@ -379,7 +379,13 @@ object Formats {
       Json.obj("plugins" -> query.plugins)
     }
 
-    name ++ limit ++ tags ++ aggregators ++ groupBys ++ excludeTags ++ order ++ plugins
+    val returnIngestionTimestamp = if (query.returnIngestionTimestamp) {
+      Json.obj("return_ingestion_timestamp" -> query.returnIngestionTimestamp)
+    } else {
+      Json.obj()
+    }
+
+    name ++ limit ++ tags ++ aggregators ++ groupBys ++ excludeTags ++ order ++ plugins ++ returnIngestionTimestamp
   }
 
   implicit val tagResultFormat: OFormat[TagResult] = Json.format[TagResult]
@@ -402,7 +408,7 @@ object Formats {
         .map(KNumber) orElse JsError("error.expected.jsstringOrJsnumber")
     }
 
-  implicit val dataPointValueReads: Reads[(Instant, KairosCompatibleType)] =
+  implicit val dataPointValueReads: Reads[(Instant, KairosCompatibleType, Option[Instant])] =
     (json: JsValue) => {
       val millisRes = json(0).validate[Long]
       val valueRes = json(1).validateOpt[KairosCompatibleType].map {
@@ -410,10 +416,17 @@ object Formats {
         case Some(value) => value
       }
 
+      // Try to read the optional third element (ingestion timestamp)
+      val ingestionTimestampRes = Try(json(2).validate[Long]).toOption match {
+        case Some(jsResult) => jsResult.map(millis => Some(Instant.ofEpochMilli(millis)))
+        case None => JsSuccess(None) // No third element, which is valid
+      }
+
       for {
         millis <- millisRes
         value <- valueRes
-      } yield (Instant.ofEpochMilli(millis), value)
+        ingestionTimestamp <- ingestionTimestampRes
+      } yield (Instant.ofEpochMilli(millis), value, ingestionTimestamp)
     }
 
   implicit val metricNameAsStringReads: Reads[MetricName] =
@@ -425,7 +438,7 @@ object Formats {
         .read[Seq[GroupBy]]
         .orElse((json: JsValue) => JsSuccess(Seq.empty[GroupBy])) and
       (JsPath \ "tags").read[Seq[TagResult]] and
-      (JsPath \ "values").read[Seq[(Instant, KairosCompatibleType)]]
+      (JsPath \ "values").read[Seq[(Instant, KairosCompatibleType, Option[Instant])]]
     )(Result.apply _)
 
   implicit val responseQueryReads: Reads[ResponseQuery] = (

@@ -160,7 +160,7 @@ class QuerySpec(implicit ee: ExecutionEnv) extends Specification with MockHelper
               Seq(GroupByType("number"),
                 GroupByTags(Seq("host"))), // TODO group by tag in the result has an extra field "group"
               Seq(TagResult("host", Seq("server1")), TagResult("customer", Seq("bar"))),
-              Seq((Instant.ofEpochMilli(1364968800000L), KNumber(11019)), (Instant.ofEpochMilli(1366351200000L), KNumber(2843)))
+              Seq((Instant.ofEpochMilli(1364968800000L), KNumber(11019), None), (Instant.ofEpochMilli(1366351200000L), KNumber(2843), None))
             )
           )
         )

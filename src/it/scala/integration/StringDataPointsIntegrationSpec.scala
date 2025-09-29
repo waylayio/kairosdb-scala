@@ -46,7 +46,7 @@ class StringDataPointsIntegrationSpec extends IntegrationSpec {
                   "my.new.metric",
                   Seq(GroupBy.GroupByType("text")),
                   Seq(TagResult("aoeu", Seq("snth"))),
-                  Seq((instant, KString("my test string")))
+                  Seq((instant, KString("my test string"), None))
                 )
               )
             )
@@ -83,7 +83,7 @@ class StringDataPointsIntegrationSpec extends IntegrationSpec {
                   "my.new.metric",
                   Seq(GroupBy.GroupByType("text")),
                   Seq(TagResult("aoeu", Seq("snth"))),
-                  Seq((instant, KString("12345")))
+                  Seq((instant, KString("12345"), None))
                 )
               )
             )
