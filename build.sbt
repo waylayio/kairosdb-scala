@@ -14,7 +14,7 @@ ThisBuild / developers := List(
 ThisBuild / licenses := List("MIT License" -> url("http://www.opensource.org/licenses/mit-license.php"))
 val playWsVersion   = "3.0.8"
 val playJsonVersion = "3.0.6"
-val specs2Version   = "4.22.0"
+val specs2Version   = "4.23.0"
 val pekkoVersion    = "1.2.1"
 
 val testContainersVersion = "0.43.0"
