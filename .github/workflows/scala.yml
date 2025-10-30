@@ -22,3 +22,16 @@ jobs:
     - uses: sbt/setup-sbt@v1
     - name: Run tests
       run: sbt clean test IntegrationTest/test
+  merge:
+    name: Merge dependency update
+    if: ${{ github.actor == 'scala-steward' || github.actor == 'scala-steward[bot]' }}
+    needs:
+      - build
+    runs-on: ubuntu-latest
+    steps:
+      - name: merge PR
+        uses: desbo/merge-pr-action@v0
+        with:
+          GITHUB_TOKEN: ${{ secrets.PR_MERGE_PAT }}
+          ALLOWED_UPDATE: minor
+          MERGE_METHOD: squash
