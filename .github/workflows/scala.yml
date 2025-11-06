@@ -31,6 +31,8 @@ jobs:
     steps:
       - name: merge PR
         uses: desbo/merge-pr-action@v0
+        env:
+          INPUT_GITHUB_TOKEN: ${{ secrets.PR_MERGE_PAT }}
         with:
           GITHUB_TOKEN: ${{ secrets.PR_MERGE_PAT }}
           ALLOWED_UPDATE: minor
