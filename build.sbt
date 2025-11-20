@@ -15,7 +15,7 @@ ThisBuild / licenses := List("MIT License" -> url("http://www.opensource.org/lic
 val playWsVersion   = "3.0.9"
 val playJsonVersion = "3.0.6"
 val specs2Version   = "4.23.0"
-val pekkoVersion    = "1.2.1"
+val pekkoVersion    = "1.3.0"
 
 val testContainersVersion = "0.43.6"
 val scalaTestVersion      = "3.2.19"
