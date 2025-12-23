@@ -12,14 +12,14 @@ ThisBuild / developers := List(
   Developer("brunoballekens", "Bruno Ballekens", "bruno@waylay.io", url("https://github.com/brunoballekens"))
 )
 ThisBuild / licenses := List("MIT License" -> url("http://www.opensource.org/licenses/mit-license.php"))
-val playWsVersion   = "3.0.9"
+val playWsVersion   = "3.0.10"
 val playJsonVersion = "3.0.6"
 val specs2Version   = "4.23.0"
 val pekkoVersion    = "1.4.0"
 
 val testContainersVersion = "0.44.0"
 val scalaTestVersion      = "3.2.19"
-val playVersion           = "3.0.9" // test only
+val playVersion           = "3.0.10" // test only
 
 val scala2_13 = "2.13.18"
 
