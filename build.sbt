@@ -25,6 +25,9 @@ val scala2_13 = "2.13.18"
 
 ThisBuild / scalaVersion := scala2_13
 
+ThisBuild / libraryDependencySchemes +=
+  "org.scala-lang.modules" %% "scala-parser-combinators" % VersionScheme.Always
+
 // we need both Test and IntegrationTest scopes for a correct pom, see https://github.com/sbt/sbt/issues/1380
 val TestAndIntegrationTest = IntegrationTest.name + "," + Test.name
 
