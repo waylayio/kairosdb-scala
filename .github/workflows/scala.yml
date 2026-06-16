@@ -3,6 +3,7 @@ name: Scala CI
 on:
   push:
     branches: [ master ]
+    tags: ["*"]
   pull_request:
     branches: [ master ]
 
@@ -20,8 +21,16 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
     - uses: sbt/setup-sbt@v1
+    - name: Set up repository credentials
+      env:
+        NEXUS_USER: ${{ secrets.NEXUS_USER }}
+        NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
+      run: mkdir -p $HOME/.sbt/1.0 && echo "credentials += Credentials(\"Sonatype Nexus Repository Manager\", \"nexus.waylay.io\", \"${NEXUS_USER}\", \"${NEXUS_PASSWORD}\")" > $HOME/.sbt/1.0/global.sbt
     - name: Run tests
       run: sbt clean test IntegrationTest/test
+    - name: Publish
+      if: ${{ github.event_name != 'pull_request' }}
+      run: sbt +publish
   merge:
     name: Merge dependency update
     if: ${{ github.actor == 'scala-steward' || github.actor == 'scala-steward[bot]' }}

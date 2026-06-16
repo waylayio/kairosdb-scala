@@ -146,17 +146,10 @@ The integration tests use [`docker-it-scala`](https://github.com/whisklabs/docke
 
 You can run the unit tests with `test` and the integration tests with `it:test`. See [here](http://www.scala-sbt.org/0.13/docs/Testing.html#Integration+Tests) for more information on integration tests with sbt.
 
-### Releases/versioning
+## Cutting a release
 
-[`sbt-release`](https://github.com/sbt/sbt-release) is used for releases. Use `sbt release`.
+We use sbt-dynver in combination with github actions.
 
-### ScalaDoc
+All you have to do is create a tag named v#.#.# Snapshots with git hash are also published automatically from master or branches
 
-Published [here](https://waylayio.github.io/kairosdb-scala/latest/api) on [Github Pages](https://pages.github.com/) with [sbt-site](https://github.com/sbt/sbt-site) and [sbt-ghpages](https://github.com/sbt/sbt-ghpages). Automatically published as part of release process.
-
-Manually publishing the ScalaDocs can be done with the following command:
-
-```
-$ sbt ghpagesPushSite
-```
 
