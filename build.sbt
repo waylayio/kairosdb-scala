@@ -24,6 +24,8 @@ val playVersion           = "3.0.11" // test only
 val scala2_13 = "2.13.18"
 
 ThisBuild / scalaVersion := scala2_13
+ThisBuild / versionScheme           := Some("semver-spec")
+ThisBuild / dynverSonatypeSnapshots := true
 
 ThisBuild / libraryDependencySchemes +=
   "org.scala-lang.modules" %% "scala-parser-combinators" % VersionScheme.Always
@@ -39,6 +41,16 @@ val exclusions = Seq(
   "netty-codec-socks",
   "netty-codec-http"
 ).map(name => ExclusionRule(organization = "io.netty", name = name))
+
+lazy val repoSettings = Seq(
+  publishTo := {
+    val nexus = "https://nexus.waylay.io"
+    if (isSnapshot.value)
+      Some("Waylay snapshot repo" at nexus + "/repository/maven-snapshots")
+    else
+      Some("Waylay releases repo" at nexus + "/repository/maven-releases")
+  }
+)
 
 lazy val root = (project in file("."))
   .settings(
@@ -89,43 +101,12 @@ lazy val root = (project in file("."))
       "-unchecked",
       "-Xlint",
       "-Ywarn-dead-code"
-    )
+    ),
+    releaseNotesURL := scmInfo.value.map(scm => url(s"${scm.browseUrl}/releases"))
   )
+  .settings(repoSettings)
   .configs(IntegrationTest)
   .settings(Defaults.itSettings: _*)
-
-enablePlugins(GhpagesPlugin)
-enablePlugins(SiteScaladocPlugin)
-
-val publishScalaDoc = (ref: ProjectRef) =>
-  ReleaseStep(
-    action = releaseStepTaskAggregated(ref / ghpagesPushSite)
-  )
-
-val runIntegrationTest = (ref: ProjectRef) =>
-  ReleaseStep(
-    action = releaseStepTaskAggregated(ref / IntegrationTest / test)
-  )
-
-releaseProcess := {
-  import sbtrelease.ReleaseStateTransformations.*
-
-  Seq[ReleaseStep](
-    checkSnapshotDependencies,
-    inquireVersions,
-    runClean,
-    runTest,
-    runIntegrationTest(thisProjectRef.value),
-    setReleaseVersion,
-    commitReleaseVersion,
-    tagRelease,
-    publishArtifacts,
-    publishScalaDoc(thisProjectRef.value),
-    setNextVersion,
-    commitNextVersion,
-    pushChanges
-  )
-}
 
 git.remoteRepo := "git@github.com:waylayio/kairosdb-scala.git"
 

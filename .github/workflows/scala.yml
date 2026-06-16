@@ -22,6 +22,9 @@ jobs:
     - uses: sbt/setup-sbt@v1
     - name: Run tests
       run: sbt clean test IntegrationTest/test
+    - name: Publish
+      if: ${{ github.event_name != 'pull_request' }}
+      run: sbt +publish
   merge:
     name: Merge dependency update
     if: ${{ github.actor == 'scala-steward' || github.actor == 'scala-steward[bot]' }}
