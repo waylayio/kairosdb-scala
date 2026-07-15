@@ -109,7 +109,6 @@ lazy val integration = (project in file("integration"))
   .settings(
     name                     := "kairosdb-scala-integration-tests",
     publish / skip           := true,
-    Test / fork              := true,
     Test / parallelExecution := false,
     Test / baseDirectory     := (LocalRootProject / baseDirectory).value,
     Test / scalaSource       := (LocalRootProject / baseDirectory).value / "src" / "it" / "scala",
