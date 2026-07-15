@@ -27,7 +27,7 @@ jobs:
         NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
       run: mkdir -p $HOME/.config/sbt/2 && echo "credentials += Credentials(\"Sonatype Nexus Repository Manager\", \"nexus.waylay.io\", \"${NEXUS_USER}\", \"${NEXUS_PASSWORD}\")" > $HOME/.config/sbt/2/global.sbt
     - name: Run tests
-      run: sbt ";clean;test;integration/test"
+      run: sbt ";clean;testFull;integration/testFull"
     - name: Publish
       if: ${{ github.event_name != 'pull_request' }}
       run: sbt +publish
