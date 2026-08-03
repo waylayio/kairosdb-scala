@@ -1,0 +1,51 @@
+workflow:
+  rules:
+    - if: $CI_COMMIT_TAG
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+
+stages:
+  - verify
+  - publish
+
+.sbt_setup:
+  image: eclipse-temurin:17
+  variables:
+    GIT_DEPTH: "0"
+  before_script:
+    - apt-get update && apt-get install --no-install-recommends -y curl git
+    - git fetch --tags --force
+    - curl -Ls https://raw.githubusercontent.com/paulp/sbt-extras/master/sbt > /usr/local/bin/sbt
+    - chmod 0755 /usr/local/bin/sbt
+    - mkdir -p "$HOME/.config/sbt/2"
+    - echo "credentials += Credentials(\"Sonatype Nexus Repository Manager\", \"nexus.waylay.io\", \"${NEXUS_USER}\", \"${NEXUS_PASSWORD}\")" > "$HOME/.config/sbt/2/global.sbt"
+
+verify:
+  stage: verify
+  extends: .sbt_setup
+  services:
+    - name: docker:29-dind
+      alias: docker
+  tags:
+    - gsp-privileged
+  variables:
+    GIT_DEPTH: "0"
+    DOCKER_HOST: "tcp://docker:2376/"
+    DOCKER_TLS_CERTDIR: "/certs"
+    DOCKER_TLS_VERIFY: "1"
+    DOCKER_CERT_PATH: "$DOCKER_TLS_CERTDIR/client"
+  script:
+    - sbt ";clean;testFull;integration/testFull"
+
+publish:
+  stage: publish
+  extends: .sbt_setup
+  needs:
+    - verify
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: never
+    - if: $CI_COMMIT_TAG
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  script:
+    - sbt +publish
