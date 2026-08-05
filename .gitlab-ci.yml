@@ -9,14 +9,13 @@ stages:
   - publish
 
 .sbt_setup:
-  image: eclipse-temurin:17
+  image: sbtscala/scala-sbt:eclipse-temurin-17_2.x
   variables:
     GIT_DEPTH: "0"
+    # Image sets HOME=/home/sbtuser, but the job runs as root; sbt reads user.home (/root).
+    HOME: "/root"
   before_script:
-    - apt-get update && apt-get install --no-install-recommends -y curl git
     - git fetch --tags --force
-    - curl -Ls https://raw.githubusercontent.com/paulp/sbt-extras/master/sbt > /usr/local/bin/sbt
-    - chmod 0755 /usr/local/bin/sbt
     - mkdir -p "$HOME/.config/sbt/2"
     - echo "credentials += Credentials(\"Sonatype Nexus Repository Manager\", \"nexus.waylay.io\", \"${NEXUS_USER}\", \"${NEXUS_PASSWORD}\")" > "$HOME/.config/sbt/2/global.sbt"
 
